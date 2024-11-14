@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 dotenv.config();
 
@@ -9,11 +10,16 @@ dotenv.config();
 const logins = require("./Routes/loginRoutes");
 const emailsConfirm = require("./Routes/emailRoutes");
 const newsletterRoutes = require("./Routes/newsletterRoutes");
+const productRoutes = require("./Routes/productRoutes");
 
 mongoose.set("strictQuery", true);
 
 // Crear la aplicación express
 const app = express();
+
+// Configurar body-parser con un límite mayor
+app.use(bodyParser.json({ limit: "10mb" })); // Aumenta el límite según sea necesario
+app.use(bodyParser.urlencoded({ extended: true, limit: "10mb" }));
 
 // Middleware
 app.use(express.json()); // Analizar los datos JSON
@@ -37,6 +43,7 @@ mongoose
 app.use("/auth", logins);
 app.use("/emails", emailsConfirm);
 app.use("/newsletter", newsletterRoutes);
+app.use("/api", productRoutes);
 
 // Iniciar el servidor
 app.listen(process.env.PORT, () => {
