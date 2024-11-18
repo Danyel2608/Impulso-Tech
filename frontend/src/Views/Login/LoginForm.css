@@ -1,0 +1,129 @@
+.login-content {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.login-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-logo img {
+  width: 50%;
+}
+.login-content form,
+.login-dates,
+.submit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+}
+form h3 {
+  margin-bottom: 1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.login-dates input {
+  width: 90%;
+  margin: 2em 0;
+  border-bottom: 1px solid grey;
+  padding: 1em;
+}
+.login-links,
+.login-dates,
+.sign-up {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.remember-me,
+.forget-password,
+.submit {
+  display: flex;
+  justify-content: center;
+}
+.remember-me h5 {
+  margin-left: 0.5em;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+.forget-password a,
+.sign-up a {
+  text-decoration: none;
+  color: black;
+  margin: 2em 0;
+  font-size: 1.1em;
+}
+.sign-up a {
+  font-weight: 400;
+}
+.submit button {
+  width: 90%;
+  margin-top: 2em;
+  padding: 1em 2em;
+  border: 1px solid black;
+  background-color: white;
+  font-size: 1.2em;
+  text-transform: uppercase;
+}
+.img-left img {
+  display: none;
+}
+/* Mobile-first styles (for smaller screens) are defined above */
+
+@media (min-width: 768px) {
+  /* Tablets and small desktops */
+  .login-content {
+    flex-direction: row;
+  }
+
+  .login-logo {
+    width: 40%;
+  }
+
+  .login-logo img {
+    width: 80%;
+  }
+
+  .login-dates input {
+    width: 80%;
+  }
+
+  .submit button {
+    width: 80%;
+  }
+
+  .img-left img {
+    display: block;
+    width: 40%;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Laptops and desktops */
+  .login-content form{
+    width: 60%;
+  }
+  .login-logo {
+    width: 30%;
+  }
+
+  .login-logo img {
+    width: 70%;
+  }
+
+  .login-dates input {
+    width: 50%;
+  }
+
+  .submit button {
+    width: 50%;
+  }
+}

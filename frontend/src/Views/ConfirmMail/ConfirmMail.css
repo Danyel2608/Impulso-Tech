@@ -1,0 +1,33 @@
+/* Centrado absoluto */
+.confirm-mail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, .5);
+  width: 100%;
+  max-width: 500px; /* Limitar el tamaño máximo del contenedor */
+  text-align: center;
+
+  /* Centramos el contenedor con position absolute */
+  position: absolute;
+  top: 50%; /* Ajustamos al centro vertical */
+  left: 50%; /* Ajustamos al centro horizontal */
+  transform: translate(-50%, -50%); /* Ajuste para un centrado perfecto */
+}
+
+.confirm-mail h2 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.confirm-mail p {
+  color: #555;
+  font-size: 16px;
+  line-height: 1.5;
+}

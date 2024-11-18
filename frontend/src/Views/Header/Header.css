@@ -1,0 +1,68 @@
+.header-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 1px;
+}
+.header-content i:hover {
+  cursor: pointer;
+}
+.header-menu {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.header-menu i {
+  font-size: 1.5em;
+}
+.header-content img {
+  width: 50%;
+}
+.header-links {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: black;
+  width: 100%;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: start;
+  padding-top: 15em;
+}
+.header-links a {
+  text-decoration: none;
+  color: white;
+  margin: 1.5em 2em;
+  font-size: 1.5em;
+}
+.header-links a:hover {
+  color: #f39c12;
+}
+.header-links i {
+  color: white;
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  font-size: 2em;
+}
+.marcas-list{
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.invisible {
+  opacity: 0;
+  display: none;
+}
+.visible {
+  opacity: 0.8;
+}

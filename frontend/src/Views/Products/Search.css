@@ -1,0 +1,26 @@
+/* Search.css */
+.products-page-search {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  background-color: #333;
+  padding: 1.5em;
+  margin: 2em 0;
+}
+
+.products-page-search input[type="search"] {
+  width: 100%;
+  background-color: #333;
+  color: white;
+}
+
+.products-page-search input[type="search"]::placeholder,
+.products-page-search i {
+  color: white;
+}
+
+.products-page-search i {
+  margin-left: 1em;
+}

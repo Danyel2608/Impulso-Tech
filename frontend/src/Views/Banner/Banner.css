@@ -1,0 +1,12 @@
+.banner-content{
+    width: 100%;
+    height: auto;
+    margin-top: 45%;
+    margin-bottom: 10%;
+    display: flex;
+}
+.banner-content video{
+    object-fit: cover;
+    width: 100%;
+    height: auto;
+}

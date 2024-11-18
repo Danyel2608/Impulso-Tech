@@ -1,0 +1,24 @@
+.description-content,.description-imgs{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 5em 0;
+}
+.description-content h2{
+    text-transform: uppercase;
+    width: 90%;
+    margin: 1em;
+}
+.description-content p{
+    width: 90%;
+}
+.description-imgs img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+

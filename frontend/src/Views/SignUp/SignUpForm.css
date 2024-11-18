@@ -1,0 +1,136 @@
+.signup-content {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.signup-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.signup-logo img {
+  width: 50%;
+}
+.signup-content form,
+.signup-dates,
+.submit,
+.answer-security {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: auto;
+}
+form h3 {
+  margin-bottom: 1em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.signup-dates input,.answer-security input {
+  width: 80%;
+  margin: 1.5em 0;
+  border-bottom: 1px solid grey;
+  padding: 1em;
+}
+.login-link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.login-link a {
+  text-decoration: none;
+  color: black;
+  margin: 2em 0;
+  font-size: 1.1em;
+}
+.login-link strong {
+  font-weight: 400;
+}
+.submit button {
+  width: 80%;
+  margin: 1em 0;
+  padding: 1em 2em;
+  border: 1px solid black;
+  background-color: white;
+  font-size: 1.2em;
+  text-transform: uppercase;
+}
+.submit button:hover{
+  cursor: pointer;
+}
+.img-left {
+  display: none;
+}
+.answer-security h5{
+  margin-top: 1.5em;
+}
+@keyframes moveBackground {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+/* Mobile-first styles (for smaller screens) are already defined above */
+
+@media (min-width: 768px) {
+  /* Tablets and small desktops */
+  .signup-content {
+    flex-direction: row;
+  }
+  .signup-logo {
+    width: 50%;
+  }
+
+  .signup-logo img {
+    width: 80%;
+  }
+
+  .signup-dates input {
+    width: 80%;
+  }
+
+  .submit button {
+    width: 80%;
+  }
+
+  .img-left {
+    display: block;
+    width: 40%;
+  }
+  .img-left img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Desktops */
+
+  .signup-logo {
+    width: 25%;
+  }
+
+  .signup-logo img {
+    width: 60%;
+  }
+
+  .signup-dates input {
+    width: 50%;
+  }
+
+  .submit button {
+    width: 50%;
+  }
+}

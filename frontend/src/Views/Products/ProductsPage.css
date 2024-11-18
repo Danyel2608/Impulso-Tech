@@ -1,0 +1,147 @@
+/* Contenedor principal de la página de productos */
+.product-page-main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra el contenido horizontalmente */
+  justify-content: flex-start;
+  min-height: 100vh; /* Asegura que la página ocupe toda la altura */
+}
+
+/* Contenido principal de la página de productos */
+.products-page-content {
+  width: 100%;
+  max-width: 1200px; /* Limita el ancho máximo de la página */
+  padding: 2rem; /* Espaciado interno */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 200px;
+}
+
+/* Título de la página */
+.products-page-content h3 {
+  text-transform: uppercase;
+  font-size: 2rem;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #333;
+}
+
+/* Contenedor de la lista de productos */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(250px, 1fr)
+  ); /* Adaptación automática de las tarjetas */
+  gap: 20px;
+  width: 100%;
+  justify-items: center; /* Centra los elementos en el grid */
+  margin-top: 2rem;
+}
+
+/* Tarjetas de productos */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  width: 100%;
+  max-width: 350px; /* Limita el tamaño máximo de las tarjetas */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  padding-bottom: 1em;
+}
+
+.product-card:hover {
+  transform: scale(1.05); /* Efecto al pasar el mouse sobre la tarjeta */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+}
+
+/* Imagen del producto */
+.product-image {
+  width: 100%;
+  height: auto; /* Tamaño fijo para las imágenes */
+  object-fit: cover; /* Mantiene la proporción de la imagen */
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+}
+
+/* Título del producto */
+.product-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 10px 0;
+  text-transform: capitalize; /* Capitaliza la primera letra */
+  color: #333;
+}
+
+/* Precio del producto */
+.product-price {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin-top: 0.5rem;
+}
+
+/* Descripción de las etiquetas (rebaja, novedad) */
+.product-description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.new-tag,
+.sale-tag {
+  font-weight: bold;
+  padding: 5px 10px;
+  background-color: #ff6347; /* Naranja para el descuento */
+  color: white;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+.sale-tag {
+  background-color: #ff4500; /* Rojo para rebaja */
+}
+
+/* Detalles del producto (talla, color, material) */
+.product-details {
+  font-size: 0.9rem;
+  color: #555;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.product-details p {
+  margin: 0.2rem 0;
+}
+
+.product-buy button {
+  padding: 1em 5.5em;
+  margin: 1em 0;
+  background-color: #333;
+  color: white;
+}
+
+.load-more-button button {
+  margin-top: 1.5em;
+  padding: 1em;
+  background-color: #333;
+  color: white;
+}
+
+.load-more-button button:hover,
+.product-buy button:hover {
+  cursor: pointer;
+}
