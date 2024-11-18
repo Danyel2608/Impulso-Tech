@@ -9,7 +9,7 @@ const getAllLogins = async (req, res) => {
     const logins = await Login.find();
     res.json(logins);
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener los logins' });
+    res.status(500).json({ error: "Error al obtener los logins" });
   }
 };
 //Get Login by id
@@ -19,7 +19,7 @@ const getLoginId = async (req, res) => {
     const login = await Login.findOne(userId);
     res.json(login);
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener login by id' });
+    res.status(500).json({ error: "Error al obtener login by id" });
   }
 };
 
@@ -60,7 +60,8 @@ const signup = async (req, res) => {
     res.status(201).json({
       status: "Succeeded",
       data: {
-        message: "Please verify your email address. A confirmation email has been sent to your email.",
+        message:
+          "Please verify your email address. A confirmation email has been sent to your email.",
         user: {
           // No incluyas el token y refreshToken aquí
           id: user._id,
@@ -73,12 +74,11 @@ const signup = async (req, res) => {
     });
   } catch (error) {
     // Manejar errores
-    res.status(400).json({ status: "failed", data: null, error: error.message });
+    res
+      .status(400)
+      .json({ status: "failed", data: null, error: error.message });
   }
 };
-
-
-
 
 //POST login
 const login = async (req, res) => {
@@ -105,7 +105,7 @@ const login = async (req, res) => {
       });
     }
 
-    if (user.confirmEmail!=true) {
+    if (user.confirmEmail != true) {
       return res.status(404).json({
         status: "failed",
         data: null,
@@ -137,7 +137,6 @@ const login = async (req, res) => {
     });
   }
 };
-
 
 //GET /auth/refresh-token
 const refreshToken = async (req, res) => {
@@ -176,38 +175,48 @@ const refreshToken = async (req, res) => {
 const forgetPassword = async (req, res) => {
   try {
     const { email, password, answerSecurity } = req.body;
+
+    // Buscar al usuario por correo electrónico
     const user = await Login.findOne({ email });
 
     if (!user) {
+      // Si el usuario no existe
       return res.status(404).json({
         status: "failed",
         data: null,
-        error: "This email doesn't exist. Please try again.",
-      });
-    }
-    const answer = user.answerPrivate;
-    if (answerSecurity === answer) {
-      // Hash de la nueva contraseña
-      const hashedPassword = await bcrypt.hash(password, 10);
-      // Actualizar la contraseña del usuario en la base de datos
-      user.password = hashedPassword;
-      await user.save();
-      // Envío de respuesta exitosa
-      res.status(200).json({
-        status: "Succeeded",
-        data: null,
-        error: null,
-      });
-    } else {
-      console.error(error);
-      res.status(500).json({
-        status: "Failed",
-        data: null,
-        error: error.message,
+        error: "Este correo no está registrado. Por favor, verifica el correo.",
       });
     }
 
+    // Obtener la respuesta a la pregunta de seguridad del usuario
+    const answer = user.answerPrivate;
+
+    if (answerSecurity !== answer) {
+      // Si la respuesta a la pregunta de seguridad no es correcta
+      return res.status(400).json({
+        status: "failed",
+        data: null,
+        error: "La respuesta de seguridad es incorrecta.",
+      });
+    }
+
+    // Si la respuesta es correcta, procedemos a actualizar la contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Actualizamos la contraseña del usuario
+    user.password = hashedPassword;
+
+    // Guardamos los cambios en la base de datos
+    await user.save();
+
+    // Respuesta exitosa
+    res.status(200).json({
+      status: "Succeeded",
+      data: null,
+      error: null,
+    });
   } catch (error) {
+    // En caso de error en la solicitud
     console.error(error);
     res.status(500).json({
       status: "Failed",
@@ -258,6 +267,14 @@ const deleteUser = async (req, res) => {
       error: "Error al intentar eliminar el usuario.",
     });
   }
-}
+};
 
-module.exports = { signup, login, refreshToken, forgetPassword, deleteUser, getAllLogins, getLoginId };
+module.exports = {
+  signup,
+  login,
+  refreshToken,
+  forgetPassword,
+  deleteUser,
+  getAllLogins,
+  getLoginId,
+};
