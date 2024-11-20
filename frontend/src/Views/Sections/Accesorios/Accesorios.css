@@ -1,0 +1,25 @@
+.accesorios-content {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.accesorios-header {
+  display: block;
+}
+.accesorios-search {
+  width: 90%;
+  height: auto;
+  margin-top: 1em;
+}
+.accesorios-header {
+  margin-top: 15em;
+  width: 100%;
+}
+.accesorios-header h2 {
+  font-weight: 400;
+  font-size: 5em;
+  text-align: center;
+}

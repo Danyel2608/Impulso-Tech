@@ -1,26 +1,36 @@
-/* Search.css */
+.search-and-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
 .products-page-search {
   display: flex;
-  justify-content: center;
   align-items: center;
+  border: 1px solid grey;
+  border-radius: .5rem;
   width: 100%;
-  height: auto;
-  background-color: #333;
-  padding: 1.5em;
-  margin: 2em 0;
+  padding: .5em 1em;
 }
 
-.products-page-search input[type="search"] {
+input[type="search"] {
+  padding: 8px;
+  font-size: 16px;
   width: 100%;
-  background-color: #333;
-  color: white;
 }
 
-.products-page-search input[type="search"]::placeholder,
-.products-page-search i {
-  color: white;
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.products-page-search i {
-  margin-left: 1em;
+select {
+  padding: 8px;
+  font-size: 16px;
+}
+
+.fa-magnifying-glass {
+  cursor: pointer;
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Search from "../Products/Search";
+import Search from "../../Products/Search";
 import "./Marcas.css";
-import Header from "../Header/Header";
+import Header from "../../Header/Header";
 
 function Marca({ marca }) {
   const [productosMarca, setProductosMarca] = useState([]);

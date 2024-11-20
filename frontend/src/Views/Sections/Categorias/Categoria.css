@@ -1,0 +1,23 @@
+.categoria-content {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.categoria-header {
+  display: block;
+}
+.categoria-search {
+  width: 90%;
+  height: auto;
+  margin-top: 1em;
+}
+.categoria-header {
+  margin-top: 15em;
+}
+.categoria-header h2 {
+  font-weight: 400;
+  font-size: 5em;
+}

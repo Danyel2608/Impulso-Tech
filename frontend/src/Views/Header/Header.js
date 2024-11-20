@@ -2,6 +2,11 @@ import "./Header.css";
 import ModaUrbanaLogo from "../../assets/ModaUrbanaLogo.png";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import Adidas from "../../assets/marcas/Adidas.jpg";
+import Nike from "../../assets/marcas/Nike.jpg";
+import Puma from "../../assets/marcas/Puma.png";
+import Supreme from "../../assets/marcas/Supreme.png";
+import Vans from "../../assets/marcas/Vans.jpg";
 
 function Header() {
   const navigate = useNavigate();
@@ -36,6 +41,7 @@ function Header() {
       </div>
       <div className="header-links invisible" id="menu-header">
         <i className="fa-solid fa-xmark" onClick={closeMenu}></i>
+        <a href="/products">TODOS LOS PRODUCTOS</a>
         <a href="#" onClick={toggleMarcas}>
           MARCAS
         </a>
@@ -44,18 +50,28 @@ function Header() {
           className={`marcas-list ${isMarcasVisible ? "visible" : "invisible"}`}
           id="marcas-list"
         >
-          <a href="/nike">NIKE</a>
-          <a href="/adidas">ADIDAS</a>
-          <a href="/supreme">SUPREME</a>
-          <a href="/puma">PUMA</a>
-          <a href="/vans">VANS</a>
+          <a href="/nike">
+            <img src={Nike} alt="Nike"></img>
+          </a>
+          <a href="/adidas">
+            <img src={Adidas} alt="Adidas"></img>
+          </a>
+          <a href="/supreme">
+            <img src={Supreme} alt="Supreme"></img>
+          </a>
+          <a href="/puma">
+            <img src={Puma} alt="Puma"></img>
+          </a>
+          <a href="/vans">
+            <img src={Vans} alt="Vans"></img>
+          </a>
         </div>
-        <a href="#">HOMBRE</a>
-        <a href="#">MUJER</a>
-        <a href="#">NIÑO</a>
-        <a href="#">ACCESORIOS</a>
-        <a href="#">NOVEDADES</a>
-        <a href="#">REBAJAS</a>
+        <a href="/hombre">HOMBRE</a>
+        <a href="/mujer">MUJER</a>
+        <a href="/niño">NIÑO</a>
+        <a href="/accesorios">ACCESORIOS</a>
+        <a href="/novedades">NOVEDADES</a>
+        <a href="/rebajas">REBAJAS</a>
       </div>
     </div>
   );

@@ -9,12 +9,18 @@ import ConfirmEmail from "./Views/ConfirmMail/ConfirmMail";
 import NewsletterPage from "./Views/Newsletter/NewsletterPage";
 import ProductsPage from "./Views/Products/ProductsPage";
 import ProductGenerator from "./GenerarDatos";
-import Nike from "./Views/Sections/Nike";
-import Adidas from "./Views/Sections/Adidas";
-import Supreme from "./Views/Sections/Supreme";
-import Vans from "./Views/Sections/Vans";
-import Puma from "./Views/Sections/Puma";
+import Adidas from "./Views/Sections/Marcas/Adidas";
+import Supreme from "./Views/Sections/Marcas/Supreme";
+import Vans from "./Views/Sections/Marcas/Vans";
+import Puma from "./Views/Sections/Marcas/Puma";
 import ForgetPassword from "./Views/ForgetPassword/ForgetPassword";
+import Nike from "./Views/Sections/Marcas/Nike";
+import Niño from "./Views/Sections/Categorias/Niño";
+import Hombre from "./Views/Sections/Categorias/Hombre";
+import Mujer from "./Views/Sections/Categorias/Mujer";
+import Accesorios from "./Views/Sections/Accesorios/Accesorios";
+import Novedades from "./Views/Sections/Novedades/Novedades";
+import Rebajas from "./Views/Sections/Rebajas/Rebajas";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -67,6 +73,12 @@ function App() {
             <Route path="/vans" element={<Vans />} />
             <Route path="/puma" element={<Puma />} />
             <Route path="/forget" element={<ForgetPassword />} />
+            <Route path="/niño" element={<Niño />}></Route>
+            <Route path="/hombre" element={<Hombre />}></Route>
+            <Route path="/mujer" element={<Mujer />}></Route>
+            <Route path="/accesorios" element={<Accesorios />}></Route>
+            <Route path="/novedades" element={<Novedades />}></Route>
+            <Route path="/rebajas" element={<Rebajas />}></Route>
           </Routes>
         </BrowserRouter>
       )}

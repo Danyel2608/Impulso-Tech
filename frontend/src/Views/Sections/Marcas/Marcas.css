@@ -1,0 +1,23 @@
+.marcas-content {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.marcas-header {
+  display: block;
+}
+.marcas-search {
+  width: 90%;
+  height: auto;
+  margin-top: 1em;
+}
+.marcas-header{
+  margin-top: 15em;
+}
+.marcas-header h2{
+  font-weight: 400;
+  font-size: 5em;
+}

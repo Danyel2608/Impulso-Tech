@@ -1,4 +1,4 @@
-.marcas-content {
+.novedades-content {
   width: 100%;
   height: auto;
   display: flex;
@@ -6,19 +6,19 @@
   justify-content: center;
   align-items: center;
 }
-.marcas-header {
+.novedades-header {
   display: block;
 }
-.marcas-search {
+.novedades-search {
   width: 90%;
   height: auto;
   margin-top: 1em;
 }
-.marcas-header{
+.novedades-header {
   margin-top: 15em;
 }
-.marcas-header h2{
+.novedades-header h2 {
   font-weight: 400;
   font-size: 5em;
-  letter-spacing: 10px;
+  text-align: center;
 }

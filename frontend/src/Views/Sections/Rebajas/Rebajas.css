@@ -1,0 +1,24 @@
+.rebajas-content {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.rebajas-header {
+  display: block;
+}
+.rebajas-search {
+  width: 90%;
+  height: auto;
+  margin-top: 1em;
+}
+.rebajas-header {
+  margin-top: 15em;
+}
+.rebajas-header h2 {
+  font-weight: 400;
+  font-size: 5em;
+  text-align: center;
+}
