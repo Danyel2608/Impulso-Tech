@@ -7,6 +7,7 @@ import Nike from "../../assets/marcas/Nike.jpg";
 import Puma from "../../assets/marcas/Puma.png";
 import Supreme from "../../assets/marcas/Supreme.png";
 import Vans from "../../assets/marcas/Vans.jpg";
+import ShoppingCart from "../ShoppingCart/ShoppingCart";
 
 function Header() {
   const navigate = useNavigate();
@@ -30,14 +31,19 @@ function Header() {
   const toggleMarcas = () => {
     setIsMarcasVisible(!isMarcasVisible); // Alterna entre visible/invisible
   };
-
+  const openCart = () => {
+    let shoppingCart = document.getElementById("shopping-cart");
+    shoppingCart.classList.remove("invisible");
+    shoppingCart.classList.add("visible");
+  };
   return (
     <div className="header-content">
+      <ShoppingCart></ShoppingCart>
       <div className="header-menu">
         <i className="fa-solid fa-bars" onClick={openMenu}></i>
         <img src={ModaUrbanaLogo} alt="moda-urbana-logo" />
         <i className="fa-solid fa-user" onClick={goLogin}></i>
-        <i className="fa-solid fa-cart-shopping"></i>
+        <i className="fa-solid fa-cart-shopping" onClick={openCart}></i>
       </div>
       <div className="header-links invisible" id="menu-header">
         <i className="fa-solid fa-xmark" onClick={closeMenu}></i>

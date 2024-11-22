@@ -3,23 +3,16 @@ import "./Search.css";
 
 function Search({ productos, setProductosFiltrados }) {
   const [searchQuery, setSearchQuery] = useState(""); // Para la búsqueda
-  const [activeFilters, setActiveFilters] = useState({
-    alphabetical: false,
-    alphabetical2: false,
-    priceLowToHigh: false,
-    priceHighToLow: false,
-    discount: false,
-    discount2: false,
-    stock: false,
-  }); // Estado para saber qué filtros están activos
+  const [selectedFilter, setSelectedFilter] = useState(""); // Para el filtro seleccionado
 
   const allProductsRef = useRef([]); // Ref para almacenar los productos originales
 
+  // Guardamos los productos originales una sola vez en el ref
   useEffect(() => {
     if (allProductsRef.current.length === 0) {
       allProductsRef.current = productos; // Guardamos los productos iniciales solo una vez
     }
-  }, [productos]); // Se ejecuta solo cuando 'productos' cambia por primera vez
+  }, [productos]);
 
   // Función para ordenar los productos utilizando el algoritmo de selección
   const selectionSort = (arr, key, ascending = true) => {
@@ -44,8 +37,8 @@ function Search({ productos, setProductosFiltrados }) {
   };
 
   // Función para aplicar los filtros de orden
-  const applyFilters = (filteredProducts) => {
-    let products = [...filteredProducts];
+  const applyFilters = () => {
+    let products = [...allProductsRef.current];
 
     // Aplicar filtro de búsqueda
     if (searchQuery.trim()) {
@@ -63,39 +56,44 @@ function Search({ productos, setProductosFiltrados }) {
       });
     }
 
-    // Si el filtro "alphabetical" está activo (A-Z)
-    if (activeFilters.alphabetical) {
-      products = selectionSort(products, "nombre", true);
+    // Si el filtro es de descuento, solo tomar los productos con descuento
+    if (selectedFilter === "discount" || selectedFilter === "discount2") {
+      // Filtrar productos con descuento
+      products = products.filter(
+        (producto) => producto.rebaja && producto.descuento > 0
+      );
     }
 
-    // Si el filtro "alphabetical2" está activo (Z-A)
-    if (activeFilters.alphabetical2) {
-      products = selectionSort(products, "nombre", false);
-    }
-
-    // Si el filtro "priceLowToHigh" está activo
-    if (activeFilters.priceLowToHigh) {
-      products = selectionSort(products, "precio", true);
-    }
-
-    // Si el filtro "priceHighToLow" está activo
-    if (activeFilters.priceHighToLow) {
-      products = selectionSort(products, "precio", false);
-    }
-
-    // Si el filtro "discount" está activo
-    if (activeFilters.discount) {
-      products = selectionSort(products, "descuento", false); // Orden de mayor a menor
-    }
-
-    // Si el filtro "discount2" está activo
-    if (activeFilters.discount2) {
-      products = selectionSort(products, "descuento", true); // Orden de menor a mayor
-    }
-
-    // Si el filtro "stock" está activo
-    if (activeFilters.stock) {
-      products = selectionSort(products, "stock", false); // Orden de mayor a menor
+    // Ordenar productos con descuento o sin descuento según el filtro seleccionado
+    switch (selectedFilter) {
+      case "discount":
+        // Ordenar de mayor descuento a menor
+        products.sort((a, b) => b.descuento - a.descuento);
+        break;
+      case "discount2":
+        // Ordenar de menor descuento a mayor
+        products.sort((a, b) => a.descuento - b.descuento);
+        break;
+      case "alphabetical":
+        products.sort((a, b) => a.nombre.localeCompare(b.nombre));
+        break;
+      case "alphabetical2":
+        products.sort((a, b) => b.nombre.localeCompare(a.nombre));
+        break;
+      case "priceLowToHigh":
+        products.sort((a, b) => a.precio - b.precio);
+        break;
+      case "priceHighToLow":
+        products.sort((a, b) => b.precio - a.precio);
+        break;
+      case "stock":
+        products.sort((a, b) => b.stock - a.stock);
+        break;
+      case "stock2":
+        products.sort((a, b) => a.stock - b.stock);
+        break;
+      default:
+        break;
     }
 
     // Finalmente, actualizamos el estado con los productos ordenados
@@ -105,7 +103,6 @@ function Search({ productos, setProductosFiltrados }) {
   // Función para manejar la búsqueda
   const handleSearch = (query) => {
     setSearchQuery(query); // Actualizar el estado de la búsqueda
-    applyFilters(allProductsRef.current); // Aplicar los filtros con los productos actuales
   };
 
   // Manejo de cambio en el campo de búsqueda
@@ -120,15 +117,15 @@ function Search({ productos, setProductosFiltrados }) {
     }
   };
 
-  // Cambiar el estado de los filtros (activar/desactivar)
+  // Función para manejar el cambio de filtro
   const handleFilterChange = (e) => {
-    const { name, checked } = e.target;
-    setActiveFilters((prev) => {
-      const newFilters = { ...prev, [name]: checked };
-      applyFilters(allProductsRef.current); // Aplicar filtros después de cambiar uno
-      return newFilters;
-    });
+    setSelectedFilter(e.target.value); // Establecer el filtro seleccionado
   };
+
+  // useEffect que detecta cambios en searchQuery y selectedFilter
+  useEffect(() => {
+    applyFilters(); // Aplicamos los filtros siempre que searchQuery o selectedFilter cambien
+  }, [searchQuery, selectedFilter]);
 
   return (
     <div className="search-and-filters">
@@ -148,72 +145,20 @@ function Search({ productos, setProductosFiltrados }) {
         ></i>
       </div>
 
-      {/* Filtros de orden */}
+      {/* Filtros de orden utilizando un select */}
       <div className="filters">
         <h4>Filtrar por:</h4>
-        <label>
-          <input
-            type="checkbox"
-            name="alphabetical"
-            checked={activeFilters.alphabetical}
-            onChange={handleFilterChange}
-          />
-          Nombre (A-Z)
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="alphabetical2"
-            checked={activeFilters.alphabetical2}
-            onChange={handleFilterChange}
-          />
-          Nombre (Z-A)
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="priceLowToHigh"
-            checked={activeFilters.priceLowToHigh}
-            onChange={handleFilterChange}
-          />
-          Precio: Menor a Mayor
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="priceHighToLow"
-            checked={activeFilters.priceHighToLow}
-            onChange={handleFilterChange}
-          />
-          Precio: Mayor a Menor
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="discount"
-            checked={activeFilters.discount}
-            onChange={handleFilterChange}
-          />
-          Descuento: Mayor a Menor
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="discount2"
-            checked={activeFilters.discount2}
-            onChange={handleFilterChange}
-          />
-          Descuento: Menor a Mayor
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="stock"
-            checked={activeFilters.stock}
-            onChange={handleFilterChange}
-          />
-          Stock: Mayor a Menor
-        </label>
+        <select onChange={handleFilterChange} value={selectedFilter}>
+          <option value="">Seleccione un filtro</option>
+          <option value="alphabetical">Nombre (A-Z)</option>
+          <option value="alphabetical2">Nombre (Z-A)</option>
+          <option value="priceLowToHigh">Precio: Menor a Mayor</option>
+          <option value="priceHighToLow">Precio: Mayor a Menor</option>
+          <option value="discount">Descuento: Mayor a Menor</option>
+          <option value="discount2">Descuento: Menor a Mayor</option>
+          <option value="stock">Stock: Mayor a Menor</option>
+          <option value="stock2">Stock: Menor a Mayor</option>
+        </select>
       </div>
     </div>
   );

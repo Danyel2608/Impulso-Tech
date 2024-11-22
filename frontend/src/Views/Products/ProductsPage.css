@@ -67,7 +67,7 @@
 /* Imagen del producto */
 .product-image {
   width: 100%;
-  height: auto; /* Tamaño fijo para las imágenes */
+  height: 300px; /* Tamaño fijo para las imágenes */
   object-fit: cover; /* Mantiene la proporción de la imagen */
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
@@ -93,6 +93,7 @@
 /* Descripción de las etiquetas (rebaja, novedad) */
 .product-description {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -100,19 +101,18 @@
 }
 
 .new-tag,
-.sale-tag {
+.sale-tag,
+.last-units {
   font-weight: bold;
   padding: 5px 10px;
-  background-color: #ff6347; /* Naranja para el descuento */
+  background-color: #ff7f00; /* Naranja para el descuento */
   color: white;
   border-radius: 5px;
   font-size: 0.9rem;
 }
-
-.sale-tag {
-  background-color: #ff4500; /* Rojo para rebaja */
+.last-units {
+  background-color: #ff0000;
 }
-
 /* Detalles del producto (talla, color, material) */
 .product-details {
   font-size: 0.9rem;
@@ -134,14 +134,50 @@
   color: white;
 }
 
-.load-more-button button {
-  margin-top: 1.5em;
-  padding: 1em;
-  background-color: #333;
-  color: white;
-}
-
-.load-more-button button:hover,
 .product-buy button:hover {
   cursor: pointer;
+}
+.pages-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pagination {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los botones se envuelvan si no hay suficiente espacio */
+  justify-content: center;
+  align-items: center;
+  margin: 5em 0;
+  max-width: 90%;
+  width: 100%;
+}
+
+.pagination button {
+  background-color: transparent;
+  margin: 5px 0;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  max-width: 90px;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+/* Estilos para la página activa */
+.pagination button.active {
+  color: #333;
+  font-weight: 500;
+}
+
+/* Estilos para los botones deshabilitados */
+.pagination button:disabled {
+  cursor: not-allowed;
+  color: #000;
+}
+.pagination .pages-number {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
