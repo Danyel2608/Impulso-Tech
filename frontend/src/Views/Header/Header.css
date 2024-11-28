@@ -20,6 +20,9 @@
 .header-content img {
   width: 50%;
 }
+.header-content img:hover{
+  cursor: pointer;
+}
 .header-links {
   position: fixed;
   top: 0;

@@ -41,7 +41,7 @@ function Header() {
       <ShoppingCart></ShoppingCart>
       <div className="header-menu">
         <i className="fa-solid fa-bars" onClick={openMenu}></i>
-        <img src={ModaUrbanaLogo} alt="moda-urbana-logo" />
+        <img src={ModaUrbanaLogo} alt="moda-urbana-logo" onClick={() => navigate("/")}></img>
         <i className="fa-solid fa-user" onClick={goLogin}></i>
         <i className="fa-solid fa-cart-shopping" onClick={openCart}></i>
       </div>
@@ -56,25 +56,25 @@ function Header() {
           className={`marcas-list ${isMarcasVisible ? "visible" : "invisible"}`}
           id="marcas-list"
         >
-          <a href="/nike">
+          <a href="/marcas/nike">
             <img src={Nike} alt="Nike"></img>
           </a>
-          <a href="/adidas">
+          <a href="/marcas/adidas">
             <img src={Adidas} alt="Adidas"></img>
           </a>
-          <a href="/supreme">
+          <a href="/marcas/supreme">
             <img src={Supreme} alt="Supreme"></img>
           </a>
-          <a href="/puma">
+          <a href="/marcas/puma">
             <img src={Puma} alt="Puma"></img>
           </a>
-          <a href="/vans">
+          <a href="/marcas/vans">
             <img src={Vans} alt="Vans"></img>
           </a>
         </div>
-        <a href="/hombre">HOMBRE</a>
-        <a href="/mujer">MUJER</a>
-        <a href="/niño">NIÑO</a>
+        <a href="/categorias/hombre">HOMBRE</a>
+        <a href="/categorias/mujer">MUJER</a>
+        <a href="/categorias/niño">NIÑO</a>
         <a href="/accesorios">ACCESORIOS</a>
         <a href="/novedades">NOVEDADES</a>
         <a href="/rebajas">REBAJAS</a>

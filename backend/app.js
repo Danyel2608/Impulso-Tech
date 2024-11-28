@@ -45,6 +45,7 @@ app.use("/emails", emailsConfirm);
 app.use("/newsletter", newsletterRoutes);
 app.use("/api", productRoutes);
 
+
 // Iniciar el servidor
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);

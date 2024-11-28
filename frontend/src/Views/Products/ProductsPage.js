@@ -2,104 +2,140 @@ import React, { useState, useEffect } from "react";
 import "./ProductsPage.css";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import Search from "./Search"; // Importar el componente Search
-import { useHistory } from "react-router-dom"; // Si estás usando react-router
+import Search from "./Search";
+import ShoppingCart from "../ShoppingCart/ShoppingCart";
+import ModalShop from "../ShoppingCart/ModalShop"; // Importa el ModalShop
 
 function ProductsPage() {
   const [productos, setProductos] = useState([]);
   const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [productosVista, setProductosVista] = useState([]);
-  const [paginaActual, setPaginaActual] = useState(1);
-  const [productosPorPagina] = useState(20);
-  const [totalPaginas, setTotalPaginas] = useState(0);
+  const [cantidadCargada, setCantidadCargada] = useState(20);
   const [isLoading, setIsLoading] = useState(false);
-  const [carrito, setCarrito] = useState([]); // Estado del carrito
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
-  // Función para hacer la solicitud GET y obtener los productos
-  const fetchProducts = async () => {
-    try {
-      setIsLoading(true);
-      const response = await fetch("http://localhost:8001/api/all-products");
-      const data = await response.json();
-
-      if (response.ok) {
-        setProductos(data.products);
-        setProductosFiltrados(data.products);
-      } else {
-        console.error("Error al obtener los productos:", data.error);
-      }
-    } catch (error) {
-      console.error("Error de red:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // useEffect para ejecutar fetchProducts al cargar el componente
   useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch("http://localhost:8001/api/all-products");
+        if (!response.ok) {
+          throw new Error("Error al obtener los productos");
+        }
+
+        const data = await response.json();
+        setProductos(data.products || []);
+        setProductosFiltrados(data.products || []);
+      } catch (error) {
+        console.error("Error al obtener los productos:", error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchProducts();
   }, []);
 
-  // useEffect para actualizar productosVista cada vez que cambian los productos filtrados
   useEffect(() => {
-    const totalProductos = productosFiltrados.length;
-    setTotalPaginas(Math.ceil(totalProductos / productosPorPagina));
+    const productosAMostrar = productosFiltrados.slice(0, cantidadCargada);
+    setProductosVista(productosAMostrar);
+  }, [productosFiltrados, cantidadCargada]);
 
-    const startIndex = (paginaActual - 1) * productosPorPagina;
-    const endIndex = startIndex + productosPorPagina;
-    setProductosVista(productosFiltrados.slice(startIndex, endIndex));
-  }, [productosFiltrados, paginaActual]);
-
-  // Función para cambiar de página
-  const handlePageChange = (pagina) => {
-    setPaginaActual(pagina);
-  };
-
-  // Función para agregar un producto al carrito
   const agregarAlCarrito = (producto) => {
-    setCarrito((prevCarrito) => {
-      // Verificar si el producto ya está en el carrito
-      const productoExistente = prevCarrito.find(
-        (item) => item.id === producto.id
-      );
+    let listItems = document.getElementById("listItems");
+    let cartRow = document.createElement("div");
+    let rowId = "row-number-" + producto._id;
+    cartRow.setAttribute("id", rowId);
+    cartRow.classList.add("items-shop");
 
-      if (productoExistente) {
-        // Si ya existe, solo aumentar la cantidad
-        return prevCarrito.map((item) =>
-          item.id === producto.id
-            ? { ...item, cantidad: item.cantidad + 1 }
-            : item
-        );
-      } else {
-        // Si no existe, agregar el producto al carrito
-        return [...prevCarrito, { ...producto, cantidad: 1 }];
+    let cartItems = document.querySelectorAll("li");
+    let alreadyInCart = false;
+
+    cartItems.forEach((item) => {
+      if (item.getAttribute("id") === rowId) {
+        alreadyInCart = true;
       }
     });
-  };
 
-  // Función para generar las páginas visibles (con un rango limitado)
-  const generatePageNumbers = () => {
-    const pageNumbers = [];
-    const range = 2;
-    let startPage = Math.max(paginaActual - range, 1);
-    let endPage = Math.min(paginaActual + range, totalPaginas);
-
-    if (startPage > 1) pageNumbers.push(1);
-    if (paginaActual > range + 1) pageNumbers.push("...");
-
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
+    if (alreadyInCart) {
+      setModalMessage("Este producto ya está en el carrito.");
+      setIsModalVisible(true);
+      return;
     }
 
-    if (endPage < totalPaginas) pageNumbers.push("...");
-    if (endPage < totalPaginas) pageNumbers.push(totalPaginas);
+    let fotoCamiseta = encodeURIComponent(producto.imagen_url);
+    let description = producto.nombre;
+    let price = producto.precio;
+    let quantity = 1;
 
-    return pageNumbers;
+    let contentItem = `
+    <div class="item-content">
+      <div class="img-item">
+          <img src=${fotoCamiseta} alt=${description} />
+      </div>
+      <div class="name-item"><h5>${description}</h5></div>
+      <div class="price-item"><h5>$${price.toFixed(2)}</h5></div>
+      <div id="price-x-quantity">€/und</div>
+      <div class="buttons-quantity">
+        <div class="plus"><i class="fa-solid fa-plus" id="plus" ></i></div>
+        <div class="quantity"><p class="quantity-value">${quantity}</p></div>
+        <div class="rest"><i class="fa-solid fa-minus" id="rest"></i></div>
+      </div>
+    </div>
+    `;
+
+    cartRow.innerHTML = contentItem;
+    listItems.appendChild(cartRow);
+
+    cartRow.querySelector(".fa-plus").addEventListener("click", () => {
+      quantity++;
+      cartRow.querySelector(".quantity p").textContent = quantity;
+      updateTotal();
+    });
+
+    cartRow.querySelector(".fa-minus").addEventListener("click", () => {
+      if (quantity > 1) {
+        quantity--;
+        cartRow.querySelector(".quantity p").textContent = quantity;
+        updateTotal();
+      } else {
+        cartRow.remove();
+        updateTotal();
+      }
+    });
+
+    updateTotal();
+    setModalMessage("Producto añadido al carrito correctamente.");
+    setIsModalVisible(true);
+  };
+
+  const updateTotal = () => {
+    let total = 0;
+    // Obtén todos los divs dentro de listItems que contienen productos
+    let cartItems = document.querySelectorAll(".items-shop");
+
+    cartItems.forEach((item) => {
+      // Extrae el precio del producto
+      const price = parseFloat(
+        item.querySelector(".price-item h5").textContent.slice(1) // Remueve el signo $ y convierte el precio a número
+      );
+
+      // Extrae la cantidad del producto
+      const quantity = parseInt(item.querySelector(".quantity p").textContent);
+
+      // Suma al total
+      total += price * quantity;
+    });
+
+    // Actualiza el total en el carrito
+    document.getElementById("total-cart").textContent = `$${total.toFixed(2)}`;
   };
 
   return (
     <div className="product-page-main">
       <Header />
+
       <div className="products-page-content">
         <h3>Ropa que te representa: ¡Encuentra tu estilo!</h3>
 
@@ -109,21 +145,29 @@ function ProductsPage() {
         />
 
         <div className="product-list">
-          {productosVista.length === 0 ? (
+          {isLoading ? (
+            <p>Cargando productos...</p>
+          ) : productosVista.length === 0 ? (
             <h5>No se encontraron resultados para tu búsqueda.</h5>
           ) : (
             productosVista.map((producto) => (
-              <div key={producto.id} className="product-card">
+              <div key={producto._id} className="product-card">
                 <img
                   src={producto.imagen_url}
                   alt={producto.nombre}
                   className="product-image"
                 />
+                <div className="product-info">
+                  <h4 className={`new ${producto.rebaja ? "new" : "no-new"}`}>
+                    {producto.rebaja ? "Novedad" : ""}
+                  </h4>
+                  <h4 className="rebaja">-{producto.descuento}%</h4>
+                </div>
                 <h4>{producto.nombre}</h4>
                 <p>${producto.precio.toFixed(2)}</p>
                 <div className="product-buy">
                   <button onClick={() => agregarAlCarrito(producto)}>
-                    Comprar
+                    <h4>Comprar</h4>
                   </button>
                 </div>
               </div>
@@ -131,7 +175,14 @@ function ProductsPage() {
           )}
         </div>
       </div>
+
       <Footer />
+      <ShoppingCart />
+      <ModalShop
+        visible={isModalVisible}
+        onClose={() => setIsModalVisible(false)}
+        message={modalMessage}
+      />
     </div>
   );
 }

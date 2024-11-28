@@ -72,6 +72,37 @@
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
 }
+.product-info{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin: 1em 0;
+}
+h4.new, h4.rebaja {
+  color: white;
+  padding: 0.5em;
+  width: 40%;
+  border-radius: 0.5rem;
+  opacity: 1; 
+  margin: .5em 0;
+  font-weight: 300;
+}
+h4.new{
+  background-color: #ff7f00;
+}
+h4.rebaja{
+  background-color: #ff0000;
+}
+h4.no-new {
+  background-color: transparent; 
+  color: transparent; 
+  opacity: 0; 
+  padding: 0; 
+  width: auto; 
+}
+
 
 /* Título del producto */
 .product-title {
@@ -128,10 +159,11 @@
 }
 
 .product-buy button {
-  padding: 1em 5.5em;
+  padding: 1em 4.5em;
   margin: 1em 0;
   background-color: #333;
   color: white;
+  border-radius: .5rem;
 }
 
 .product-buy button:hover {
@@ -164,20 +196,18 @@
   box-sizing: border-box;
 }
 
-
-/* Estilos para la página activa */
-.pagination button.active {
-  color: #333;
-  font-weight: 500;
+.load-more-btn {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
-/* Estilos para los botones deshabilitados */
-.pagination button:disabled {
-  cursor: not-allowed;
-  color: #000;
-}
-.pagination .pages-number {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.load-more-btn:hover {
+  background-color: #45a049;
 }

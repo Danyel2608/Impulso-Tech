@@ -69,7 +69,7 @@ function Login({ onLogin }) {
               navigate("/admin");
             } else {
               // Redirige al usuario a /home
-              navigate("/home");
+              navigate("/userHome");
             }
           }, 3000);
         }
