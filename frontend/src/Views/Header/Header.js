@@ -36,12 +36,21 @@ function Header() {
     shoppingCart.classList.remove("invisible");
     shoppingCart.classList.add("visible");
   };
+
   return (
     <div className="header-content">
       <ShoppingCart></ShoppingCart>
+      <div className="languages">
+        <p>ES</p>
+        <p>EN</p>
+      </div>
       <div className="header-menu">
         <i className="fa-solid fa-bars" onClick={openMenu}></i>
-        <img src={ModaUrbanaLogo} alt="moda-urbana-logo" onClick={() => navigate("/")}></img>
+        <img
+          src={ModaUrbanaLogo}
+          alt="moda-urbana-logo"
+          onClick={() => navigate("/")}
+        ></img>
         <i className="fa-solid fa-user" onClick={goLogin}></i>
         <i className="fa-solid fa-cart-shopping" onClick={openCart}></i>
       </div>

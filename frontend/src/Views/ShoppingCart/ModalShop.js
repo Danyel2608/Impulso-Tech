@@ -11,7 +11,7 @@ function ModalShop({ visible, onClose, message }) {
     : message === "Este producto ya está en el carrito."
     ? "segunda-vez modal-shop-content"
     : "";
-
+  
   return ReactDOM.createPortal(
     <div className="modal-shop-overlay" onClick={onClose}>
       <div className={messageClass} onClick={(e) => e.stopPropagation()}>

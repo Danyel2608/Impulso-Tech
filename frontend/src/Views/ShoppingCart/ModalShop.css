@@ -37,8 +37,13 @@
 }
 
 .segunda-vez {
-  background-color:#ff0000;
+  color: white;
+  background-color:#bd3838;
   font-weight: bold;
+}
+.segunda-vez button{
+  background-color: white;
+  color: black;
 }
 .modal-shop-overlay p{
   margin: 1em 0;

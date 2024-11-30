@@ -11,6 +11,7 @@ const logins = require("./Routes/loginRoutes");
 const emailsConfirm = require("./Routes/emailRoutes");
 const newsletterRoutes = require("./Routes/newsletterRoutes");
 const productRoutes = require("./Routes/productRoutes");
+const invoiceRoutes = require("./Routes/invoiceRoutes");
 
 mongoose.set("strictQuery", true);
 
@@ -44,7 +45,7 @@ app.use("/auth", logins);
 app.use("/emails", emailsConfirm);
 app.use("/newsletter", newsletterRoutes);
 app.use("/api", productRoutes);
-
+app.use("/invoice", invoiceRoutes);
 
 // Iniciar el servidor
 app.listen(process.env.PORT, () => {

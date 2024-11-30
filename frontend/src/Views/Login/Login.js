@@ -74,6 +74,7 @@ function Login({ onLogin }) {
           }, 3000);
         }
       } catch (error) {
+        console.log(error);
         setLoginInfo({
           loggedIn: false,
           email: loginData.email,

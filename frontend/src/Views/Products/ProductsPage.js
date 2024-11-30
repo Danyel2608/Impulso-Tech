@@ -49,7 +49,7 @@ function ProductsPage() {
     cartRow.setAttribute("id", rowId);
     cartRow.classList.add("items-shop");
 
-    let cartItems = document.querySelectorAll("li");
+    let cartItems = document.querySelectorAll(".items-shop");
     let alreadyInCart = false;
 
     cartItems.forEach((item) => {
@@ -151,11 +151,18 @@ function ProductsPage() {
             <h5>No se encontraron resultados para tu búsqueda.</h5>
           ) : (
             productosVista.map((producto) => (
-              <div key={producto._id} className="product-card">
+              <div className="product-card" key={producto._id}>
                 <img
                   src={producto.imagen_url}
                   alt={producto.nombre}
                   className="product-image"
+                  draggable
+                  onDragStart={(event) => {
+                    event.dataTransfer.setData(
+                      "producto",
+                      JSON.stringify(producto)
+                    ); // Pasa los datos del producto
+                  }}
                 />
                 <div className="product-info">
                   <h4 className={`new ${producto.rebaja ? "new" : "no-new"}`}>
