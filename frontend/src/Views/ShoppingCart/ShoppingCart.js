@@ -40,6 +40,11 @@ function ShoppingCart() {
     console.log("Guardado en LocalStorage:", arrayItemsCart);
   };
   const handlePurchase = async () => {
+    let tokenAccess = localStorage.getItem("token");
+    if (!tokenAccess) {
+      alert("Tienes que iniciar sesión primero");
+      return;
+    }
     // Llama a saveCart para asegurar que los datos estén actualizados
     saveCart();
 
