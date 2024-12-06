@@ -5,8 +5,8 @@ const ProtectedRoute = ({ element }) => {
   const token = localStorage.getItem("token");
 
   // Si el token no está presente, redirige al login
-  if (!token) {
-    return <Navigate to="/login" />;
+  if (token) {
+    return <Navigate to="/" />;
   }
 
   // Si el token está presente, muestra el componente de la ruta protegida

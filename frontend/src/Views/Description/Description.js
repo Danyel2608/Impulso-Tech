@@ -3,15 +3,17 @@ import Description1 from "../../assets/Description1.jpg";
 import Description2 from "../../assets/Description2.jpg";
 import Description3 from "../../assets/Description3.jpg";
 import Description4 from "../../assets/Description4.jpg";
+import { useTranslation } from "../../TranslationContext"; // Importa el contexto de traducción
+
 function Description() {
+  const { translate } = useTranslation(); // Desestructuramos la función translate
+
   return (
     <div className="description-content">
-      <h2>¿Cómo surgió Moda Urbana?</h2>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. A repellendus
-        impedit corrupti aperiam non iusto ea facere nobis, repudiandae alias
-        facilis error iste labore optio sunt rem et sed. Sunt?
-      </p>
+      <h2>{translate("how_it_started")}</h2>{" "}
+      {/* Traducción de "¿Cómo surgió Moda Urbana?" */}
+      <p>{translate("description_paragraph")}</p>{" "}
+      {/* Traducción del párrafo de descripción */}
       <div className="description-imgs">
         <img src={Description1} alt="Description1" />
         <img src={Description2} alt="Description2" />

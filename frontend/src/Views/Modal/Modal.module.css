@@ -60,10 +60,12 @@ div.md-show.md-effect > div.md-content {
   margin: 0 auto;
 }
 .md-content.danger {
-  background: #6e524f;
+  background: #000;
+  color: #fff;
 }
 .md-content.success {
-  background: rgb(0, 59, 51);
+  background-color: #fff;
+  color: #000;
 }
 .md-content h3 {
   margin: 0;
@@ -115,12 +117,7 @@ div.md-show.md-effect > div.md-content {
   background: #ffffff;
   color: black;
 }
-.md-content.danger button:hover {
-  background: #a5281b;
-}
 .md-content.success button {
-  background: rgb(0, 59, 51);
-}
-.md-content.success button:hover {
-  background: #011816;
+  color: #ffffff;
+  background-color: black;
 }

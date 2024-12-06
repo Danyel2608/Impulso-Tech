@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Search.css";
+import { useTranslation } from "../../TranslationContext"; // Importa el contexto de traducción
 
 function Search({ productos, setProductosFiltrados }) {
+  const { translate } = useTranslation(); // Agregar idioma activo desde el contexto
   const [searchQuery, setSearchQuery] = useState(""); // Para la búsqueda
   const [selectedFilter, setSelectedFilter] = useState(""); // Para el filtro seleccionado
 
@@ -14,71 +16,80 @@ function Search({ productos, setProductosFiltrados }) {
     }
   }, [productos]);
 
-  // Función para ordenar los productos utilizando el algoritmo de selección
-  const selectionSort = (arr, key, ascending = true) => {
-    const n = arr.length;
-    for (let i = 0; i < n; i++) {
-      let targetIndex = i;
-      for (let j = i + 1; j < n; j++) {
-        // Comparar según la clave y el orden
-        if (
-          (ascending && arr[j][key] < arr[targetIndex][key]) ||
-          (!ascending && arr[j][key] > arr[targetIndex][key])
-        ) {
-          targetIndex = j;
-        }
-      }
-      // Intercambiar si es necesario
-      if (i !== targetIndex) {
-        [arr[i], arr[targetIndex]] = [arr[targetIndex], arr[i]];
-      }
-    }
-    return arr;
-  };
-
   // Función para aplicar los filtros de orden
   const applyFilters = () => {
     let products = [...allProductsRef.current];
+    let idioma = localStorage.getItem("language") || "es"; // Idioma predeterminado
 
     // Aplicar filtro de búsqueda
     if (searchQuery.trim()) {
+      const lowerCaseQuery = searchQuery.toLowerCase();
+
       products = products.filter((producto) => {
-        const lowerCaseQuery = searchQuery.toLowerCase();
+        // Validar y buscar en cada campo relevante
+        const matchesNombre = producto.nombre[idioma]
+          ?.toLowerCase()
+          .includes(lowerCaseQuery);
+        const matchesDescripcion = producto.descripcion?.[idioma]
+          ?.toLowerCase()
+          .includes(lowerCaseQuery);
+        const matchesCategoria = producto.categoria?.[idioma]
+          ?.toLowerCase()
+          .includes(lowerCaseQuery);
+        const matchesTipoPrenda = producto.tipo_prenda?.[idioma]
+          ?.toLowerCase()
+          .includes(lowerCaseQuery);
+        const matchesColor = producto.color?.[idioma]
+          ?.toLowerCase()
+          .includes(lowerCaseQuery);
+        const matchesMaterial = producto.material?.[idioma]
+          ?.toLowerCase()
+          .includes(lowerCaseQuery);
+        const matchesMarca = producto.marca
+          ?.toLowerCase()
+          .includes(lowerCaseQuery);
+        const matchesTalla = producto.talla
+          ?.join(" ")
+          .toLowerCase()
+          .includes(lowerCaseQuery);
+
+        // Retornar true si al menos uno coincide
         return (
-          producto.nombre.toLowerCase().includes(lowerCaseQuery) ||
-          producto.talla.join(" ").toLowerCase().includes(lowerCaseQuery) ||
-          producto.color.join(" ").toLowerCase().includes(lowerCaseQuery) ||
-          producto.material.toLowerCase().includes(lowerCaseQuery) ||
-          producto.tipo_prenda.toLowerCase().includes(lowerCaseQuery) ||
-          producto.categoria.toLowerCase().includes(lowerCaseQuery) ||
-          producto.marca.toLowerCase().includes(lowerCaseQuery)
+          matchesNombre ||
+          matchesDescripcion ||
+          matchesCategoria ||
+          matchesTipoPrenda ||
+          matchesColor ||
+          matchesMaterial ||
+          matchesMarca ||
+          matchesTalla
         );
       });
     }
 
-    // Si el filtro es de descuento, solo tomar los productos con descuento
+    // Resto del código de filtros (sin cambios)
     if (selectedFilter === "discount" || selectedFilter === "discount2") {
-      // Filtrar productos con descuento
       products = products.filter(
         (producto) => producto.rebaja && producto.descuento > 0
       );
     }
 
-    // Ordenar productos con descuento o sin descuento según el filtro seleccionado
     switch (selectedFilter) {
       case "discount":
-        // Ordenar de mayor descuento a menor
         products.sort((a, b) => b.descuento - a.descuento);
         break;
       case "discount2":
-        // Ordenar de menor descuento a mayor
         products.sort((a, b) => a.descuento - b.descuento);
         break;
       case "alphabetical":
-        products.sort((a, b) => a.nombre.localeCompare(b.nombre));
+        products.sort((a, b) =>
+          a.nombre[idioma]?.localeCompare(b.nombre[idioma])
+        );
         break;
       case "alphabetical2":
-        products.sort((a, b) => b.nombre.localeCompare(a.nombre));
+        products.sort((a, b) =>
+          b.nombre[idioma]?.localeCompare(a.nombre[idioma])
+        );
         break;
       case "priceLowToHigh":
         products.sort((a, b) => a.precio - b.precio);
@@ -96,7 +107,6 @@ function Search({ productos, setProductosFiltrados }) {
         break;
     }
 
-    // Finalmente, actualizamos el estado con los productos ordenados
     setProductosFiltrados(products);
   };
 
@@ -134,7 +144,7 @@ function Search({ productos, setProductosFiltrados }) {
           type="search"
           name="searchProducts"
           id="searchProducts"
-          placeholder="Buscar productos..."
+          placeholder={translate("search_placeholder")} // Usamos translate para el placeholder
           value={searchQuery}
           onChange={handleSearchChange} // Llamar a handleSearch cada vez que el usuario escribe
           onKeyDown={handleKeyDown} // Ejecutar búsqueda al presionar "Enter"
@@ -147,17 +157,23 @@ function Search({ productos, setProductosFiltrados }) {
 
       {/* Filtros de orden utilizando un select */}
       <div className="filters">
-        <h4>Filtrar por:</h4>
+        <h4>{translate("filter_by")}</h4>{" "}
+        {/* Usamos translate para el título de filtros */}
         <select onChange={handleFilterChange} value={selectedFilter}>
-          <option value="">Seleccione un filtro</option>
-          <option value="alphabetical">Nombre (A-Z)</option>
-          <option value="alphabetical2">Nombre (Z-A)</option>
-          <option value="priceLowToHigh">Precio: Menor a Mayor</option>
-          <option value="priceHighToLow">Precio: Mayor a Menor</option>
-          <option value="discount">Descuento: Mayor a Menor</option>
-          <option value="discount2">Descuento: Menor a Mayor</option>
-          <option value="stock">Stock: Mayor a Menor</option>
-          <option value="stock2">Stock: Menor a Mayor</option>
+          <option value="">{translate("select_filter")}</option>{" "}
+          {/* Usamos translate para la opción predeterminada */}
+          <option value="alphabetical">{translate("alphabetical_A_Z")}</option>
+          <option value="alphabetical2">{translate("alphabetical_Z_A")}</option>
+          <option value="priceLowToHigh">
+            {translate("price_low_to_high")}
+          </option>
+          <option value="priceHighToLow">
+            {translate("price_high_to_low")}
+          </option>
+          <option value="discount">{translate("discount_high_to_low")}</option>
+          <option value="discount2">{translate("discount_low_to_high")}</option>
+          <option value="stock">{translate("stock_high_to_low")}</option>
+          <option value="stock2">{translate("stock_low_to_high")}</option>
         </select>
       </div>
     </div>

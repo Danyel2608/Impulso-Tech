@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "./NewsletterPage.css";
 import NewsletterVideoBackground from "../../assets/Video2.mp4";
+import { useTranslation } from "../../TranslationContext"; // Importamos el contexto de traducción
 
 function NewsletterPage() {
+  const { translate } = useTranslation(); // Accedemos a la función de traducción
   const [email, setEmail] = useState(""); // Estado para almacenar el correo
   const [loading, setLoading] = useState(false); // Estado para mostrar cargando
   const [error, setError] = useState(null); // Estado para mostrar errores
@@ -38,9 +40,9 @@ function NewsletterPage() {
         // Si la respuesta no es exitosa, manejar el error
         const data = await response.json(); // Obtener el mensaje de error
         if (data.error === "Este correo ya está suscrito.") {
-          setError("El email ingresado ya está registrado.");
+          setError(translate("email_already_registered")); // Traducción del error
         } else {
-          setError("Hubo un problema al registrarse.");
+          setError(translate("registration_error")); // Traducción del error
         }
 
         // Eliminar el mensaje de error después de 5 segundos
@@ -49,7 +51,7 @@ function NewsletterPage() {
         }, 5000);
       }
     } catch (err) {
-      setError("Hubo un problema al registrarse."); // Mostrar el mensaje de error
+      setError(translate("registration_error")); // Traducción del error
       // Eliminar el mensaje de error después de 5 segundos
       setTimeout(() => {
         setError(null);
@@ -68,20 +70,25 @@ function NewsletterPage() {
 
       {/* Contenedor del formulario */}
       <div className="newsletter-page-form">
-        <h2>Suscríbete a nuestra Newsletter</h2>
-        {success && <p>¡Te has suscrito correctamente!</p>}{" "}
+        <h2>{translate("join_newsletter")}</h2> {/* Traducción del título */}
+        <p>
+          {translate("newsletter_description")}{" "}
+          {/* Traducción de la descripción */}
+        </p>
+        {success && <p>{translate("subscription_success")}</p>}{" "}
         {/* Mensaje de éxito */}
         {error && <p className="error">{error}</p>} {/* Mensaje de error */}
         <form onSubmit={handleSubmit}>
           <input
             type="email"
-            placeholder="Ingresa tu correo electrónico"
+            placeholder={translate("email_placeholder")} // Traducción del placeholder
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
           <button type="submit" disabled={loading}>
-            {loading ? "Cargando..." : "Suscribirse"}
+            {loading ? translate("loading") : translate("subscribe")}{" "}
+            {/* Traducción del botón */}
           </button>
         </form>
       </div>

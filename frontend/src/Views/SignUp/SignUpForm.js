@@ -2,8 +2,11 @@ import "./SignUpForm.css";
 import LogoModaModerna from "../../assets/ModaUrbanaLogo.png";
 import ImgLeft from "../../assets/mm1.jpg";
 import { useRef } from "react";
+import { useTranslation } from "../../TranslationContext"; // Importamos el contexto de traducción
+import HeaderLanguages from "../Header/HeaderLanguages";
 
 function SignUpForm(props) {
+  const { translate } = useTranslation(); // Accedemos a la función de traducción
   const refEmail = useRef("");
   const refPassword = useRef("");
   const refName = useRef("");
@@ -21,47 +24,63 @@ function SignUpForm(props) {
     };
     props.onLogin(loginData);
   };
+
   return (
     <div className="signup-content">
+      <HeaderLanguages></HeaderLanguages>
       <form action="register" onSubmit={handleSubmit}>
         <div className="signup-logo">
           <img src={LogoModaModerna} alt="logo" />
         </div>
-        <h3>sign up</h3>
+        <h3>{translate("sign_up")}</h3> {/* Traducimos el título */}
         <div className="signup-dates">
-          <input ref={refName} type="text" placeholder="Name" required />
+          <input
+            ref={refName}
+            type="text"
+            placeholder={translate("name")}
+            required
+          />
           <input
             ref={refLastName}
             type="text"
-            placeholder="Last Name"
+            placeholder={translate("last_name")}
             required
           />
-          <input ref={refEmail} type="email" placeholder="Email" required />
+          <input
+            ref={refEmail}
+            type="email"
+            placeholder={translate("email")}
+            required
+          />
           <input
             ref={refPassword}
             type="password"
-            placeholder="Password"
+            placeholder={translate("password")}
             required
           />
         </div>
         <div className="answer-security">
-          <h5>What was the name of your school?</h5>
+          <h5>{translate("security_question")}</h5>{" "}
+          {/* Traducimos la pregunta de seguridad */}
           <input
             ref={refAnswerPrivate}
             type="text"
             name="answerSecurity"
             id="answerSecurity"
-            placeholder="Write here"
+            placeholder={translate("write_here")}
             required
           />
         </div>
         <div className="login-link">
           <a href="/login">
-            Already have an account? <strong>Log in here.</strong>
+            {translate("already_have_account")}{" "}
+            <strong>{translate("log_in_here")}</strong>{" "}
+            {/* Traducimos el enlace */}
           </a>
         </div>
         <div className="submit">
-          <button type="submit">Submit</button>
+          <button type="submit">{translate("submit")}</button>{" "}
+          {/* Traducimos el botón de envío */}
         </div>
       </form>
       <div className="img-left">

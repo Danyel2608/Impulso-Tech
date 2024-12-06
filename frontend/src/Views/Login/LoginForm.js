@@ -2,8 +2,10 @@ import "./LoginForm.css";
 import { useRef } from "react";
 import LogoModaModerna from "../../assets/ModaUrbanaLogo.png";
 import ImgLeft2 from "../../assets/mm2.jpg";
-
+import { useTranslation } from "../../TranslationContext"; // Importamos el contexto de traducción
+import HeaderLanguages from "../Header/HeaderLanguages";
 function LoginForm(props) {
+  const { translate } = useTranslation(); // Accedemos a la función de traducción
   const refEmail = useRef("");
   const refPassword = useRef("");
   const refCheckbox = useRef(false);
@@ -20,17 +22,23 @@ function LoginForm(props) {
 
   return (
     <div className="login-content">
+      <HeaderLanguages></HeaderLanguages>
       <form action="login" onSubmit={handleSubmit}>
         <div className="login-logo">
           <img src={LogoModaModerna} alt="logo" />
         </div>
-        <h3>Login</h3>
+        <h3>{translate("login")}</h3> {/* Traducción del título */}
         <div className="login-dates">
-          <input ref={refEmail} type="email" placeholder="Email" required />
+          <input
+            ref={refEmail}
+            type="email"
+            placeholder={translate("email_placeholder")} // Traducción del placeholder
+            required
+          />
           <input
             ref={refPassword}
             type="password"
-            placeholder="Password"
+            placeholder={translate("password_placeholder")} // Traducción del placeholder
             required
           />
         </div>
@@ -42,17 +50,21 @@ function LoginForm(props) {
               name="remember"
               id="remember"
             />
-            <h5>Remember me</h5>
+            <h5>{translate("remember_me")}</h5>{" "}
+            {/* Traducción de "Remember me" */}
           </div>
           <div className="forget-password">
-            <a href="/forget">Reset your password</a>
+            <a href="/forget">{translate("reset_password")}</a>{" "}
+            {/* Traducción de "Reset your password" */}
           </div>
         </div>
         <div className="sign-up">
-          <a href="/sign-up">Create an Account</a>
+          <a href="/sign-up">{translate("create_account")}</a>{" "}
+          {/* Traducción de "Create an Account" */}
         </div>
         <div className="submit">
-          <button type="submit">Submit</button>
+          <button type="submit">{translate("submit")}</button>{" "}
+          {/* Traducción de "Submit" */}
         </div>
       </form>
       <div className="img-left">

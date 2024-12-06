@@ -103,7 +103,6 @@ h4.no-new {
   width: auto; 
 }
 
-
 /* Título del producto */
 .product-title {
   font-size: 1.2rem;
@@ -116,7 +115,7 @@ h4.no-new {
 /* Precio del producto */
 .product-price {
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 300;
   color: #333;
   margin-top: 0.5rem;
 }

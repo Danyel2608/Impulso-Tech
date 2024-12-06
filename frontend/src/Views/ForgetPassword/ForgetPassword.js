@@ -4,8 +4,13 @@ import "./ForgetPassword.css";
 import LogoModaModerna from "../../assets/ModaUrbanaLogo.png";
 import ImgLeft3 from "../../assets/Description3.jpg";
 import ModalForget from "../Modal/ModalForget"; // Asegúrate de importar tu modal
+import { useTranslation } from "../../TranslationContext"; // Importamos el contexto de traducción
+import HeaderLanguages from "../Header/HeaderLanguages";
 
 function ForgetPassword() {
+  // Accedemos a la función de traducción
+  const { translate } = useTranslation();
+
   // Estados para el formulario y el mensaje de respuesta
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,7 +27,7 @@ function ForgetPassword() {
 
     // Validación básica
     if (!email || !password || !answerSecurity) {
-      setMessage("Por favor completa todos los campos.");
+      setMessage(translate("complete_all_fields"));
       setIsSuccess(false);
       setModalVisible(true);
       return;
@@ -50,23 +55,21 @@ function ForgetPassword() {
 
       if (response.ok) {
         // Si la respuesta es exitosa
-        setMessage("Contraseña actualizada correctamente.");
+        setMessage(translate("password_updated_successfully"));
         setIsSuccess(true);
       } else {
         // Si hubo un error en la respuesta
         if (data.error && data.error.includes("respuesta incorrecta")) {
-          setMessage("La respuesta de seguridad es incorrecta.");
+          setMessage(translate("incorrect_security_answer"));
           setIsSuccess(false);
         } else {
-          setMessage(
-            data.error || "Hubo un problema al cambiar la contraseña."
-          );
+          setMessage(data.error || translate("problem_updating_password"));
           setIsSuccess(false);
         }
       }
     } catch (error) {
       // Si ocurre un error en la solicitud fetch
-      setMessage("Hubo un problema al procesar la solicitud.");
+      setMessage(translate("problem_processing_request"));
       setIsSuccess(false);
     } finally {
       setIsLoading(false); // Desactivar estado de carga
@@ -82,30 +85,31 @@ function ForgetPassword() {
 
   return (
     <div className="forget-content">
+      <HeaderLanguages></HeaderLanguages>
       <form onSubmit={handleSubmit}>
         <div className="forget-logo">
           <img src={LogoModaModerna} alt="logo" />
         </div>
-        <h3>FORGET PASSWORD</h3>
+        <h3>{translate("forget_password")}</h3>
         <div className="forget-dates">
           <input
             type="email"
-            placeholder="Email"
+            placeholder={translate("email")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
           <input
             type="password"
-            placeholder="New Password"
+            placeholder={translate("new_password")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <h5>What was the name of your school?</h5>
+          <h5>{translate("security_question")}</h5>
           <input
             type="text"
-            placeholder="Answer Security"
+            placeholder={translate("answer_security")}
             value={answerSecurity}
             onChange={(e) => setAnswerSecurity(e.target.value)}
             required
@@ -113,13 +117,14 @@ function ForgetPassword() {
         </div>
         <div className="forget-info">
           <h5>
-            Si no te acuerdas de tus credenciales contacta con nosotros <br />
-            <a href="mailto:contacto@modaurbana.com">Soporte</a>
+            {translate("if_you_forget_credentials")}
+            <br />
+            <a href="mailto:contacto@modaurbana.com">{translate("support")}</a>
           </h5>
         </div>
         <div className="submit">
           <button type="submit" disabled={isLoading}>
-            {isLoading ? "Cargando..." : "Submit"}
+            {isLoading ? translate("loading") : translate("submit")}
           </button>
         </div>
       </form>
@@ -127,7 +132,7 @@ function ForgetPassword() {
       {ReactDOM.createPortal(
         <ModalForget
           visible={modalVisible}
-          header={isSuccess ? "Éxito" : "Error"}
+          header={isSuccess ? translate("success") : translate("error")}
           message={message}
           isSuccess={isSuccess}
           onClose={handleCloseModal}

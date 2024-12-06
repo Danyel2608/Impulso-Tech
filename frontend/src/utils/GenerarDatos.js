@@ -7,20 +7,41 @@ import {
   calzado,
 } from "./ProductsList"; // Importamos los arrays de productos
 
-// Función para generar productos con imágenes
+// Función para generar productos con imágenes y traducciones
 const generateProductData = async (marca, tipoPrenda, categoria) => {
-  // Tallas asociadas a cada categoría
+  // Traducciones de tipos de prendas y categorías
+  const translations = {
+    camiseta: { es: "camiseta", en: "t-shirt" },
+    sudadera: { es: "sudadera", en: "sweatshirt" },
+    pantalon: { es: "pantalón", en: "pants" },
+    accesorio: { es: "accesorio", en: "accessory" },
+    calzado: { es: "calzado", en: "footwear" },
+    niño: { es: "niño", en: "children" },
+    mujer: { es: "mujer", en: "women" },
+    hombre: { es: "hombre", en: "men" },
+    colores: {
+      negro: { es: "negro", en: "black" },
+      blanco: { es: "blanco", en: "white" },
+      gris: { es: "gris", en: "gray" },
+      azul: { es: "azul", en: "blue" },
+      rojo: { es: "rojo", en: "red" },
+    },
+    materiales: {
+      algodón: { es: "algodón", en: "cotton" },
+      poliéster: { es: "poliéster", en: "polyester" },
+      cuero: { es: "cuero", en: "leather" },
+    },
+  };
+
   const tallasPorCategoria = {
     niño: ["XS", "S", "14", "12", "10"],
     mujer: ["S", "M", "L", "XL"],
     hombre: ["M", "L", "XL", "XXL"],
   };
 
-  const categorias = ["niño", "mujer", "hombre"];
   const colores = ["negro", "blanco", "gris", "azul", "rojo"];
   const materiales = ["algodón", "poliéster", "cuero"];
 
-  // Mapear cada tipo de prenda con su array respectivo
   const productImages = {
     camiseta: camisetas,
     accesorio: accesorios,
@@ -31,51 +52,63 @@ const generateProductData = async (marca, tipoPrenda, categoria) => {
 
   const getRandomElement = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-  // Verificamos que el tipo de prenda exista en el objeto productImages
   const imageArray = productImages[tipoPrenda];
-
   if (!imageArray) {
     throw new Error(
       `Tipo de prenda '${tipoPrenda}' no encontrado en las imágenes.`
     );
   }
 
-  // Buscar la imagen correspondiente en el array del tipo de prenda
   const productImage = imageArray.find((product) => product.brand === marca);
-
-  // Verificamos si se encontró la imagen, si no, asignamos una por defecto
   const image = productImage ? productImage.src : null;
 
-  // Seleccionamos las tallas dependiendo de la categoría (niño, mujer, hombre)
   const tallas = tallasPorCategoria[categoria] || ["S", "M", "L"];
-
-  // Generar un número aleatorio de tallas disponibles entre 1 y el número de tallas disponibles
   const numTallasDisponibles = Math.floor(Math.random() * tallas.length) + 1;
   const tallasDisponibles = [];
   for (let i = 0; i < numTallasDisponibles; i++) {
-    // Seleccionamos una talla aleatoria de la lista
     const tallaSeleccionada = getRandomElement(tallas);
-    // Añadimos la talla si no ha sido añadida antes (para evitar duplicados)
     if (!tallasDisponibles.includes(tallaSeleccionada)) {
       tallasDisponibles.push(tallaSeleccionada);
     }
   }
 
+  const color = getRandomElement(colores);
+  const material = getRandomElement(materiales);
+
   return {
-    nombre: `${marca} ${tipoPrenda} ${categoria}`,
-    categoria: categoria,
+    nombre: {
+      es: `${marca} ${translations[tipoPrenda].es} ${translations[categoria].es}`,
+      en: `${marca} ${translations[tipoPrenda].en} ${translations[categoria].en}`,
+    },
+    descripcion: {
+      es: `Este producto es una ${translations[tipoPrenda].es} de la marca ${marca}, perfecto para ${translations[categoria].es}. Está hecho de ${translations.materiales[material].es} y está disponible en color ${translations.colores[color].es}.`,
+      en: `This product is a ${translations[tipoPrenda].en} from ${marca}, perfect for ${translations[categoria].en}. It's made of ${translations.materiales[material].en} and comes in ${translations.colores[color].en}.`,
+    },
+    categoria: {
+      es: translations[categoria].es,
+      en: translations[categoria].en,
+    },
     marca: marca,
-    tipo_prenda: tipoPrenda,
+    tipo_prenda: {
+      es: translations[tipoPrenda].es,
+      en: translations[tipoPrenda].en,
+    },
     precio: parseFloat((Math.random() * 100).toFixed(2)),
     novedad: Math.random() > 0.5,
     rebaja: Math.random() > 0.5,
     descuento: Math.floor(Math.random() * 30),
-    talla: tallasDisponibles, // Usamos las tallas generadas
-    color: [getRandomElement(colores)],
-    material: getRandomElement(materiales),
+    talla: tallasDisponibles,
+    color: {
+      es: translations.colores[color].es,
+      en: translations.colores[color].en,
+    },
+    material: {
+      es: translations.materiales[material].es,
+      en: translations.materiales[material].en,
+    },
     fecha_agregado: new Date().toISOString().split("T")[0],
     stock: Math.floor(Math.random() * 100) + 1,
-    imagen_url: image, // Añadimos la imagen correspondiente
+    imagen_url: image,
   };
 };
 
@@ -96,10 +129,9 @@ const ProductGenerator = () => {
       "accesorio",
       "calzado",
     ];
-    const categorias = ["niño", "mujer", "hombre"]; // Ahora tenemos las tres categorías
+    const categorias = ["niño", "mujer", "hombre"];
 
     try {
-      // Generar productos
       const generatedProducts = [];
       for (const marca of marcas) {
         for (const tipoPrenda of tiposPrenda) {
@@ -116,20 +148,18 @@ const ProductGenerator = () => {
         }
       }
 
-      // Guardar los productos en la base de datos
       const response = await fetch("http://localhost:8001/api/productos", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", // Asegúrate de enviar en formato JSON
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(generatedProducts), // Convertimos los productos a JSON
+        body: JSON.stringify(generatedProducts),
       });
 
       if (!response.ok) {
         throw new Error("Error al guardar los productos en la base de datos.");
       }
 
-      // Si la respuesta es exitosa, actualizamos el estado
       setProducts(generatedProducts);
       setMessage("Productos generados y guardados exitosamente!");
       console.log("Productos generados y guardados en la base de datos");

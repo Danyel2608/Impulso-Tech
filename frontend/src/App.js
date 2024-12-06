@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import MainRoutes from "./MainRoutes"; // Importa el componente de rutas
 import LoadingIndicator from "./Views/UI/Spinners/LoadingIndicator";
+import { TranslationProvider } from "./TranslationContext";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,15 +22,17 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      {isLoading ? (
-        <LoadingIndicator /> // Muestra la animación de carga mientras isLoading es true
-      ) : (
-        <BrowserRouter>
-          <MainRoutes /> {/* Usa las rutas dentro del router */}
-        </BrowserRouter>
-      )}
-    </div>
+    <TranslationProvider>
+      <div className="App">
+        {isLoading ? (
+          <LoadingIndicator /> // Muestra la animación de carga mientras isLoading es true
+        ) : (
+          <BrowserRouter>
+            <MainRoutes /> {/* Usa las rutas dentro del router */}
+          </BrowserRouter>
+        )}
+      </div>
+    </TranslationProvider>
   );
 }
 

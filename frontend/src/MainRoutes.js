@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Home from "./Views/Home/Home";
 import Login from "./Views/Login/Login";
 import SignUp from "./Views/SignUp/SignUp";
@@ -19,30 +19,35 @@ import Mujer from "./Views/Sections/Categorias/Mujer";
 import Accesorios from "./Views/Sections/Accesorios/Accesorios";
 import Novedades from "./Views/Sections/Novedades/Novedades";
 import Rebajas from "./Views/Sections/Rebajas/Rebajas";
-import ProtectedRoute from "./ProtectedRoute";
-import UserHome from "./Views/UserHome/UserHome";
 import NotFound from "./NotFound";
 import ForgetPassword from "./Views/ForgetPassword/ForgetPassword";
+import ProtectedRoute from "./ProtectedRoute";
+import AdminPage from "./Views/Admin/AdminPage";
 
 function MainRoutes() {
   const [isRouteLoading, setIsRouteLoading] = useState(false);
   const location = useLocation();
-  const [token, setToken] = useState("");
-  const [role, setRole] = useState("");
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
 
   useEffect(() => {
+    const storedLanguage = localStorage.getItem("language");
+
+    // Si no hay un idioma almacenado, lo establecemos en "en"
+    if (!storedLanguage) {
+      localStorage.setItem("language", "en");
+    }
+
     setIsRouteLoading(true);
-    const timer = setTimeout(() => setIsRouteLoading(false), 1000); // 3 segundos de carga
-    return () => clearTimeout(timer); // Limpia el temporizador al desmontar
+    const timer = setTimeout(() => setIsRouteLoading(false), 1000);
+    return () => clearTimeout(timer);
   }, [location]);
 
   if (isRouteLoading) {
     return <LoadingIndicator />;
   }
+
   const handleLogin = (token, role) => {
     setToken(token);
-    setRole(role);
-    // Almacenar el token en el localStorage para que persista después de recargar la página
     localStorage.setItem("token", token);
   };
 
@@ -50,8 +55,15 @@ function MainRoutes() {
     <Routes>
       {/* Ruta Principal */}
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login onLogin={handleLogin} />} />
-      <Route path="/sign-up" element={<SignUp />} />
+      <Route
+        path="/login"
+        element={<ProtectedRoute element={<Login onLogin={handleLogin} />} />}
+      />
+      <Route
+        path="/sign-up"
+        element={<ProtectedRoute element={<SignUp />} />}
+      />
+      <Route path="/admin" element={<AdminPage />}></Route>
       <Route path="/forget" element={<ForgetPassword />} />
       <Route path="/confirmar" element={<ConfirmEmail />} />
       <Route path="/newsletter" element={<NewsletterPage />} />
@@ -74,13 +86,8 @@ function MainRoutes() {
       <Route path="accesorios" element={<Accesorios />} />
       <Route path="novedades" element={<Novedades />} />
       <Route path="rebajas" element={<Rebajas />} />
-      {/* Rutas protegidas */}
-      <Route path="/invoice" />
-      <Route
-        path="/userHome"
-        element={<ProtectedRoute element={<UserHome />} />}
-      />
-      {/* Ruta comodín para rutas no definidas */}
+      <Route path="generar" element={<ProductGenerator />} />
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

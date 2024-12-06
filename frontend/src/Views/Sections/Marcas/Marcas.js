@@ -2,10 +2,17 @@ import React, { useState, useEffect } from "react";
 import Search from "../../Products/Search";
 import "./Marcas.css";
 import Header from "../../Header/Header";
+import { useTranslation } from "../../../TranslationContext";
+import useShoppingCart from "../../Products/hooks/useShoppingCart";
+import ModalShop from "../../Products/ModalShop";
 
 function Marca({ marca }) {
+  const { translate } = useTranslation();
+  const { agregarAlCarrito, isModalVisible, modalMessage, setIsModalVisible } =
+    useShoppingCart();
   const [productosMarca, setProductosMarca] = useState([]);
   const [productosFiltrados, setProductosFiltrados] = useState([]);
+  const idioma = localStorage.getItem("language");
 
   // Esta función se ejecuta cuando la marca cambia (cuando la prop 'marca' cambia)
   useEffect(() => {
@@ -65,36 +72,53 @@ function Marca({ marca }) {
 
       <div className="product-list">
         {productosFiltrados.length === 0 ? (
-          <p>No hay productos de {marca} disponibles.</p>
+          <p>{translate("marca_not_aviable")}</p>
         ) : (
           productosFiltrados.map((producto, index) => (
             <div key={index} className="product-card">
               <img
                 src={producto.imagen_url}
-                alt={producto.nombre}
+                alt={producto.nombre[idioma]}
                 className="product-image"
               />
               <div className="product-description">
                 {producto.rebaja && (
                   <span className="sale-tag">
-                    En rebaja ({producto.descuento}% OFF)
+                    {translate("on_sale")} ({producto.descuento}% OFF)
                   </span>
                 )}
-                {producto.novedad && <span className="new-tag">Novedad</span>}
+                {producto.novedad && (
+                  <span className="new-tag">{translate("new_arrival")}</span>
+                )}
               </div>
-              <h4 className="product-title">{producto.nombre}</h4>
-              <p className="product-price">Precio: ${producto.precio}</p>
+              <h4 className="product-title">{producto.nombre[idioma]}</h4>
+              <p className="product-price">
+                {translate("price_label")}: ${producto.precio}
+              </p>
               <div className="product-details">
-                <p>Talla: {producto.talla.join(", ")}</p>
-                <p>Material: {producto.material}</p>
+                <p>
+                  {translate("size_label")}:{producto.talla.join(", ")}
+                </p>
+                <p>
+                  {translate("material_label")}: {producto.material[idioma]}
+                </p>
               </div>
               <div className="product-buy">
-                <button type="submit">Comprar</button>
+                <button onClick={() => agregarAlCarrito(producto)}>
+                  {translate("buy_button")}
+                </button>
               </div>
             </div>
           ))
         )}
       </div>
+      <ModalShop
+        visible={isModalVisible}
+        onClose={() => {
+          setIsModalVisible(false);
+        }}
+        message={modalMessage}
+      />
     </div>
   );
 }

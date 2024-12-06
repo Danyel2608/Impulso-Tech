@@ -2,13 +2,19 @@ import React, { useState, useEffect } from "react";
 import Search from "../../Products/Search";
 import "./Accesorios.css";
 import Header from "../../Header/Header";
+import { useTranslation } from "../../../TranslationContext"; // Importa el hook de traducción
+import useShoppingCart from "../../Products/hooks/useShoppingCart";
+import ModalShop from "../../Products/ModalShop";
 
 function Accesorios() {
+  const { translate } = useTranslation(); // Usamos el hook para obtener la función translate y el idioma actual
+  const { agregarAlCarrito, isModalVisible, modalMessage, setIsModalVisible } =
+    useShoppingCart();
+
   const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [loading, setLoading] = useState(true); // Estado para manejar la carga
   const [error, setError] = useState(null); // Estado para manejar errores
-
-  // Función para obtener todos los productos de la API y filtrarlos por la categoría "accesorio"
+  const idioma = localStorage.getItem("language");
   const fetchProductsAccesorios = async () => {
     setLoading(true); // Establecer carga en true cuando comience la solicitud
     try {
@@ -16,10 +22,9 @@ function Accesorios() {
       const data = await response.json();
 
       if (response.ok) {
-        // Filtrar los productos que sean de tipo accesorio
-        const productosFiltrados = data.products.filter(
-          (producto) =>
-            producto.tipo_prenda?.trim().toLowerCase() === "accesorio"
+        // Filtrar productos que sean de tipo accesorio en el idioma actual
+        const productosFiltrados = data.products.filter((producto) =>
+          producto.tipo_prenda[idioma].trim().toLowerCase()
         );
 
         setProductosFiltrados(productosFiltrados);
@@ -41,7 +46,7 @@ function Accesorios() {
     <div className="accesorios-content">
       <Header />
       <div className="accesorios-header">
-        <h2>ACCESORIOS</h2>
+        <h2>{translate("accesorios_title")}</h2>
       </div>
       <div className="accesorios-search">
         <Search
@@ -52,40 +57,61 @@ function Accesorios() {
 
       <div className="product-list">
         {loading ? (
-          <p>Cargando productos...</p>
+          <p>{translate("loading_products")}</p>
         ) : error ? (
           <p>{error}</p>
         ) : productosFiltrados.length === 0 ? (
-          <p>No hay productos de accesorios disponibles.</p>
+          <p>{translate("no_accessories_found")}</p>
         ) : (
-          productosFiltrados.map((producto, index) => (
-            <div key={index} className="product-card">
-              <img
-                src={producto.imagen_url}
-                alt={producto.nombre}
-                className="product-image"
-              />
-              <div className="product-description">
-                {producto.rebaja && (
-                  <span className="sale-tag">
-                    En rebaja ({producto.descuento}% OFF)
-                  </span>
-                )}
-                {producto.novedad && <span className="new-tag">Novedad</span>}
+          productosFiltrados.map((producto, index) => {
+            const idioma = localStorage.getItem("language"); // Obtener el idioma actual
+
+            return (
+              <div key={index} className="product-card">
+                <img
+                  src={producto.imagen_url}
+                  alt={producto.nombre[idioma]}
+                  className="product-image"
+                />
+                <div className="product-description">
+                  {producto.rebaja && (
+                    <span className="sale-tag">
+                      {translate("on_sale")} ({producto.descuento}% OFF)
+                    </span>
+                  )}
+                  {producto.novedad && (
+                    <span className="new-tag">{translate("new_arrival")}</span>
+                  )}
+                </div>
+                <h4 className="product-title">{producto.nombre[idioma]}</h4>
+                <p className="product-price">
+                  {translate("price_label")}: {producto.precio}
+                </p>
+                <div className="product-details">
+                  <p>
+                    {translate("size_label")}: {producto.talla.join(", ")}
+                  </p>
+                  <p>
+                    {translate("material_label")}: {producto.material[idioma]}
+                  </p>
+                </div>
+                <div className="product-buy">
+                  <button onClick={() => agregarAlCarrito(producto)}>
+                    {translate("buy_button")}
+                  </button>
+                </div>
               </div>
-              <h4 className="product-title">{producto.nombre}</h4>
-              <p className="product-price">Precio: ${producto.precio}</p>
-              <div className="product-details">
-                <p>Talla: {producto.talla.join(", ")}</p>
-                <p>Material: {producto.material}</p>
-              </div>
-              <div className="product-buy">
-                <button type="submit">Comprar</button>
-              </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
+      <ModalShop
+        visible={isModalVisible}
+        onClose={() => {
+          setIsModalVisible(false);
+        }}
+        message={modalMessage}
+      />
     </div>
   );
 }

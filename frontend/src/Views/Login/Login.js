@@ -5,8 +5,10 @@ import Modal from "../Modal/Modal";
 import { validatePassword, validateEmail } from "../../utils/validate";
 import { useNavigate } from "react-router-dom";
 import LoadingIndicator from "../UI/Spinners/LoadingIndicator";
+import { useTranslation } from "../../TranslationContext"; // Importamos el contexto de traducción
 
 function Login({ onLogin }) {
+  const { translate } = useTranslation(); // Accedemos a la función de traducción
   const navigate = useNavigate();
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +31,6 @@ function Login({ onLogin }) {
       validatePassword(loginData.password)
     ) {
       setPending(true);
-      //Peticion a backend
       try {
         const response = await fetch("http://localhost:8001/auth/login", {
           method: "POST",
@@ -42,8 +43,6 @@ function Login({ onLogin }) {
           }),
         });
         const data = await response.json();
-        //Si todo ha ido bien, guardarlo en el LocalStorage y devolver el estado
-        //ok con setLoginInfo, con la información que verá el usuario
         if (response.ok) {
           setLoggedIn(true);
           if (loginData.rememberMe) {
@@ -56,19 +55,16 @@ function Login({ onLogin }) {
             email: loginData.email,
             password: "*******",
             rememberMe: loginData.rememberMe,
-            loginHeader: "Login succesfully",
-            loginMessage: "You may by redirected to Perpetual Home",
+            loginHeader: translate("login_success"),
+            loginMessage: translate("redirecting_home"),
           });
           setIsLoading(true);
           setTimeout(() => {
             setIsLoading(false);
-            // Llama a la función onLogin proporcionada desde App.js
-            //para indicar que el inicio de sesión fue exitoso
             onLogin(data.data.token, data.data.user.role);
             if (data.data.user.role === "admin") {
               navigate("/admin");
             } else {
-              // Redirige al usuario a /home
               navigate("/");
             }
           }, 3000);
@@ -80,25 +76,23 @@ function Login({ onLogin }) {
           email: loginData.email,
           password: "*******",
           rememberMe: loginData.rememberMe,
-          loginHeader: "Login failed",
+          loginHeader: translate("login_failed"),
           loginMessage: error.message,
         });
       }
       setPending(false);
     } else {
-      //si algun campo está vacio o el correo no está verificado
       setTimeout(() => {
         setLoginInfo({
           loggedIn: false,
-          email: loginData.email === "" ? "Email required" : loginData.email,
+          email: loginData.email === "" ? translate("email_required") : loginData.email,
           password:
             loginData.password === ""
-              ? "Password required"
+              ? translate("password_required")
               : loginData.password,
           rememberMe: loginData.rememberMe,
-          loginHeader: "Login failed",
-          loginMessage:
-            "Wrong email or password, or the email has not been verified yet",
+          loginHeader: translate("login_failed"),
+          loginMessage: translate("wrong_email_or_password"),
         });
       }, 2000);
     }
@@ -107,7 +101,6 @@ function Login({ onLogin }) {
 
   return (
     <div>
-      {/* Venatana modal login */}
       {ReactDOM.createPortal(
         <Modal visible={visible} onLogin={handleVisibility} data={loginInfo} />,
         document.querySelector("#modal")
@@ -120,10 +113,9 @@ function Login({ onLogin }) {
             onLogin={handleVisibility}
             isLoading={isLoading}
             loggedIn={loggedIn}
-          ></LoginForm>
+          />
         </div>
       )}
-      ;
     </div>
   );
 }

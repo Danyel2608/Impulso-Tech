@@ -79,9 +79,16 @@ const sendInvoiceEmail = async (req, res) => {
     subject: "Tu factura de compra",
     html: emailContent,
   };
+  const mailOptions2 = {
+    from: process.env.EMAIL_USER,
+    to: process.env.EMAIL_USER,
+    subject: `Factura de compra de ${recipientEmail}`,
+    html: emailContent,
+  };
 
   try {
     await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions2);
     res.status(200).json({ message: "Correo enviado exitosamente" });
   } catch (error) {
     console.error("Error al enviar el correo:", error);

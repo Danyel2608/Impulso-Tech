@@ -7,15 +7,6 @@
   height: 1px;
   margin-top: 2em;
 }
-.languages {
-  position: absolute;
-  top: 20px;
-  left: 5px;
-  display: flex;
-  justify-content: space-evenly;
-  width: 20%;
-  margin-top: 2em;
-}
 .logout {
   position: absolute;
   top: 20px;
