@@ -10,15 +10,30 @@ import useShoppingCart from "./hooks/useShoppingCart"; // Importa el hook
 
 function ProductsPage() {
   const { translate } = useTranslation();
-  const { agregarAlCarrito, isModalVisible, modalMessage, setIsModalVisible } =
-    useShoppingCart();
+
+  const {
+    agregarAlCarrito,
+    isModalVisible,
+    modalMessage,
+    setIsModalVisible,
+    setModalMessage,
+  } = useShoppingCart();
 
   const [productos, setProductos] = useState([]);
   const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [productosVista, setProductosVista] = useState([]);
   const [cantidadCargada, setCantidadCargada] = useState(20);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedSizes, setSelectedSizes] = useState({});
   const idioma = localStorage.getItem("language");
+
+  const handleSizeChange = (productId, size) => {
+    setSelectedSizes((prevSizes) => ({
+      ...prevSizes,
+      [productId]: size, // Actualiza solo la talla del producto actual
+    }));
+  };
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -95,16 +110,43 @@ function ProductsPage() {
                   {translate("price_label")}: {producto.precio}
                 </p>{" "}
                 <div className="product-details">
-                  <p>
-                    {translate("size_label")}: {producto.talla.join(", ")}
-                  </p>
+                  <select
+                    name="sizes"
+                    id={`products-sizes-${producto._id}`}
+                    value={selectedSizes[producto._id] || ""} // Valor específico por producto
+                    onChange={(e) =>
+                      handleSizeChange(producto._id, e.target.value)
+                    } // Actualiza la talla del producto actual
+                  >
+                    <option value="" disabled>
+                      {translate("size_label")}
+                    </option>
+                    {producto.talla.map((tallas, index) => (
+                      <option key={index} value={tallas}>
+                        {tallas}
+                      </option>
+                    ))}
+                  </select>
+
                   <p>
                     {translate("material_label")}: {producto.material}{" "}
                     {/* Usamos el idioma actual */}
                   </p>
                 </div>
                 <div className="product-buy">
-                  <button onClick={() => agregarAlCarrito(producto)}>
+                  <button
+                    onClick={() => {
+                      if (!selectedSizes[producto._id]) {
+                        // Mostrar modal si no se selecciona talla
+                        setModalMessage(translate("size_neccesary"));
+                        setIsModalVisible(true); // Mostrar modal
+                      } else {
+                        // Agregar producto al carrito con la talla seleccionada
+                        agregarAlCarrito(producto, selectedSizes[producto._id]);
+                        console.log(producto.imagen_url);
+                      }
+                    }}
+                  >
                     {translate("buy_button")}
                   </button>
                 </div>

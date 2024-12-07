@@ -31,8 +31,9 @@ function ShoppingCart() {
 
     const arrayItemsCart = [...itemsCart].map((item) => {
       return {
-        id: item.id,
+        id: item._id,
         name: item.querySelector(".name-item h5").textContent.trim(),
+        size: item.querySelector(".size-item h5").textContent,
         price: parseFloat(
           item
             .querySelector(".price-item h5")
@@ -114,7 +115,15 @@ function ShoppingCart() {
       </button>
       <div className="shopping-title">
         <h3>{translateText("cart_title")}</h3>{" "}
-        {/* Título del carrito traducido */}
+      </div>
+      <div className="product-cart-index">
+        <table>
+          <th>Img</th>
+          <th>Name</th>
+          <th>Talla</th>
+          <th>Precio/und</th>
+          <th>Unidad/es</th>
+        </table>
       </div>
       <ul id="listItems"></ul>
       <div className="cart-summary">

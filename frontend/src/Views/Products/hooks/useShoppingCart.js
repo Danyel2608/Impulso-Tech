@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { useTranslation } from "../../../TranslationContext";
 
-const useShoppingCart = () => {
+const useShoppingCart = (producto, selectSize) => {
   const { translate } = useTranslation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const agregarAlCarrito = (producto) => {
+  const agregarAlCarrito = (producto,selectSize) => {
+    console.log(selectSize);
     const listItems = document.getElementById("listItems");
     const rowId = `row-number-${producto._id}`;
     const tokenAccessUser = localStorage.getItem("token");
+    console.log(selectSize);
 
     if (!tokenAccessUser) {
       setModalMessage(translate("login_required_message"));
@@ -24,28 +26,34 @@ const useShoppingCart = () => {
       return;
     }
 
+    if (!selectSize) {
+      setModalMessage(translate("Talla no recibida"));
+      setIsModalVisible(true);
+      return;
+    }
+
     const cartRow = document.createElement("div");
     cartRow.setAttribute("id", rowId);
     cartRow.classList.add("items-shop");
 
     let quantity = 1;
     const contentItem = `
-      <div class="item-content">
-        <div class="img-item">
-            <img src=${encodeURIComponent(producto.imagen_url)} alt="${
+    <div class="item-content">
+      <div class="img-item">
+        <img src=${encodeURIComponent(producto.imagen_url)} alt="${
       producto.nombre
     }" />
-        </div>
-        <div class="name-item"><h5>${producto.nombre}</h5></div>
-        <div class="price-item"><h5>$${producto.precio.toFixed(2)}</h5></div>
-        <div id="price-x-quantity">€/und</div>
-        <div class="buttons-quantity">
-          <div class="plus"><i class="fa-solid fa-plus" id="plus"></i></div>
-          <div class="quantity"><p class="quantity-value">${quantity}</p></div>
-          <div class="rest"><i class="fa-solid fa-minus" id="rest"></i></div>
-        </div>
       </div>
-    `;
+      <div class="name-item"><h5>${producto.nombre}</h5></div>
+      <div class="size-item"><h5>${selectSize}</h5></div> <!-- Usa la talla seleccionada -->
+      <div class="price-item"><h5>${producto.precio.toFixed(2)} /und</h5></div>
+      <div class="buttons-quantity">
+        <div class="plus"><i class="fa-solid fa-plus" id="plus"></i></div>
+        <div class="quantity"><p class="quantity-value">${quantity}</p></div>
+        <div class="rest"><i class="fa-solid fa-minus" id="rest"></i></div>
+      </div>
+    </div>
+  `;
     cartRow.innerHTML = contentItem;
     listItems.appendChild(cartRow);
 
@@ -84,10 +92,9 @@ const useShoppingCart = () => {
     updateTotal();
     setModalMessage(translate("product_added_message"));
     setIsModalVisible(true);
-    console.log("modal");
   };
 
-  return { agregarAlCarrito, isModalVisible, modalMessage, setIsModalVisible };
+  return { agregarAlCarrito, isModalVisible, modalMessage, setIsModalVisible ,setModalMessage};
 };
 
 export default useShoppingCart;

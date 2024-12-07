@@ -16,6 +16,8 @@ function ModalShop({ visible, onClose, message }) {
       ? "segunda-vez modal-shop-content"
       : message === translate("login_required_message")
       ? "modal-shop-content"
+      : message === translate("size_neccesary")
+      ? "modal-shop-content"
       : "";
 
   return ReactDOM.createPortal(

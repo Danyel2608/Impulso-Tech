@@ -39,7 +39,21 @@
   font-size: 1.5em; /* Ajusta el tamaño de fuente según el espacio */
   font-weight: bold;
 }
-
+.product-cart-index{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 8em;
+  text-decoration: underline;
+  text-underline-offset: 1em;
+}
+.product-cart-index table{
+  display: flex;
+  justify-content: space-between;
+  width:90%;
+  text-transform: uppercase;
+}
 /* Empty cart message */
 .empty-cart-message {
   font-weight: 800;

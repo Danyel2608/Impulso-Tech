@@ -18,6 +18,7 @@ const sendInvoiceEmail = async (req, res) => {
       (item) => `
         <tr>
             <td>${item.name}</td>
+            <td>${item.size}</td>
             <td>${item.quantity}</td>
             <td>$${item.price.toFixed(2)}</td>
             <td>$${(item.quantity * item.price).toFixed(2)}</td>
@@ -41,7 +42,8 @@ const sendInvoiceEmail = async (req, res) => {
     <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
       <thead style="background-color: #f1f1f1;text-align: center;">
         <tr>
-          <th style="padding: 10px; font-size: 1em; color: #333; width: 50%;">Producto</th>
+          <th style="padding: 10px; font-size: 1em; color: #333; width: 30%;">Producto</th>
+          <th style="padding: 10px; font-size: 1em; color: #333; width: 20%;">Talla</th>
           <th style="padding: 10px; font-size: 1em; color: #333; width: 20%;">Cantidad</th>
           <th style="padding: 10px; font-size: 1em; color: #333; width: 15%;">Precio Unitario</th>
           <th style="padding: 10px; font-size: 1em; color: #333; width: 15%;">Total</th>

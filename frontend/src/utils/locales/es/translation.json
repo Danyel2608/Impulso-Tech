@@ -100,5 +100,6 @@
   "no_products_in_category": "No hay productos disponibles en la categoría",
   "new_arrivals_title": "Novedades",
   "sales_title": "Rebajas",
-  "marca_not_aviable":"Productos no disponibles de esta marca"
+  "marca_not_aviable": "Productos no disponibles de esta marca",
+  "size_neccesary": "Tienes que seleccionar una talla"
 }

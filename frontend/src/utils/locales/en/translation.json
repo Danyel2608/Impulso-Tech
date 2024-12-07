@@ -100,5 +100,6 @@
   "no_products_in_category": "No products available in the category",
   "new_arrivals_title": "New Arrivals",
   "sales_title": "Sales",
-  "marca_not_aviable":"Products not available from this brand"
+  "marca_not_aviable": "Products not available from this brand",
+  "size_neccesary": "You must select a size"
 }
