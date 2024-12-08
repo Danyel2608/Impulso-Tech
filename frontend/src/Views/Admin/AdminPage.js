@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./AdminPage.css";
+import ProductsTable from "./ProductsTable";
 
 function AdminPage() {
   const [users, setUsers] = useState([]);
@@ -77,6 +78,9 @@ function AdminPage() {
 
   return (
     <div className="admin-page">
+      <a href="/">
+        <i class="fa-solid fa-house"></i>
+      </a>
       <h1>Panel de Administración</h1>
       <table className="admin-page-table">
         <thead>
@@ -104,6 +108,7 @@ function AdminPage() {
           ))}
         </tbody>
       </table>
+      <ProductsTable></ProductsTable>
     </div>
   );
 }
