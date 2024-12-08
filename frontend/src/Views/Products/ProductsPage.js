@@ -107,7 +107,7 @@ function ProductsPage() {
                   {producto.nombre} {/* Usamos el idioma actual */}
                 </h4>{" "}
                 <p className="product-price">
-                  {translate("price_label")}: {producto.precio}
+                  {producto.precio}{translate("price_label")}
                 </p>{" "}
                 <div className="product-details">
                   <select

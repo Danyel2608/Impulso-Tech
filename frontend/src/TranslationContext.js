@@ -11,18 +11,25 @@ const translations = { en, es };
 const TranslationContext = createContext();
 
 export const TranslationProvider = ({ children }) => {
-  const [language, setLanguage] = useState("en"); // Idioma por defecto
+  const [language, setLanguage] = useState(
+    () => localStorage.getItem("language") || "es"
+  );
 
   const translate = (key) => {
-    return translations[language][key] || key; // Devuelve la traducción o la clave si no existe
+    if (!translations[language][key]) {
+      console.warn(
+        `Missing translation for key: "${key}" in language: "${language}"`
+      );
+    }
+    return translations[language][key] || key;
   };
 
-  const changeLanguage = (lang) => {
+  const changeLanguage = (language) => {
     // Guardar el idioma seleccionado en localStorage
-    localStorage.setItem("language", lang);
+    localStorage.setItem("language", language);
 
     // Establecer el idioma en el estado de la aplicación
-    setLanguage(lang);
+    setLanguage(language);
   };
 
   return (

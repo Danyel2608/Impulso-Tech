@@ -8,13 +8,26 @@ import ModalShop from "../../Products/ModalShop";
 
 function Rebajas() {
   const { translate } = useTranslation(); // Usamos translate en lugar de textos estáticos
-  const { agregarAlCarrito, isModalVisible, modalMessage, setIsModalVisible } =
-  useShoppingCart();
+  const {
+    agregarAlCarrito,
+    isModalVisible,
+    modalMessage,
+    setIsModalVisible,
+    setModalMessage,
+  } = useShoppingCart();
 
   const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [loading, setLoading] = useState(true); // Estado para manejar la carga
   const [error, setError] = useState(null); // Estado para manejar errores
+  const [selectedSizes, setSelectedSizes] = useState({});
   const idioma = localStorage.getItem("language");
+
+  const handleSizeChange = (productId, size) => {
+    setSelectedSizes((prevSizes) => ({
+      ...prevSizes,
+      [productId]: size, // Actualiza solo la talla del producto actual
+    }));
+  };
 
   // Función para obtener todos los productos de la API y filtrarlos por la categoría "rebaja"
   const fetchProductsRebajas = async () => {
@@ -88,18 +101,56 @@ function Rebajas() {
                 {translate("price_label")}: ${producto.precio}
               </p>
               <div className="product-details">
+                <select
+                  name="sizes"
+                  id={`products-sizes-${producto._id}`}
+                  value={selectedSizes[producto._id] || ""} // Valor específico por producto
+                  onChange={(e) =>
+                    handleSizeChange(producto._id, e.target.value)
+                  } // Actualiza la talla del producto actual
+                >
+                  <option value="" disabled>
+                    {translate("size_label")}
+                  </option>
+                  {producto.talla.map((tallas, index) => (
+                    <option key={index} value={tallas}>
+                      {tallas}
+                    </option>
+                  ))}
+                </select>
                 <p>
-                  {translate("size_label")}: {producto.talla.join(", ")}
-                </p>
-                <p>
-                  {translate("material_label")}: {producto.material[idioma]}
+                  {translate("material_label")}: {producto.material[idioma]}{" "}
+                  {/* Usamos el idioma actual */}
                 </p>
               </div>
               <div className="product-buy">
-                <button onClick={() => agregarAlCarrito(producto)}>
+                <button
+                  onClick={() => {
+                    if (!selectedSizes[producto._id]) {
+                      // Mostrar modal si no se selecciona talla
+                      setModalMessage(translate("size_neccesary"));
+                      setIsModalVisible(true); // Mostrar modal
+                    } else {
+                      const productoSelect = {
+                        _id: producto._id,
+                        nombre: producto.nombre[idioma], // Usar el nombre según el idioma
+                        imagen_url: producto.imagen_url, // Usar la imagen
+                        precio: producto.precio, // Usar el precio
+                      };
+
+                      console.log(productoSelect); // Esto debería mostrar solo los valores que quieres
+
+                      // Ahora pasas el producto correctamente al carrito
+                      agregarAlCarrito(
+                        productoSelect,
+                        selectedSizes[producto._id]
+                      );
+                    }
+                  }}
+                >
                   {translate("buy_button")}
                 </button>
-              </div>
+              </div>{" "}
             </div>
           ))
         )}

@@ -39,6 +39,34 @@ const generateProductData = async (marca, tipoPrenda, categoria) => {
     hombre: ["M", "L", "XL", "XXL"],
   };
 
+  const tallasPorCategoriaCalzado = {
+    niño: [
+      "20",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+      "28",
+      "29",
+      "30",
+      "31",
+      "32",
+      "33",
+      "34",
+      "35",
+      "36",
+      "37",
+      "38",
+      "39",
+      "40",
+    ],
+    mujer: ["36", "37", "38", "39", "40"],
+    hombre: ["41", "42", "43", "44", "45"],
+  };
+
   const colores = ["negro", "blanco", "gris", "azul", "rojo"];
   const materiales = ["algodón", "poliéster", "cuero"];
 
@@ -62,9 +90,15 @@ const generateProductData = async (marca, tipoPrenda, categoria) => {
   const productImage = imageArray.find((product) => product.brand === marca);
   const image = productImage ? productImage.src : null;
 
-  const tallas = tallasPorCategoria[categoria] || ["S", "M", "L"];
+  // Usar las tallas según el tipo de prenda
+  const tallas =
+    tipoPrenda === "calzado"
+      ? tallasPorCategoriaCalzado[categoria] || ["37", "38", "39", "41", "42"]
+      : tallasPorCategoria[categoria] || ["S", "M", "L"];
+
   const numTallasDisponibles = Math.floor(Math.random() * tallas.length) + 1;
   const tallasDisponibles = [];
+
   for (let i = 0; i < numTallasDisponibles; i++) {
     const tallaSeleccionada = getRandomElement(tallas);
     if (!tallasDisponibles.includes(tallaSeleccionada)) {

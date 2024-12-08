@@ -50,10 +50,7 @@ function Categoria({ categoria }) {
         // Filtrar los productos que coincidan con la categoría en el idioma seleccionado
         const productosFiltrados = data.products.filter((producto) => {
           if (producto.categoria[idioma]) {
-            return (
-              producto.categoria[idioma].trim().toLowerCase() ===
-              categoria.trim().toLowerCase()
-            );
+            return producto.categoria[idioma] === categoria;
           }
           return false; // Ignoramos los productos sin categoría en el idioma actual
         });
@@ -93,6 +90,7 @@ function Categoria({ categoria }) {
                 src={producto.imagen_url}
                 alt={producto.nombre[idioma]} // Usamos el idioma actual para el nombre
                 className="product-image"
+                id={producto._id}
               />
               <div className="product-description">
                 {producto.rebaja && (
@@ -108,7 +106,8 @@ function Categoria({ categoria }) {
                 {producto.nombre[idioma]} {/* Usamos el idioma actual */}
               </h4>
               <p className="product-price">
-                {translate("price_label")}: {producto.precio}
+                {producto.precio}
+                {translate("price_label")}
               </p>
               <div className="product-details">
                 <select
@@ -141,17 +140,20 @@ function Categoria({ categoria }) {
                       setModalMessage(translate("size_neccesary"));
                       setIsModalVisible(true); // Mostrar modal
                     } else {
-                      // Extraer las propiedades necesarias del producto
                       const productoSelect = {
                         _id: producto._id,
-                        nombre: producto.nombre[idioma], // Acceder al nombre según el idioma
+                        nombre: producto.nombre[idioma], // Usar el nombre según el idioma
                         imagen_url: producto.imagen_url, // Usar la imagen
                         precio: producto.precio, // Usar el precio
                       };
 
-                      console.log(productoSelect); // Verifica el producto que se añade al carrito
-                      // Agregar el producto seleccionado al carrito
-                      agregarAlCarrito(productoSelect, selectedSizes[producto._id]);
+                      console.log(productoSelect); // Esto debería mostrar solo los valores que quieres
+
+                      // Ahora pasas el producto correctamente al carrito
+                      agregarAlCarrito(
+                        productoSelect,
+                        selectedSizes[producto._id]
+                      );
                     }
                   }}
                 >

@@ -49,7 +49,7 @@ function Login({ onLogin }) {
             localStorage.setItem("user", JSON.stringify(data));
           }
           localStorage.setItem("user", JSON.stringify(data));
-          onLogin(data.data.token, data.data.user.role);
+          onLogin(data.data.token, data.data.refreshToken, data.data.user.role);
           setLoginInfo({
             loggedIn: true,
             email: loginData.email,
@@ -61,7 +61,12 @@ function Login({ onLogin }) {
           setIsLoading(true);
           setTimeout(() => {
             setIsLoading(false);
-            onLogin(data.data.token, data.data.user.role);
+            onLogin(
+              data.data.token,
+              data.data.refreshToken,
+              data.data.user.role
+            );
+            console.log(data);
             if (data.data.user.role === "admin") {
               navigate("/admin");
             } else {
@@ -85,7 +90,10 @@ function Login({ onLogin }) {
       setTimeout(() => {
         setLoginInfo({
           loggedIn: false,
-          email: loginData.email === "" ? translate("email_required") : loginData.email,
+          email:
+            loginData.email === ""
+              ? translate("email_required")
+              : loginData.email,
           password:
             loginData.password === ""
               ? translate("password_required")

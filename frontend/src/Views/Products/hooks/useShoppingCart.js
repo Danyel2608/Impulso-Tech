@@ -6,7 +6,7 @@ const useShoppingCart = (producto, selectSize) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
-  const agregarAlCarrito = (producto,selectSize) => {
+  const agregarAlCarrito = (producto, selectSize) => {
     console.log(selectSize);
     const listItems = document.getElementById("listItems");
     const rowId = `row-number-${producto._id}`;
@@ -40,13 +40,13 @@ const useShoppingCart = (producto, selectSize) => {
     const contentItem = `
     <div class="item-content">
       <div class="img-item">
-        <img src=${encodeURIComponent(producto.imagen_url)} alt="${
+        <img src=${producto.imagen_url} alt="${
       producto.nombre
     }" />
       </div>
       <div class="name-item"><h5>${producto.nombre}</h5></div>
       <div class="size-item"><h5>${selectSize}</h5></div> <!-- Usa la talla seleccionada -->
-      <div class="price-item"><h5>${producto.precio.toFixed(2)} /und</h5></div>
+      <div class="price-item"><h5>${producto.precio.toFixed(2)}/und</h5></div>
       <div class="buttons-quantity">
         <div class="plus"><i class="fa-solid fa-plus" id="plus"></i></div>
         <div class="quantity"><p class="quantity-value">${quantity}</p></div>
@@ -62,14 +62,12 @@ const useShoppingCart = (producto, selectSize) => {
       const cartItems = document.querySelectorAll(".items-shop");
       cartItems.forEach((item) => {
         const price = parseFloat(
-          item.querySelector(".price-item h5").textContent.slice(1)
+          item.querySelector(".price-item h5").textContent.slice(0)
         );
         const qty = parseInt(item.querySelector(".quantity p").textContent);
         total += price * qty;
       });
-      document.getElementById("total-cart").textContent = `$${total.toFixed(
-        2
-      )}`;
+      document.getElementById("total-cart").textContent = `${total.toFixed(2)}`;
     };
 
     cartRow.querySelector(".fa-plus").addEventListener("click", () => {
@@ -94,7 +92,13 @@ const useShoppingCart = (producto, selectSize) => {
     setIsModalVisible(true);
   };
 
-  return { agregarAlCarrito, isModalVisible, modalMessage, setIsModalVisible ,setModalMessage};
+  return {
+    agregarAlCarrito,
+    isModalVisible,
+    modalMessage,
+    setIsModalVisible,
+    setModalMessage,
+  };
 };
 
 export default useShoppingCart;

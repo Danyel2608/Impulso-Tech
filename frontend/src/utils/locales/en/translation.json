@@ -2,9 +2,9 @@
   "close_sesion": "Log out",
   "all_products": "All Products",
   "brands": "Brands",
-  "men": "Men",
-  "women": "Women",
-  "children": "Children",
+  "men": "men",
+  "women": "women",
+  "children": "children",
   "accessories": "Accessories",
   "novelties": "New Arrivals",
   "sales": "Sales",
@@ -101,5 +101,6 @@
   "new_arrivals_title": "New Arrivals",
   "sales_title": "Sales",
   "marca_not_aviable": "Products not available from this brand",
-  "size_neccesary": "You must select a size"
+  "size_neccesary": "You must select a size",
+  "moneda":"$"
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./Views/Home/Home";
 import Login from "./Views/Login/Login";
 import SignUp from "./Views/SignUp/SignUp";
@@ -28,6 +28,9 @@ function MainRoutes() {
   const [isRouteLoading, setIsRouteLoading] = useState(false);
   const location = useLocation();
   const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [refreshToken, setRefreshToken] = useState(
+    localStorage.getItem("refresh-token") || ""
+  );
 
   useEffect(() => {
     const storedLanguage = localStorage.getItem("language");
@@ -42,13 +45,61 @@ function MainRoutes() {
     return () => clearTimeout(timer);
   }, [location]);
 
+  // Función para refrescar el token
+  const refreshTokenUser = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      // Si no hay refresh token, el usuario necesita iniciar sesión de nuevo
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8001/auth/refresh", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "auth-token": `${token}`, // Usamos el refresh token en el encabezado
+        },
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Si la respuesta es exitosa, actualizamos el token de acceso
+        console.log(data);
+        localStorage.setItem("token", data.data.token);
+        console.log("Token de acceso renovado");
+      } else {
+        console.error("No se pudo renovar el token", data.error);
+        // Si no se pudo renovar el token, probablemente el refresh token ha expirado
+        // Aquí puedes redirigir al usuario a la pantalla de inicio de sesión
+      }
+    } catch (error) {
+      console.error("Error al intentar refrescar el token:", error);
+    }
+  };
+
+  // Configurar el intervalo para refrescar el token cada 14 minutos
+  useEffect(() => {
+    // Solo refrescar el token si el usuario tiene un token de acceso
+    if (token) {
+      const interval = setInterval(() => {
+        refreshTokenUser(); // Llamamos a la función para refrescar el token
+      }, 14 * 60 * 1000); // 14 minutos en milisegundos
+
+      return () => clearInterval(interval); // Limpiar el intervalo cuando el componente se desmonte
+    }
+  }, [token]); // Solo cuando el token cambia
+
   if (isRouteLoading) {
     return <LoadingIndicator />;
   }
 
-  const handleLogin = (token, role) => {
+  const handleLogin = (token, refreshToken, role) => {
     setToken(token);
+    setRefreshToken(refreshToken);
     localStorage.setItem("token", token);
+    localStorage.setItem("refresh-token", refreshToken);
   };
 
   return (

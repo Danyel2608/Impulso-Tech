@@ -2,9 +2,9 @@
   "close_sesion": "Cerrar sesión",
   "all_products": "Todos los productos",
   "brands": "Marcas",
-  "men": "Hombre",
-  "women": "Mujer",
-  "children": "Niño",
+  "men": "hombre",
+  "women": "mujer",
+  "children": "niño",
   "accessories": "Accesorios",
   "novelties": "Novedades",
   "sales": "Rebajas",
@@ -101,5 +101,6 @@
   "new_arrivals_title": "Novedades",
   "sales_title": "Rebajas",
   "marca_not_aviable": "Productos no disponibles de esta marca",
-  "size_neccesary": "Tienes que seleccionar una talla"
+  "size_neccesary": "Tienes que seleccionar una talla",
+  "moneda":"€"
 }

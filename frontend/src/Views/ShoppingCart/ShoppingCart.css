@@ -90,7 +90,9 @@
   transform: translateX(-50%);
   z-index: 1010; /* Asegura que el resumen esté sobre el contenido */
 }
-
+.price-content{
+  display: flex;
+}
 .shopping-buttons {
   display: flex;
   gap: 10px;

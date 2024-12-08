@@ -128,7 +128,10 @@ function ShoppingCart() {
       <ul id="listItems"></ul>
       <div className="cart-summary">
         <h4>{translateText("total")}</h4> {/* Total traducido */}
-        <h4 id="total-cart">$0.00</h4>
+        <div className="price-content">
+          <h4 id="total-cart">0.00</h4>
+          <h4>{translate("moneda")}</h4>
+        </div>
       </div>
       <div className="shopping-buttons">
         <button className="btn-empty" onClick={emptyCart}>
