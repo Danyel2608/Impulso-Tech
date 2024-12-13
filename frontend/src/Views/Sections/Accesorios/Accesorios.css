@@ -1,3 +1,4 @@
+/* Mobile-first styles */
 .accesorios-content {
   width: 100%;
   height: auto;
@@ -6,20 +7,51 @@
   justify-content: center;
   align-items: center;
 }
+
 .accesorios-header {
   display: block;
+  width: 100%;
+  position: relative;
+  max-height: 100px;
+  margin-bottom: 3em;
 }
+
+.accesorios-header h2 {
+  font-weight: 400;
+  font-size: 3em; /* Ajusta el tamaño de fuente para dispositivos móviles */
+  text-align: center;
+  margin: 0;
+  text-transform: uppercase;
+}
+
 .accesorios-search {
   width: 90%;
   height: auto;
   margin-top: 1em;
 }
-.accesorios-header {
-  margin-top: 15em;
-  width: 100%;
+
+/* Tablet (mínimo 768px) */
+@media (min-width: 768px) {
+  .accesorios-header h2 {
+    font-size: 4em; /* Tamaño de fuente más grande para tablets */
+  }
+
+  .accesorios-header {
+    margin: 4em 0; /* Ajusta el margen */
+  }
 }
-.accesorios-header h2 {
-  font-weight: 400;
-  font-size: 5em;
-  text-align: center;
+
+/* Desktop (mínimo 1024px) */
+@media (min-width: 1024px) {
+  .accesorios-header h2 {
+    font-size: 5em; /* Aumenta el tamaño de la fuente para escritorios */
+  }
+
+  .accesorios-header {
+    margin: 10em 0; /* Ajusta el margen */
+  }
+
+  .accesorios-search {
+    width: 60%; /* Reduce el ancho del input de búsqueda en pantallas grandes */
+  }
 }

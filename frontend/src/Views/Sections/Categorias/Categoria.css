@@ -1,3 +1,4 @@
+/* Estilos base (mobile-first) */
 .categoria-content {
   width: 100%;
   height: auto;
@@ -5,19 +6,59 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 1em; /* Espaciado general */
 }
+
 .categoria-header {
   display: block;
+  text-align: center; /* Centra el texto */
+  max-height: 100px;
+  position: relative;
+  margin-bottom: 2em;
 }
+
+.categoria-header h2 {
+  font-weight: 400;
+  font-size: 2.5em; /* Tamaño adecuado para móviles */
+  margin: 0;
+}
+
+/* Barra de búsqueda para categorías */
 .categoria-search {
   width: 90%;
   height: auto;
   margin-top: 1em;
+  padding: 0.5em;
+  font-size: 1em; /* Ajuste para móviles */
 }
-.categoria-header {
-  margin-top: 15em;
+
+/* Tablet (mínimo 768px) */
+@media (min-width: 768px) {
+  .categoria-header {
+    margin: 2em 0; /* Más espacio en tabletas */
+  }
+
+  .categoria-header h2 {
+    font-size: 4em; /* Ajuste de tamaño de texto para tabletas */
+  }
+
+  .categoria-search {
+    width: 70%; /* Barra de búsqueda más ancha */
+    font-size: 1.1em; /* Ajuste de fuente para tablets */
+  }
 }
-.categoria-header h2 {
-  font-weight: 400;
-  font-size: 5em;
+/* Desktop (mínimo 1024px) */
+@media (min-width: 1024px) {
+  .categoria-header {
+    margin: 5em 0; /* Más espacio arriba en pantallas más grandes */
+  }
+
+  .categoria-header h2 {
+    font-size: 5em; /* Tamaño más grande para escritorio */
+  }
+
+  .categoria-search {
+    width: 50%; /* Barra de búsqueda más ancha */
+    font-size: 1.2em; /* Ajuste de tamaño de fuente */
+  }
 }

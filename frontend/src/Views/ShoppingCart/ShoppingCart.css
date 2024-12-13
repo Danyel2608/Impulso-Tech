@@ -1,12 +1,11 @@
-/* General styles for the shopping cart */
+/* General styles for the shopping cart (Mobile-first approach) */
 .shopping-cart {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Empujar el contenido hacia arriba */
+  justify-content: flex-start; /* Push content upwards */
   align-items: center;
-  padding: 1em;
   position: fixed;
-  top: 0; /* Asegura que comience desde la parte superior */
+  top: 0; /* Ensure it starts from the top */
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
@@ -14,12 +13,14 @@
   max-width: 100%;
   background-color: #000;
   color: #fff;
-  z-index: 999; /* Bajo z-index para que los elementos superiores se muestren sobre él */
-  overflow-y: auto; /* Permite desplazar contenido si es necesario */
-  padding-top: 60px; /* Evita que el contenido se solape con la cabecera */
-  box-sizing: border-box; /* Incluye el relleno en las dimensiones del contenedor */
+  z-index: 999; /* Lower z-index so elements above it can be visible */
+  overflow-y: auto; /* Allows scrolling if needed */
+  padding-top: 60px; /* Prevent content from overlapping header */
+  box-sizing: border-box; /* Includes padding in container dimensions */
 }
-.close-cart{
+
+/* Close cart button */
+.close-cart {
   position: fixed;
   top: 40px;
   right: 50px;
@@ -27,33 +28,43 @@
   color: white;
   font-size: 1.5em;
 }
+
 /* Title */
 .shopping-title {
   position: fixed;
-  top: 80px; /* Establece el título cerca de la parte superior */
+  top: 80px; /* Set title near the top */
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1000; /* Asegura que el título esté sobre el contenido */
+  z-index: 1000; /* Ensure the title is above content */
   width: 100%;
   text-align: center;
-  font-size: 1.5em; /* Ajusta el tamaño de fuente según el espacio */
-  font-weight: bold;
+  font-size: 1.5em; /* Adjust font size based on space */
 }
-.product-cart-index{
+
+.shopping-title h3 {
+  font-weight: 300;
+}
+
+/* Product list */
+.product-cart-index {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   margin-top: 8em;
-  text-decoration: underline;
-  text-underline-offset: 1em;
 }
-.product-cart-index table{
-  display: flex;
+
+.product-cart-index table {
+  display: none;
   justify-content: space-between;
-  width:90%;
+  width: 100%;
   text-transform: uppercase;
 }
+
+.product-cart-index th {
+  font-weight: 300;
+}
+
 /* Empty cart message */
 .empty-cart-message {
   font-weight: 800;
@@ -61,19 +72,30 @@
 
 /* Item list */
 #listItems {
-  margin-top: 80px; /* Empuja el contenido hacia abajo para que no se solape con el título */
   overflow-y: auto;
   width: 100%;
-  flex-grow: 1; /* Ocupa el espacio restante */
-  z-index: 990; /* Asegura que el contenido del carrito no esté por encima del título */
+  flex-grow: 1; /* Take up remaining space */
+  z-index: 990; /* Ensure cart items don't overlap the title */
 }
-#listItems div{
+.item-content{
+  display: flex;
+  flex-direction: column;
+}
+.item-content img{
+  width: 60%;
+}
+#listItems div {
   width: 100%;
   list-style: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: .5em 0;
+  margin: 0.5em 0;
+}
+.shopping-actions-container{
+  min-width: 100%;
+  background-color: #000;
+  height: 400px;
 }
 /* Cart summary - stays at the bottom */
 .cart-summary {
@@ -85,23 +107,34 @@
   display: flex;
   flex-direction: row;
   position: fixed;
-  bottom: 100px; /* Coloca el resumen por encima de los botones de acción */
+  bottom: 100px; /* Places the summary above action buttons */
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1010; /* Asegura que el resumen esté sobre el contenido */
+  z-index: 1010; /* Ensure summary is above content */
 }
-.price-content{
+
+.price-content {
   display: flex;
+  width: 10%;
+  justify-content: center;
+  align-items: center;
 }
+
+.price-content h4,
+.cart-summary h4 {
+  font-weight: 300;
+}
+
+/* Shopping action buttons */
 .shopping-buttons {
   display: flex;
   gap: 10px;
   width: 90%;
   position: fixed;
-  bottom: 20px; /* Coloca los botones cerca de la parte inferior */
+  bottom: 20px; /* Places buttons near the bottom */
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1020; /* Asegura que los botones estén sobre el resumen */
+  z-index: 1020; /* Ensures buttons are on top of the summary */
   margin-bottom: 2em;
 }
 
@@ -134,25 +167,40 @@
 .invisible {
   height: 0;
   opacity: 0;
+  top: -1000px;
 }
 
 .visible {
   height: 100vh;
   opacity: 1;
+  top: 0;
 }
 
-/* Media queries for larger screens */
+/* Media queries for larger screens (Tablets and Desktops) */
+
+/* Tablet (min-width: 768px) */
 @media (min-width: 768px) {
   .shopping-cart {
-    max-width: 600px;
+    max-width: 100%; /* Limit the width on tablet */
     border-radius: 10px;
-    padding-top: 100px; /* Aumenta el espacio para pantallas más grandes */
   }
-
+  .product-cart-index table{
+    display: flex;
+    max-width: 90%;
+  }
   .item-content {
-    width: 300px;
+    max-width: 750px;
+    flex-direction: row;
+    padding: 1em 0;
   }
-
+  .item-content img{
+    width: 100%;
+    max-height: 150px;
+    padding: 1em;
+  }
+  .shopping-actions-container{
+    height: 180px;
+  }
   .cart-item {
     flex-direction: row; /* Align items in a row */
     align-items: center;
@@ -165,12 +213,39 @@
   }
 
   .cart-actions {
-    flex-direction: row; /* Buttons side by side */
+    flex-direction: row; /* Arrange buttons side by side */
     gap: 20px;
   }
 
   .btn-empty,
   .btn-buy {
     width: 100%;
+  }
+}
+
+/* Desktop (min-width: 1024px) */
+@media (min-width: 1024px) {
+  .shopping-cart {
+    max-width: 800px; /* Increase width on desktops */
+    padding-top: 120px; /* Add more padding on larger screens */
+  }
+
+  .item-content {
+    width: 400px; /* Adjust item content width */
+  }
+
+  .cart-item {
+    flex-direction: row; /* Keep items in row layout */
+    justify-content: space-between;
+  }
+
+  .cart-actions {
+    flex-direction: row;
+    gap: 30px;
+  }
+
+  .btn-empty,
+  .btn-buy {
+    width: 100%; /* Ensure buttons are still full width on large screens */
   }
 }

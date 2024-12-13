@@ -1,6 +1,6 @@
 import "./SignUpForm.css";
 import LogoModaModerna from "../../assets/ModaUrbanaLogo.png";
-import ImgLeft from "../../assets/mm1.jpg";
+import ImgRight from "../../assets/mm1.jpg";
 import { useRef } from "react";
 import { useTranslation } from "../../TranslationContext"; // Importamos el contexto de traducción
 import HeaderLanguages from "../Header/HeaderLanguages";
@@ -83,8 +83,8 @@ function SignUpForm(props) {
           {/* Traducimos el botón de envío */}
         </div>
       </form>
-      <div className="img-left">
-        <img src={ImgLeft} alt="img-left" />
+      <div className="img-right-register">
+        <img src={ImgRight} alt="img-right-register" />
       </div>
     </div>
   );

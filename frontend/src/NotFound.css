@@ -1,4 +1,4 @@
-/* Estilos para la página NotFound */
+/* Estilos generales para la página NotFound (Mobile First) */
 .not-found-container {
   display: flex;
   flex-direction: column;
@@ -8,22 +8,23 @@
   text-align: center;
   background-color: #f8f9fa;
   color: #333;
+  padding: 0 20px; /* Asegura que no haya márgenes laterales en móviles */
 }
 
 .not-found-title {
-  font-size: 2rem;
+  font-size: 1.8rem; /* Ajuste de tamaño para pantallas pequeñas */
   font-weight: bold;
   color: black;
   margin-bottom: 20px;
 }
 
 .not-found-message {
-  font-size: 1.2rem;
+  font-size: 1rem; /* Texto más pequeño en móviles */
   margin-bottom: 30px;
 }
 
 .not-found-link {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #3498db;
   text-decoration: none;
   transition: color 0.3s;
@@ -31,4 +32,38 @@
 
 .not-found-link:hover {
   color: #2c3e50;
+}
+
+/* Media Query para pantallas medianas (tabletas) */
+@media (min-width: 768px) {
+  .not-found-title {
+    font-size: 2.5rem; /* Aumenta el tamaño del título en pantallas medianas */
+  }
+
+  .not-found-message {
+    font-size: 1.2rem; /* Aumenta el tamaño del mensaje en pantallas medianas */
+  }
+
+  .not-found-link {
+    font-size: 1.3rem; /* Ajuste de tamaño para pantallas medianas */
+  }
+}
+
+/* Media Query para pantallas grandes (escritorios) */
+@media (min-width: 1024px) {
+  .not-found-container {
+    padding: 0 50px; /* Añadir más padding lateral en pantallas grandes */
+  }
+
+  .not-found-title {
+    font-size: 3rem; /* Aumenta el tamaño del título en pantallas grandes */
+  }
+
+  .not-found-message {
+    font-size: 1.4rem; /* Aumenta el tamaño del mensaje en pantallas grandes */
+  }
+
+  .not-found-link {
+    font-size: 1.4rem; /* Aumenta el tamaño del enlace en pantallas grandes */
+  }
 }

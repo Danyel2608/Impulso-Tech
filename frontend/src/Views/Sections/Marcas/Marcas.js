@@ -82,7 +82,7 @@ function Marca({ marca }) {
         />
       </div>
 
-      <div className="product-list">
+      <div className="product-list marcas-list-products">
         {productosFiltrados.length === 0 ? (
           <p>{translate("marca_not_aviable")}</p>
         ) : (
@@ -91,7 +91,7 @@ function Marca({ marca }) {
               <img
                 src={producto.imagen_url}
                 alt={producto.nombre[idioma]}
-                className="product-image"
+                className="product-image marca-image"
               />
               <div className="product-description">
                 {producto.rebaja && (

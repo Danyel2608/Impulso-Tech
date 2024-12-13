@@ -1,21 +1,22 @@
+import { useRef, useState } from "react";
 import "./LoginForm.css";
-import { useRef } from "react";
 import LogoModaModerna from "../../assets/ModaUrbanaLogo.png";
-import ImgLeft2 from "../../assets/mm2.jpg";
+import ImgRight2 from "../../assets/mm2.jpg";
 import { useTranslation } from "../../TranslationContext"; // Importamos el contexto de traducción
 import HeaderLanguages from "../Header/HeaderLanguages";
+
 function LoginForm(props) {
   const { translate } = useTranslation(); // Accedemos a la función de traducción
+  const refCheckbox = useRef(false);
   const refEmail = useRef("");
   const refPassword = useRef("");
-  const refCheckbox = useRef(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const loginData = {
       email: refEmail.current.value,
       password: refPassword.current.value,
-      rememberMe: refCheckbox.current.checked,
+      rememberMe: refCheckbox.current.checked, // Usamos el estado de rememberMe, esto está bien
     };
     props.onLogin(loginData);
   };
@@ -44,13 +45,8 @@ function LoginForm(props) {
         </div>
         <div className="login-links">
           <div className="remember-me">
-            <input
-              ref={refCheckbox}
-              type="checkbox"
-              name="remember"
-              id="remember"
-            />
-            <h5>{translate("remember_me")}</h5>{" "}
+            <input ref={refCheckbox} type="checkbox" id="check1" />
+            <label htmlFor="check1">Remeember me</label>{" "}
             {/* Traducción de "Remember me" */}
           </div>
           <div className="forget-password">
@@ -67,8 +63,8 @@ function LoginForm(props) {
           {/* Traducción de "Submit" */}
         </div>
       </form>
-      <div className="img-left">
-        <img src={ImgLeft2} alt="img-left2" />
+      <div className="img-right">
+        <img src={ImgRight2} alt="img-right2" />
       </div>
     </div>
   );

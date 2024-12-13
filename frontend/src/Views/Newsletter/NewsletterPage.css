@@ -1,9 +1,10 @@
-/* Estilos para el contenedor general */
+/* Estilos base (mobile-first) para el contenedor general */
 .newsletter-page {
   position: relative; /* Para que los elementos se apilen correctamente */
   width: 100%;
   height: 100vh; /* Ocupa toda la altura de la pantalla */
   display: flex;
+  flex-direction: column; /* Layout vertical en dispositivos pequeños */
   justify-content: center;
   align-items: center;
 }
@@ -32,21 +33,21 @@
   position: relative; /* Asegura que el formulario esté sobre el video */
   z-index: 1; /* Coloca el formulario encima del video */
   background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro semitransparente */
-  padding: 2em;
+  padding: 2em; /* Espaciado para pantallas pequeñas */
   text-align: center;
   border-radius: 8px;
   color: #fff; /* Asegura que el texto sea visible */
 }
 
 .newsletter-page-form h2 {
-  font-size: 2em;
-  margin-bottom: .5em;
+  font-size: 1.5em; /* Tamaño base de fuente para pantallas pequeñas */
+  margin: 0;
   text-transform: uppercase;
 }
 
-.newsletter-page-form p{
-  margin-bottom: 1.5em;
-  font-size: 1.2em;
+.newsletter-page-form p {
+  margin-bottom: 1em; /* Menos espacio en pantallas pequeñas */
+  font-size: 1em;
 }
 
 .newsletter-page-form form {
@@ -58,9 +59,9 @@
 .newsletter-page-form input[type="email"] {
   padding: 0.5em;
   width: 100%;
-  max-width: 300px;
-  margin-bottom: 2em;
-  font-size: 1em;
+  max-width: 280px; /* Ajuste menor para pantallas pequeñas */
+  margin-bottom: 1.5em;
+  font-size: 0.9em;
   border-radius: 4px;
   border: none;
 }
@@ -77,4 +78,62 @@
 
 .newsletter-page-form button:hover {
   background-color: #555;
+}
+
+/* Tablet (mínimo 768px) */
+@media (min-width: 768px) {
+  .newsletter-page {
+    flex-direction: column; /* Mantener columna para tablets */
+  }
+
+  .newsletter-page-form {
+    padding: 2em; /* Mayor espaciado */
+    max-width: 80%;
+  }
+
+  .newsletter-page-form h2 {
+    font-size: 2em; /* Incrementar tamaño de fuente */
+  }
+
+  .newsletter-page-form p {
+    font-size: 1.2em;
+  }
+
+  .newsletter-page-form input[type="email"] {
+    max-width: 320px; /* Ajuste para pantallas medianas */
+  }
+}
+
+/* Desktop (mínimo 1024px) */
+@media (min-width: 1024px) {
+  .newsletter-page {
+    flex-direction: row; /* Cambiar a diseño horizontal si es necesario */
+  }
+
+  .newsletter-page-form {
+    padding: 3em; /* Más espacio en pantallas grandes */
+    max-width: 40%;
+  }
+
+  .newsletter-page-form h2 {
+    font-size: 2.5em; /* Mayor tamaño de fuente */
+    margin: 1em 0;
+  }
+
+  .newsletter-page-form p {
+    font-size: 1.5em; /* Ajuste de tamaño */
+    margin-bottom: 2em;
+  }
+
+  .newsletter-page-form input[type="email"] {
+    max-width: 400px; /* Más ancho para pantallas grandes */
+    min-height: 50px;
+    font-size: 1.2em;
+    margin-bottom:2em;
+  }
+
+  .newsletter-page-form button {
+    font-size: 1.3em;
+    padding: 0.75em 1.5em;
+  }
 }

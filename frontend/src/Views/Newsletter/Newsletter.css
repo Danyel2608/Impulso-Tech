@@ -1,3 +1,4 @@
+/* Mobile-first base styles */
 .newsletter-content {
   width: 100%;
   height: auto;
@@ -7,7 +8,6 @@
   align-items: center;
   text-align: center;
   position: relative; /* Para posicionar elementos absolutos dentro */
-  margin-bottom: 5em;
 }
 
 .newsletter-content img {
@@ -16,19 +16,38 @@
   object-fit: cover;
 }
 
-.newsletter-content h3{
+.newsletter-content h3 {
   position: absolute;
-  font-size: 2em;
+  font-size: 1.5em; /* Ajuste para pantallas pequeñas */
   text-align: center;
   top: 80%;
   left: 50%; /* Centrado horizontalmente */
   transform: translate(-50%, -50%); /* Ajuste preciso al centro */
   z-index: 1; /* Asegura que el h3 esté frente a la imagen */
 }
-.newsletter-content h3 a{
-    text-decoration: none;
-    color: white;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-weight: 300;
+
+.newsletter-content h3 a {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+
+/* Tablet (mínimo 768px) */
+@media (min-width: 768px) {
+  .newsletter-content h3 {
+    font-size: 2em; /* Ajuste para pantallas medianas */
+  }
+}
+
+/* Desktop (mínimo 1024px) */
+@media (min-width: 1024px) {
+  .newsletter-content {
+    flex-direction: row; /* Cambiar layout si es necesario */
+  }
+
+  .newsletter-content h3 {
+    font-size: 2.5em; /* Mayor tamaño de fuente */
+  }
 }

@@ -1,3 +1,4 @@
+/* Mobile-first styles */
 .novedades-content {
   width: 100%;
   height: auto;
@@ -6,19 +7,51 @@
   justify-content: center;
   align-items: center;
 }
+
 .novedades-header {
   display: block;
+  width: 100%;
+  position: relative;
+  max-height: 100px;
+  margin-bottom: 3em;
 }
+
+.novedades-header h2 {
+  font-weight: 400;
+  font-size: 3em; /* Tamaño adecuado para dispositivos móviles */
+  text-align: center;
+  margin: 0;
+  text-transform: uppercase;
+}
+
 .novedades-search {
   width: 90%;
   height: auto;
   margin-top: 1em;
 }
-.novedades-header {
-  margin-top: 15em;
+
+/* Tablet (mínimo 768px) */
+@media (min-width: 768px) {
+  .novedades-header h2 {
+    font-size: 4em; /* Aumenta el tamaño de la fuente para tablets */
+  }
+
+  .novedades-header {
+    margin: 2em 0; /* Ajusta el margen superior */
+  }
 }
-.novedades-header h2 {
-  font-weight: 400;
-  font-size: 5em;
-  text-align: center;
+
+/* Desktop (mínimo 1024px) */
+@media (min-width: 1024px) {
+  .novedades-header h2 {
+    font-size: 5em; /* Aumenta aún más el tamaño de la fuente para escritorios */
+  }
+
+  .novedades-header {
+    margin: 10em 0; /* Ajusta el margen superior para pantallas grandes */
+  }
+
+  .novedades-search {
+    width: 60%; /* Reduce el ancho del campo de búsqueda en pantallas grandes */
+  }
 }

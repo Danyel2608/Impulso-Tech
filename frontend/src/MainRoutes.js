@@ -51,6 +51,7 @@ function MainRoutes() {
 
     if (!token) {
       // Si no hay refresh token, el usuario necesita iniciar sesión de nuevo
+      alert("Tiene que iniciar sesión de nuevo")
       return;
     }
 

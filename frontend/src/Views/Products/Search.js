@@ -82,14 +82,17 @@ function Search({ productos, setProductosFiltrados }) {
         products.sort((a, b) => a.descuento - b.descuento);
         break;
       case "alphabetical":
-        products.sort((a, b) =>
-          a.nombre[idioma]?.localeCompare(b.nombre[idioma])
-        );
+        products.sort((a, b) => {
+          // Usar localeCompare correctamente para comparar las cadenas
+          return a.nombre[idioma]?.trim().localeCompare(b.nombre[idioma]?.trim());
+        });
         break;
+
       case "alphabetical2":
-        products.sort((a, b) =>
-          b.nombre[idioma]?.localeCompare(a.nombre[idioma])
-        );
+        products.sort((a, b) => {
+          // Usar localeCompare correctamente para comparar las cadenas
+          return b.nombre[idioma]?.trim().localeCompare(a.nombre[idioma]?.trim());
+        });
         break;
       case "priceLowToHigh":
         products.sort((a, b) => a.precio - b.precio);

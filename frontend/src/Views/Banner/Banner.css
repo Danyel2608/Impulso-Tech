@@ -1,12 +1,36 @@
-.banner-content{
-    width: 100%;
-    height: auto;
-    margin-top: 45%;
-    margin-bottom: 10%;
-    display: flex;
+/* Estilos base: Mobile First */
+.banner-content {
+  width: 100%;
+  height: auto;
+  margin: 1% 0;
+  display: flex;
+  flex-direction: column; /* Asegura que el contenido se alinee en columna en móviles */
 }
-.banner-content video{
-    object-fit: cover;
-    width: 100%;
+
+.banner-content video {
+  object-fit: cover;
+  width: 100%;
+  height: auto; /* Mantiene la proporción del video */
+}
+
+/* Media Queries para pantallas más grandes */
+
+/* Tablet (≥768px) */
+@media (min-width: 768px) {
+  .banner-content {
+    flex-direction: row; /* Cambia a disposición horizontal si hay más contenido */
+  }
+
+  .banner-content video {
+    width: 100%; /* Video ocupa un poco menos del ancho para dar espacio al contenido adicional */
     height: auto;
+  }
+}
+
+/* Desktop (≥1024px) */
+@media (min-width: 1024px) {
+  .banner-content {
+    margin: 20em 0;
+    margin: 10em auto;
+  }
 }

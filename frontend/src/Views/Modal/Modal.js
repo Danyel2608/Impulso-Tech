@@ -1,7 +1,7 @@
 import classes from "./Modal.module.css";
 
 function Modal(props) {
-  //Modal de login
+  // Modal de login
   return (
     <>
       <div
@@ -27,11 +27,11 @@ function Modal(props) {
                 {props.data.password}
               </li>
               <li>
-                <strong>Remmber checked:</strong>
+                <strong>Remember checked:</strong>
                 {props.data.rememberMe ? "yes" : "no"}
               </li>
             </ul>
-            <button onClick={props.onLogin} className={classes["md-close"]}>
+            <button onClick={props.onClose} className={classes["md-close"]}>
               Close me!
             </button>
           </div>

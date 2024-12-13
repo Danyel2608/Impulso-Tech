@@ -1,36 +1,101 @@
+/* Mobile-first styles */
 .search-and-filters {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px; /* Espaciado reducido para móviles */
   width: 100%;
+  margin-bottom: 20px; /* Espacio extra inferior */
 }
 
 .products-page-search {
   display: flex;
   align-items: center;
   border: 1px solid grey;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   width: 100%;
-  padding: .5em 1em;
+  padding: 0.5em 0.8em; /* Reduce padding en móviles */
 }
 
 input[type="search"] {
   padding: 8px;
-  font-size: 16px;
+  font-size: 14px; /* Reduce tamaño de fuente */
   width: 100%;
+  border: none; /* Elimina bordes adicionales */
+  outline: none; /* Elimina el contorno al enfocar */
 }
 
 .filters {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%; /* Asegura que ocupe todo el ancho */
 }
 
 select {
   padding: 8px;
-  font-size: 16px;
+  font-size: 14px; /* Fuente más pequeña para móviles */
+  border: 1px solid grey; /* Consistencia con el cuadro de búsqueda */
+  border-radius: 0.5rem;
 }
 
 .fa-magnifying-glass {
   cursor: pointer;
+  color: grey;
+  font-size: 1.2em; /* Ajusta el tamaño del ícono */
+  margin-left: 10px; /* Espaciado entre el ícono y el cuadro */
+}
+
+/* Tablet (min-width: 768px) */
+@media (min-width: 768px) {
+  .search-and-filters {
+    gap: 20px; /* Incrementa el espaciado */
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .products-page-search {
+    max-width: 500px; /* Limita el tamaño del cuadro de búsqueda */
+    padding: 0.7em 1em; /* Mayor espacio en tablets */
+    margin: 2.5em 0;
+  }
+
+  input[type="search"] {
+    font-size: 16px; /* Aumenta el tamaño de la fuente */
+  }
+
+  select {
+    font-size: 16px; /* Aumenta el tamaño de la fuente */
+    padding: 10px; /* Mayor padding en tablets */
+  }
+
+  .fa-magnifying-glass {
+    font-size: 1.5em; /* Ícono más grande en tablets */
+  }
+}
+
+/* Desktop (min-width: 1024px) */
+@media (min-width: 1024px) {
+  .search-and-filters {
+    flex-direction: row;
+    gap: 30px; /* Mayor espaciado entre elementos */
+    margin-bottom: 4em;
+  }
+
+  .products-page-search {
+    max-width: 600px; /* Cuadro de búsqueda más grande */
+  }
+  .products-page-search{
+    margin-top: 2em;
+  }
+  .filters{
+    margin-bottom: 2.5em;
+  }
+  select {
+    font-size: 18px; /* Incrementa el tamaño de la fuente */
+    padding: 12px; /* Padding adicional */
+  }
+
+  .fa-magnifying-glass {
+    font-size: 1.8em; /* Ícono más grande en escritorios */
+  }
 }

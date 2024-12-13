@@ -70,7 +70,7 @@ function Rebajas() {
         />
       </div>
 
-      <div className="product-list">
+      <div className="product-list marcas-list-products">
         {loading ? (
           <p>{translate("loading_products")}</p>
         ) : error ? (
@@ -98,7 +98,7 @@ function Rebajas() {
               </div>
               <h4 className="product-title">{producto.nombre[idioma]}</h4>
               <p className="product-price">
-                {translate("price_label")}: ${producto.precio}
+                {translate("price_label")}: {producto.precio}
               </p>
               <div className="product-details">
                 <select

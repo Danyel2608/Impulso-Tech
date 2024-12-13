@@ -69,7 +69,7 @@ function Accesorios() {
         />
       </div>
 
-      <div className="product-list">
+      <div className="product-list marcas-list-products">
         {loading ? (
           <p>{translate("loading_products")}</p>
         ) : error ? (

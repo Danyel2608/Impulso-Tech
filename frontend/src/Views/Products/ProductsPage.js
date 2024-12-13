@@ -43,19 +43,8 @@ function ProductsPage() {
           throw new Error(translate("error_fetching_products"));
         }
         const data = await response.json();
-        const language = localStorage.getItem("language");
-        const translatedProducts = data.products.map((product) => ({
-          ...product,
-          nombre: product.nombre[language],
-          descripcion: product.descripcion[language],
-          categoria: product.categoria[language],
-          tipo_prenda: product.tipo_prenda[language],
-          talla: product.talla,
-          color: product.color[language],
-          material: product.material[language],
-        }));
-        setProductos(translatedProducts);
-        setProductosFiltrados(translatedProducts);
+        setProductos(data.products); // Guardar sin traducir
+        setProductosFiltrados(data.products); // Copiar la lista inicial
       } catch (error) {
         console.error(translate("error_fetching_products"), error.message);
       } finally {
@@ -65,11 +54,25 @@ function ProductsPage() {
 
     fetchProducts();
   }, [translate]);
+  const mapProductosToIdioma = (productos, idioma) => {
+    return productos.map((product) => ({
+      ...product,
+      nombre: product.nombre[idioma],
+      descripcion: product.descripcion[idioma],
+      categoria: product.categoria[idioma],
+      tipo_prenda: product.tipo_prenda[idioma],
+      color: product.color[idioma],
+      material: product.material[idioma],
+    }));
+  };
 
   useEffect(() => {
-    const productosAMostrar = productosFiltrados.slice(0, cantidadCargada);
+    const productosAMostrar = mapProductosToIdioma(
+      productosFiltrados.slice(0, cantidadCargada),
+      idioma
+    );
     setProductosVista(productosAMostrar);
-  }, [productosFiltrados, cantidadCargada]);
+  }, [productosFiltrados, cantidadCargada, idioma]);
 
   return (
     <div className="product-page-main">
@@ -95,28 +98,25 @@ function ProductsPage() {
                 />
                 <div className="product-description">
                   {producto.rebaja && (
-                    <span className="sale-tag">
-                      {translate("on_sale")} ({producto.descuento}% OFF)
-                    </span>
+                    <span className="sale-tag">-{producto.descuento}%</span>
                   )}
                   {producto.novedad && (
                     <span className="new-tag">{translate("new_arrival")}</span>
                   )}
                 </div>
-                <h4 className="product-title">
-                  {producto.nombre} {/* Usamos el idioma actual */}
-                </h4>{" "}
+                <h4 className="product-title">{producto.nombre}</h4>
                 <p className="product-price">
-                  {producto.precio}{translate("price_label")}
-                </p>{" "}
+                  {producto.precio}
+                  {translate("price_label")}
+                </p>
                 <div className="product-details">
                   <select
                     name="sizes"
                     id={`products-sizes-${producto._id}`}
-                    value={selectedSizes[producto._id] || ""} // Valor específico por producto
+                    value={selectedSizes[producto._id] || ""}
                     onChange={(e) =>
                       handleSizeChange(producto._id, e.target.value)
-                    } // Actualiza la talla del producto actual
+                    }
                   >
                     <option value="" disabled>
                       {translate("size_label")}
@@ -127,23 +127,18 @@ function ProductsPage() {
                       </option>
                     ))}
                   </select>
-
                   <p>
-                    {translate("material_label")}: {producto.material}{" "}
-                    {/* Usamos el idioma actual */}
+                    {translate("material_label")}: {producto.material}
                   </p>
                 </div>
                 <div className="product-buy">
                   <button
                     onClick={() => {
                       if (!selectedSizes[producto._id]) {
-                        // Mostrar modal si no se selecciona talla
                         setModalMessage(translate("size_neccesary"));
-                        setIsModalVisible(true); // Mostrar modal
+                        setIsModalVisible(true);
                       } else {
-                        // Agregar producto al carrito con la talla seleccionada
                         agregarAlCarrito(producto, selectedSizes[producto._id]);
-                        console.log(producto.imagen_url);
                       }
                     }}
                   >

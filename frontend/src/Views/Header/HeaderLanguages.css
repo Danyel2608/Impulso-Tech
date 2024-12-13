@@ -1,9 +1,37 @@
+/* Estilos base: Mobile First */
 .languages {
   position: absolute;
-  top: 20px;
-  left: 5px;
+  top: 10px;
+  left: 0px;
   display: flex;
   justify-content: space-evenly;
-  width: 20%;
-  margin-top: 2em;
+  width: 30%; /* Ajuste para dispositivos móviles */
+  margin-top: 1em;
+  font-size: 14px; /* Tamaño de texto más pequeño en móviles */
+}
+
+/* Hover en los elementos dentro de languages */
+.languages p:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Media Queries para pantallas más grandes */
+
+/* Tablet (≥768px) */
+@media (min-width: 768px) {
+  .languages {
+    width: 40%; /* Más espacio disponible en tabletas */
+    font-size: 16px; /* Tamaño de texto ajustado */
+    margin-top: 1.5em;
+  }
+}
+
+/* Desktop (≥1024px) */
+@media (min-width: 1024px) {
+  .languages {
+    width: 20%; /* Ajuste para mayor espacio en escritorio */
+    font-size: 18px; /* Tamaño de texto más grande */
+    margin-top: 2em;
+  }
 }

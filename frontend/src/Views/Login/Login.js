@@ -1,4 +1,3 @@
-import LoginForm from "./LoginForm";
 import { useState } from "react";
 import ReactDOM from "react-dom";
 import Modal from "../Modal/Modal";
@@ -6,6 +5,7 @@ import { validatePassword, validateEmail } from "../../utils/validate";
 import { useNavigate } from "react-router-dom";
 import LoadingIndicator from "../UI/Spinners/LoadingIndicator";
 import { useTranslation } from "../../TranslationContext"; // Importamos el contexto de traducción
+import LoginForm from "./LoginForm";
 
 function Login({ onLogin }) {
   const { translate } = useTranslation(); // Accedemos a la función de traducción
@@ -23,6 +23,11 @@ function Login({ onLogin }) {
     loginHeader: "",
     loginMessage: "",
   });
+
+  // Función para cerrar el modal
+  const closeModal = () => {
+    setVisible(false);
+  };
 
   const handleVisibility = async (loginData) => {
     if (
@@ -43,39 +48,39 @@ function Login({ onLogin }) {
           }),
         });
         const data = await response.json();
+
+        //Si todo ha ido bien, guardarlo en el LocalStorage y devolver el estado
+        //ok con setLoginInfo, con la información que verá el usuario
         if (response.ok) {
           setLoggedIn(true);
           if (loginData.rememberMe) {
             localStorage.setItem("user", JSON.stringify(data));
           }
           localStorage.setItem("user", JSON.stringify(data));
-          onLogin(data.data.token, data.data.refreshToken, data.data.user.role);
+          onLogin(data.data.token,data.data.refreshToken, data.data.user.role);
           setLoginInfo({
             loggedIn: true,
             email: loginData.email,
             password: "*******",
             rememberMe: loginData.rememberMe,
-            loginHeader: translate("login_success"),
-            loginMessage: translate("redirecting_home"),
+            loginHeader: "Login succesfully",
+            loginMessage: "You may by redirected to Perpetual Home",
           });
           setIsLoading(true);
           setTimeout(() => {
             setIsLoading(false);
-            onLogin(
-              data.data.token,
-              data.data.refreshToken,
-              data.data.user.role
-            );
-            console.log(data);
+            // Llama a la función onLogin proporcionada desde App.js
+            //para indicar que el inicio de sesión fue exitoso
+            onLogin(data.data.token,data.data.refreshToken, data.data.user.role);
             if (data.data.user.role === "admin") {
               navigate("/admin");
             } else {
-              navigate("/");
+              // Redirige al usuario a /home
+              navigate("/home");
             }
           }, 3000);
         }
       } catch (error) {
-        console.log(error);
         setLoginInfo({
           loggedIn: false,
           email: loginData.email,
@@ -87,30 +92,32 @@ function Login({ onLogin }) {
       }
       setPending(false);
     } else {
-      setTimeout(() => {
-        setLoginInfo({
-          loggedIn: false,
-          email:
-            loginData.email === ""
-              ? translate("email_required")
-              : loginData.email,
-          password:
-            loginData.password === ""
-              ? translate("password_required")
-              : loginData.password,
-          rememberMe: loginData.rememberMe,
-          loginHeader: translate("login_failed"),
-          loginMessage: translate("wrong_email_or_password"),
-        });
-      }, 2000);
+      setLoginInfo({
+        loggedIn: false,
+        email:
+          loginData.email === ""
+            ? translate("email_required")
+            : loginData.email,
+        password:
+          loginData.password === ""
+            ? translate("password_required")
+            : loginData.password,
+        rememberMe: loginData.rememberMe,
+        loginHeader: translate("login_failed"),
+        loginMessage: translate("wrong_email_or_password"),
+      });
     }
-    setVisible(!visible);
+    setVisible(true); // Asegúrate de mostrar el modal
   };
 
   return (
     <div>
       {ReactDOM.createPortal(
-        <Modal visible={visible} onLogin={handleVisibility} data={loginInfo} />,
+        <Modal
+          visible={visible}
+          onClose={closeModal} // Pasamos la función para cerrar el modal
+          data={loginInfo}
+        />,
         document.querySelector("#modal")
       )}
       {pending ? (

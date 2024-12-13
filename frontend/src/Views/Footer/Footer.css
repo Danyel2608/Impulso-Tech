@@ -1,8 +1,10 @@
+/* Mobile-first base styles */
 .footer-content {
   background-color: #222; /* Fondo oscuro */
   color: #fff; /* Texto blanco */
   padding: 2em;
   text-align: center;
+  width: 100%;
 }
 
 .footer-content h2 {
@@ -60,8 +62,9 @@
 .footer-links {
   margin-top: 1em;
   display: flex;
-  justify-content: center;
-  gap: 1em;
+  flex-direction: column; /* Layout vertical en móviles */
+  gap: 0.5em;
+  align-items: center; /* Centrar los enlaces en móviles */
 }
 
 .footer-links a {
@@ -73,4 +76,58 @@
 
 .footer-links a:hover {
   color: #f39c12;
+}
+
+/* Tablet (mínimo 768px) */
+@media (min-width: 768px) {
+  .footer-content {
+    padding: 3em; /* Mayor espaciado en tablets */
+  }
+
+  .footer-content h2 {
+    font-size: 2em; /* Incrementar tamaño de fuente */
+  }
+
+  .social-icons a {
+    font-size: 2em; /* Íconos más grandes */
+  }
+
+  .contact-info a {
+    font-size: 1.1em; /* Mayor tamaño de fuente */
+  }
+
+  .footer-links {
+    justify-content: center;
+    flex-direction: row; /* Cambiar a layout horizontal */
+    gap: 1.5em;
+  }
+}
+
+/* Desktop (mínimo 1024px) */
+@media (min-width: 1024px) {
+  .footer-content {
+    padding: 4em; /* Más espacio en pantallas grandes */
+  }
+
+  .footer-content h2 {
+    font-size: 2.5em; /* Mayor tamaño de fuente */
+  }
+
+  .social-icons a {
+    font-size: 2.5em; /* Íconos más grandes */
+  }
+
+  .contact-info {
+    flex-direction: row; /* Layout horizontal para contacto */
+    gap: 2em; /* Más separación entre elementos */
+    justify-content: center; /* Centrar contenido */
+  }
+
+  .footer-links {
+    gap: 2em; /* Mayor separación entre enlaces */
+  }
+
+  .footer-links a {
+    font-size: 1em; /* Ajuste de tamaño */
+  }
 }

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./AdminPage.css";
 import ProductsTable from "./ProductsTable";
+import { useTranslation } from "../../TranslationContext";
 
 function AdminPage() {
+  const { translate } = useTranslation();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,7 +15,7 @@ function AdminPage() {
       deleteButton.parentNode.previousElementSibling.previousElementSibling
         .textContent;
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("refresh-token");
 
     try {
       const response = await fetch("http://localhost:8001/auth/deleteUser", {
@@ -28,7 +30,11 @@ function AdminPage() {
       });
 
       if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
+        throw new Error(
+          `${translate("error_label")} ${response.status}: ${
+            response.statusText
+          }`
+        );
       }
 
       // Después de eliminar, recargar usuarios desde el servidor
@@ -38,7 +44,6 @@ function AdminPage() {
     }
   };
 
-  // Mover la función fetchUsers fuera de useEffect para poder reutilizarla
   const fetchUsers = async () => {
     const token = localStorage.getItem("token");
 
@@ -52,7 +57,11 @@ function AdminPage() {
       });
 
       if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
+        throw new Error(
+          `${translate("error_label")} ${response.status}: ${
+            response.statusText
+          }`
+        );
       }
 
       const data = await response.json();
@@ -69,28 +78,35 @@ function AdminPage() {
   }, []);
 
   if (loading) {
-    return <div className="admin-page-loading">Cargando usuarios...</div>;
+    return (
+      <div className="admin-page-loading">{translate("loading_users")}</div>
+    );
   }
 
   if (error) {
-    return <div className="admin-page-error">Error: {error}</div>;
+    return (
+      <div className="admin-page-error">{`${translate(
+        "error_label"
+      )}: ${error}`}</div>
+    );
   }
 
   return (
     <div className="admin-page">
       <a href="/">
-        <i class="fa-solid fa-house"></i>
+        <i className="fa-solid fa-house"></i>
       </a>
-      <h1>Panel de Administración</h1>
+      <h2>{translate("admin_panel_title")}</h2>
       <table className="admin-page-table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Nombre de Usuario</th>
-            <th>Apellido de Usuario</th>
-            <th>Email</th>
-            <th>Rol</th>
-            <th>Acciones</th>
+            <th>{translate("id_label")}</th>
+            <th>{translate("first_name_label")}</th>
+            <th>{translate("last_name_label")}</th>
+            <th>{translate("email_label")}</th>
+            <th>{translate("confirm_label")}</th>
+            <th>{translate("role_label")}</th>
+            <th>{translate("delete_label")}</th>
           </tr>
         </thead>
         <tbody>
@@ -100,15 +116,16 @@ function AdminPage() {
               <td>{user.name}</td>
               <td>{user.lastName}</td>
               <td>{user.email}</td>
+              <td>{user.confirmEmail === true ? "Sí" : "No"}</td>
               <td>{user.role}</td>
               <td>
-                <i class="fa-solid fa-trash" onClick={deleteUser}></i>
+                <i className="fa-solid fa-trash" onClick={deleteUser}></i>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <ProductsTable></ProductsTable>
+      <ProductsTable />
     </div>
   );
 }

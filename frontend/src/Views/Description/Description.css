@@ -1,24 +1,89 @@
-.description-content,.description-imgs{
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    margin: 5em 0;
-}
-.description-content h2{
-    text-transform: uppercase;
-    width: 90%;
-    margin: 1em;
-}
-.description-content p{
-    width: 90%;
-}
-.description-imgs img{
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+/* Estilos base: Mobile First */
+.description-content,
+.description-imgs {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
+.description-imgs {
+  margin-top: 3em; /* Espaciado vertical para móviles */
+}
+
+.description-content h2 {
+  text-transform: uppercase;
+  font-weight: 400;
+  width: 90%; /* Reduce el ancho del contenido en móviles */
+  margin-top: 2em;
+  margin-bottom: 1em;
+  font-size: 1.5em; /* Tamaño ajustado para móviles */
+}
+
+.description-content p {
+  width: 90%;
+  font-size: 1em; /* Tamaño base del texto */
+}
+
+.description-imgs img {
+  width: 100%; /* Imagen ocupa todo el ancho en móviles */
+  height: auto;
+  object-fit: cover; /* Asegura que la imagen mantenga su proporción */
+}
+
+/* Media Queries para pantallas más grandes */
+
+/* Tablet (≥768px) */
+@media (min-width: 768px) {
+  .description-content,
+  .description-imgs {
+    flex-direction: column; /* Cambia a disposición horizontal */
+  }
+
+  .description-content h2 {
+    width: 80%; /* Ajusta el ancho */
+  }
+
+  .description-content p {
+    width: 80%; /* Ajusta el ancho */
+  }
+
+  .description-imgs{
+    margin-top: 4em;
+  }
+
+  .description-imgs img {
+    width: 100%; /* Imagen ocupa menos espacio en tabletas */
+  }
+}
+
+/* Desktop (≥1024px) */
+@media (min-width: 1024px) {
+  .description-content,
+  .description-imgs {
+    flex-direction: column; /* Mantiene la disposición horizontal */
+  }
+
+  .description-content h2 {
+    font-size: 2em;
+    width: 70%; /* Reduce el ancho para un diseño más espacioso */
+    margin-top: 0em;
+  }
+
+  .description-content p {
+    font-size: 1.2em;
+    width: 70%; /* Ajusta el ancho */
+  }
+  .description-imgs {
+    margin-top: 10em; /* Espaciado vertical para móviles */
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+  }
+
+  .description-imgs img {
+    min-height: 1500px;
+  }
+}

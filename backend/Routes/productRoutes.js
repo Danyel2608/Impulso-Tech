@@ -12,4 +12,9 @@ router.post("/productos", productController.createMultipleProducts);
 //Ruta para obtener todos los productos
 router.get("/all-products", productController.getMultipleProducts);
 
-module.exports = router;
+//Ruta para borrar producto por ID
+router.delete("/deleteId", productController.deleteProductId);
+
+//Modificar producto
+router.put("/updateProduct", productController.updateProduct),
+  (module.exports = router);

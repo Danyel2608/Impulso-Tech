@@ -1,3 +1,4 @@
+/* Estilos base (mobile-first) */
 .marcas-content {
   width: 100%;
   height: auto;
@@ -5,19 +6,64 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 1em; /* Espaciado general */
 }
+
 .marcas-header {
-  display: block;
+  display: flex;
+  text-align: center; /* Centra el texto */
+  width: 100%;
+  max-height: 100px;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  margin-bottom: 2em;
 }
+
+.marcas-header h2 {
+  font-weight: 400;
+  font-size: 2.5em; /* Tamaño adecuado para móviles */
+  position: relative;
+  margin: 0;
+}
+
+/* Barra de búsqueda para marcas */
 .marcas-search {
   width: 90%;
   height: auto;
-  margin-top: 1em;
+  margin: 1em 0;
+  padding: 0.5em;
+  font-size: 1em; /* Ajuste para móviles */
 }
-.marcas-header{
-  margin-top: 15em;
+
+.marca-image {
+  min-height: 250px;
 }
-.marcas-header h2{
-  font-weight: 400;
-  font-size: 5em;
+/* Tablet (mínimo 768px) */
+@media (min-width: 768px) {
+  .marcas-header h2 {
+    font-size: 4em; /* Ajuste de tamaño de texto para tabletas */
+  }
+
+  .marcas-search {
+    width: 70%; /* Barra de búsqueda más ancha */
+    font-size: 1.1em; /* Ajuste de fuente para tablets */
+  }
+}
+/* Desktop (mínimo 1024px) */
+@media (min-width: 1024px) {
+  .marcas-header{
+    margin:5em 0 ;
+  }
+  .marcas-header h2 {
+    font-size: 5em; /* Tamaño más grande para escritorio */
+  }
+  .marcas-list-products {
+    max-width: 60%;
+  }
+  
+  .marcas-search {
+    width: 50%; /* Barra de búsqueda más ancha */
+    font-size: 1.2em; /* Ajuste de tamaño de fuente */
+  }
 }

@@ -1,3 +1,4 @@
+/* Mobile-first styles */
 .modal-shop-overlay {
   position: fixed;
   top: 0;
@@ -13,10 +14,12 @@
 
 .modal-shop-content {
   background: #fff;
-  padding: 50px;
+  padding: 20px; /* Ajuste de padding para pantallas pequeñas */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   text-align: center;
+  width: 90%; /* Ancho relativo para móviles */
+  max-width: 350px; /* Limita el ancho en pantallas pequeñas */
 }
 
 .close-modal {
@@ -27,12 +30,45 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 1.1em;
+  font-size: 1em; /* Fuente ajustada para pantallas pequeñas */
   text-transform: uppercase;
 }
 
 .modal-shop-overlay p {
   margin: 1em 0;
   text-transform: uppercase;
-  font-size: 1.1em;
+  font-size: 1em; /* Tamaño de texto ajustado */
+}
+
+/* Tablet (mínimo 768px) */
+@media (min-width: 768px) {
+  .modal-shop-content {
+    padding: 30px; /* Más espacio en pantallas medianas */
+    max-width: 500px; /* Ancho máximo ajustado */
+  }
+
+  .close-modal {
+    font-size: 1.1em; /* Incrementar el tamaño de la fuente */
+  }
+
+  .modal-shop-overlay p {
+    font-size: 1.2em; /* Mayor tamaño de texto */
+  }
+}
+
+/* Desktop (mínimo 1024px) */
+@media (min-width: 1024px) {
+  .modal-shop-content {
+    padding: 40px; /* Mayor espaciado en pantallas grandes */
+    max-width: 600px; /* Aumentar el ancho máximo */
+  }
+
+  .close-modal {
+    font-size: 1.2em; /* Texto más grande */
+    padding: 12px 24px; /* Más espacio en el botón */
+  }
+
+  .modal-shop-overlay p {
+    font-size: 1.3em; /* Ajuste para pantallas grandes */
+  }
 }

@@ -68,7 +68,7 @@ function Novedades() {
         />
       </div>
 
-      <div className="product-list">
+      <div className="product-list marcas-list-products">
         {productosFiltrados.map((producto, index) => (
           <div key={index} className="product-card">
             {producto.imagen_url ? (

@@ -118,28 +118,30 @@ function ShoppingCart() {
       </div>
       <div className="product-cart-index">
         <table>
-          <th>Img</th>
-          <th>Name</th>
-          <th>Talla</th>
-          <th>Precio/und</th>
-          <th>Unidad/es</th>
+          <th>{translate("imagen")}</th>
+          <th>{translate("nombre")}</th>
+          <th>{translate("talla")}</th>
+          <th>{translate("precio")}</th>
+          <th>{translate("unidad")}</th>
         </table>
       </div>
       <ul id="listItems"></ul>
-      <div className="cart-summary">
-        <h4>{translateText("total")}</h4> {/* Total traducido */}
-        <div className="price-content">
-          <h4 id="total-cart">0.00</h4>
-          <h4>{translate("moneda")}</h4>
+      <div className="shopping-actions-container">
+        <div className="cart-summary">
+          <h4>{translateText("total")}</h4> {/* Total traducido */}
+          <div className="price-content">
+            <h4 id="total-cart">0.00</h4>
+            <h4>{translate("moneda")}</h4>
+          </div>
         </div>
-      </div>
-      <div className="shopping-buttons">
-        <button className="btn-empty" onClick={emptyCart}>
-          {translateText("empty_cart_button")} {/* Botón vacío traducido */}
-        </button>
-        <button className="btn-buy" onClick={handlePurchase}>
-          {translateText("buy_button")} {/* Botón comprar traducido */}
-        </button>
+        <div className="shopping-buttons">
+          <button className="btn-empty" onClick={emptyCart}>
+            {translateText("empty_cart_button")} {/* Botón vacío traducido */}
+          </button>
+          <button className="btn-buy" onClick={handlePurchase}>
+            {translateText("buy_button")} {/* Botón comprar traducido */}
+          </button>
+        </div>
       </div>
       <ModalCart
         visible={isModalVisible2}

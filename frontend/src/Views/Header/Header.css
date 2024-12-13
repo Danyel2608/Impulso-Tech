@@ -1,44 +1,73 @@
+/* Estilos base: Mobile First */
+
+/* Contenedor principal del header */
 .header-content {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
   width: 100%;
-  height: 1px;
-  margin-top: 2em;
+  height: auto; /* Ajustado para que se adapte al contenido */
+  margin-top: 5.5em;
 }
+
+/* Estilo para el botón de logout */
 .logout {
   position: absolute;
   top: 20px;
   right: 5px;
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 30%;
+  max-height: 5%;
   text-transform: uppercase;
-  margin-top: 2em;
+  margin-top: 1em;
   cursor: pointer;
+  font-size: 14px;
 }
+
+/* Hover en idiomas */
 .languages p:hover {
   text-decoration: underline;
   cursor: pointer;
 }
+
+/* Hover en los iconos del header */
 .header-content i:hover {
   cursor: pointer;
 }
+
+/* Menú de navegación */
 .header-menu {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  width: 90%;
+  margin-top: 10%;
 }
+
+/* Iconos en el menú */
 .header-menu i {
   font-size: 1.5em;
 }
-.header-content img {
-  width: 50%;
+.fa-user {
+  position: absolute;
+  top: 60px;
+  right: 25px;
 }
+
+/* Imagen dentro del header */
+.header-content img {
+  width: 80%; /* Ajustado para dispositivos pequeños */
+  object-fit: cover;
+}
+
 .header-content img:hover {
   cursor: pointer;
 }
+
+/* Estilo del menú de enlaces (por defecto oculto en móviles) */
 .header-links {
   position: fixed;
   top: 0;
@@ -52,10 +81,9 @@
   justify-content: flex-start;
   align-items: flex-start;
   text-align: start;
-  padding-top: 15em; /* Ajusta el espacio desde la parte superior */
+  padding-top: 10em; /* Ajuste en móviles */
   overflow-y: scroll; /* Permite que el contenido sea desplazable verticalmente */
   -webkit-overflow-scrolling: touch; /* Habilita un desplazamiento suave en dispositivos móviles */
-  /* Opciones para ocultar la barra de desplazamiento */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
@@ -65,15 +93,20 @@
   display: none;
 }
 
+/* Estilos de los enlaces dentro del menú */
 .header-links a {
   text-decoration: none;
   color: white;
   margin: 1.5em 2em;
   font-size: 1.5em;
+  text-transform: uppercase;
 }
+
 .header-links a:hover {
   color: #f39c12;
 }
+
+/* Estilo del icono de cierre */
 .header-links i {
   color: white;
   position: absolute;
@@ -81,34 +114,118 @@
   right: 50px;
   font-size: 2em;
 }
+
+/* Estilos para la lista de marcas */
 .marcas-list {
   width: 100%;
-  height: auto;
-  display: grid; /* Cambiado a grid para control de las columnas */
-  grid-template-columns: repeat(2, 1fr); /* Dos columnas iguales */
-  gap: 0em; /* Espacio entre las imágenes */
-  justify-items: center; /* Centra las imágenes dentro de cada columna */
-  padding: 0 1em; /* Añadir algo de espacio alrededor */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1em;
+  justify-items: center;
+  padding: 0 1em;
 }
 
 .marcas-list a {
   display: block;
   text-align: center;
+  width: 100%;
 }
 
 .marcas-list img {
-  width: 120%; /* La imagen ocupa el 100% del ancho de la celda */
-  height: 100px; /* Mantiene la proporción de la imagen */
-  object-fit: cover; /* Asegura que la imagen cubra el espacio */
+  width: 100%; /* Ajustado para que las imágenes ocupen el 100% del ancho de la celda */
+  height: 100px;
+  object-fit: cover;
 }
 
 .marcas-list img:hover {
   cursor: pointer;
 }
+
 .invisible {
   opacity: 0;
   display: none;
 }
+
 .visible {
   opacity: 0.8;
+}
+
+/* Media Queries para pantallas más grandes */
+
+/* Tablet (≥768px) */
+@media (min-width: 768px) {
+  .header-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2em;
+  }
+
+  .header-menu {
+    width: 100%;
+    justify-content: space-around;
+  }
+  .fa-user {
+    right: 60px;
+  }
+  .header-content img {
+    width: 50%;
+    height: 250px;
+  }
+
+  .header-links {
+    padding-top: 5em; /* Ajuste de margen superior */
+  }
+  .marcas-list a img {
+    width: 100%;
+    height: 200px;
+    padding: 2em;
+  }
+  .marcas-list {
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas en lugar de dos */
+  }
+
+  .logout {
+    font-size: 16px;
+    width: 20%;
+  }
+}
+
+/* Desktop (≥1024px) */
+@media (min-width: 1024px) {
+  .header-content {
+    margin-top: 0em;
+  }
+
+  .header-content img {
+    width: 20%; /* Reduce el tamaño de la imagen */
+    height: 160px;
+  }
+  .header-menu i {
+    font-size: 2em;
+  }
+  .fa-user {
+    right: 100px;
+  }
+  .header-links {
+    padding-top: 10em;
+  }
+
+  .marcas-list {
+    grid-template-columns: repeat(5, 1fr); /* Cuatro columnas */
+    gap: 60px;
+    min-width: 100%;
+  }
+  .marcas-list a {
+    width: 200%;
+  }
+  .marcas-list a img {
+    width: 50%;
+    height: 250px;
+    padding: 2em;
+  }
+  .logout {
+    font-size: 18px;
+    width: 15%;
+  }
 }

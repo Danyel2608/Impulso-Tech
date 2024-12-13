@@ -6,8 +6,22 @@ function HeaderLanguages() {
 
   return (
     <div className="languages">
-      <p onClick={() => changeLanguage("es")}>ES</p>
-      <p onClick={() => changeLanguage("en")}>EN</p>
+      <p
+        onClick={() => {
+          changeLanguage("es");
+          localStorage.setItem("language", "es");
+        }}
+      >
+        ES
+      </p>
+      <p
+        onClick={() => {
+          changeLanguage("en");
+          localStorage.setItem("language", "en");
+        }}
+      >
+        EN
+      </p>
     </div>
   );
 }

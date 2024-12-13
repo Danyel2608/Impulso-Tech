@@ -54,7 +54,7 @@ function Categoria({ categoria }) {
           }
           return false; // Ignoramos los productos sin categoría en el idioma actual
         });
-
+        
         setProductosCategoria(productosFiltrados);
         setProductosFiltrados(productosFiltrados);
       } else {
@@ -80,7 +80,7 @@ function Categoria({ categoria }) {
         />
       </div>
 
-      <div className="product-list">
+      <div className="product-list marcas-list-products">
         {productosFiltrados.length === 0 ? (
           <p>{translate("no_products_in_category", { category: categoria })}</p>
         ) : (

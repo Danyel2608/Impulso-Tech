@@ -1,48 +1,43 @@
-/* Contenedor principal de la página de productos */
+/* Mobile-first styles */
 .product-page-main {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centra el contenido horizontalmente */
+  align-items: center;
   justify-content: flex-start;
-  min-height: 100vh; /* Asegura que la página ocupe toda la altura */
+  min-height: 100vh;
 }
 
-/* Contenido principal de la página de productos */
 .products-page-content {
   width: 100%;
-  max-width: 1200px; /* Limita el ancho máximo de la página */
-  padding: 2rem; /* Espaciado interno */
+  max-width: 1200px;
+  padding: 1rem; /* Reduce padding para dispositivos móviles */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 200px;
 }
 
-/* Título de la página */
 .products-page-content h3 {
   text-transform: uppercase;
-  font-size: 2rem;
+  font-size: 1.5rem; /* Fuente más pequeña para móviles */
   font-weight: 400;
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.75rem;
   color: #333;
 }
 
-/* Contenedor de la lista de productos */
 .product-list {
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
-    minmax(250px, 1fr)
-  ); /* Adaptación automática de las tarjetas */
-  gap: 20px;
+    minmax(150px, 1fr)
+  ); /* Ajusta las columnas en móviles */
+  gap: 15px;
   width: 100%;
-  justify-items: center; /* Centra los elementos en el grid */
+  justify-items: center;
 }
 
-/* Tarjetas de productos */
 .product-card {
   display: flex;
   flex-direction: column;
@@ -50,134 +45,141 @@
   align-items: center;
   background-color: #fff;
   width: 100%;
-  max-width: 350px; /* Limita el tamaño máximo de las tarjetas */
+  max-width: 300px; /* Reducir tamaño máximo en móviles */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
-  padding-bottom: 1em;
+  padding-bottom: 0.5em;
 }
 
 .product-card:hover {
-  transform: scale(1.05); /* Efecto al pasar el mouse sobre la tarjeta */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Imagen del producto */
 .product-image {
   width: 100%;
-  height: 300px; /* Tamaño fijo para las imágenes */
-  object-fit: cover; /* Mantiene la proporción de la imagen */
+  height: 300px; /* Tamaño fijo más pequeño */
+  object-fit: cover;
   border-top-right-radius: 8px;
   border-top-left-radius: 8px;
 }
-.product-info{
+
+.product-info {
   display: flex;
   flex-direction: column;
   width: 100%;
   justify-content: center;
   align-items: center;
-  margin: 1em 0;
-}
-h4.new, h4.rebaja {
-  color: white;
-  padding: 0.5em;
-  width: 40%;
-  border-radius: 0.5rem;
-  opacity: 1; 
-  margin: .5em 0;
-  font-weight: 300;
-}
-h4.new{
-  background-color: #ff7f00;
-}
-h4.rebaja{
-  background-color: #ff0000;
-}
-h4.no-new {
-  background-color: transparent; 
-  color: transparent; 
-  opacity: 0; 
-  padding: 0; 
-  width: auto; 
+  margin: 0.5em 0;
 }
 
-/* Título del producto */
-.product-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin: 10px 0;
-  text-transform: capitalize; /* Capitaliza la primera letra */
-  color: #333;
-}
-
-/* Precio del producto */
-.product-price {
-  font-size: 1.1rem;
-  font-weight: 300;
-  color: #333;
-  margin-top: 0.5rem;
-}
-
-/* Descripción de las etiquetas (rebaja, novedad) */
 .product-description {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  width: 90%;
   gap: 10px;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+}
+span.new-tag,
+span.sale-tag {
+  color: white;
+  padding: 0.5em;
+  width: 100%; /* Más ancho en móviles */
+  border-radius: 0.5rem;
+  opacity: 1;
+  margin: 0.5em 0;
+  font-weight: 300;
 }
 
-.new-tag,
-.sale-tag,
-.last-units {
-  font-weight: bold;
-  padding: 5px 10px;
-  background-color: #ff7f00; /* Naranja para el descuento */
-  color: white;
-  border-radius: 5px;
-  font-size: 0.9rem;
+span.new-tag {
+  background-color: #ff7f00;
 }
-.last-units {
+
+span.sale-tag {
   background-color: #ff0000;
 }
-/* Detalles del producto (talla, color, material) */
+
+span.no-new-tag {
+  background-color: transparent;
+  color: transparent;
+  opacity: 0;
+  padding: 0;
+  width: auto;
+}
+
+.product-title {
+  font-size: 1rem; /* Fuente más pequeña en móviles */
+  font-weight: bold;
+  margin: 10px 0;
+  text-transform: capitalize;
+  color: #333;
+  text-transform: uppercase;
+  width: 80%;
+}
+
+.product-price {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #333;
+  margin: 0.5rem 0;
+}
+
 .product-details {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #555;
   display: flex;
+  justify-content: center;
   flex-direction: column;
   align-items: center;
-  margin-top: 1rem;
+  margin: 0.5rem 0;
+}
+.product-details select{
+  padding: .5em 1em;
+  font-size: 1.1em;
+  background-color: white;
+  color: #333;
+  font-weight: 300;
+  text-align: center;
+  margin-top: .5em;
+}
+.product-details option{
+  text-align: center;
 }
 
 .product-details p {
-  margin: 0.2rem 0;
+  margin-top: 1.5rem;
+  text-transform: uppercase;
 }
 
 .product-buy button {
-  padding: 1em 4.5em;
+  padding: 1em 2em;
   margin: 1em 0;
   background-color: #333;
   color: white;
-  border-radius: .5rem;
+  text-transform: uppercase;
+  border-radius: 0.5rem;
 }
 
 .product-buy button:hover {
   cursor: pointer;
 }
+
 .pages-content {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .pagination {
   display: flex;
-  flex-wrap: wrap; /* Permite que los botones se envuelvan si no hay suficiente espacio */
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin: 5em 0;
+  margin: 3em 0; /* Menor margen para móviles */
   max-width: 90%;
   width: 100%;
 }
@@ -185,10 +187,10 @@ h4.no-new {
 .pagination button {
   background-color: transparent;
   margin: 5px 0;
-  padding: 10px 15px;
+  padding: 8px 10px; /* Reduce tamaño del botón */
   cursor: pointer;
-  font-size: 14px;
-  max-width: 90px;
+  font-size: 12px;
+  max-width: 70px;
   text-align: center;
   width: 100%;
   box-sizing: border-box;
@@ -196,16 +198,57 @@ h4.no-new {
 
 .load-more-btn {
   display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
+  margin: 15px auto;
+  padding: 8px 16px; /* Reduce padding en móviles */
   background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .load-more-btn:hover {
   background-color: #45a049;
+}
+
+/* Tablet (min-width: 768px) */
+@media (min-width: 768px) {
+  .products-page-content {
+    padding: 2rem;
+  }
+
+  .products-page-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 2em;
+  }
+
+  .product-list {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .product-image {
+    height: 250px;
+  }
+}
+
+/* Desktop (min-width: 1024px) */
+@media (min-width: 1024px) {
+
+  .products-page-content h3 {
+    font-size: 2rem;
+  }
+
+  .product-list {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  .product-image {
+    height: 300px;
+  }
+
+  .pagination {
+    margin: 5em 0;
+  }
 }

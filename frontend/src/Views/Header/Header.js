@@ -16,10 +16,25 @@ function Header() {
   const navigate = useNavigate();
   const [isMarcasVisible, setIsMarcasVisible] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [role, setRole] = useState(""); // Nuevo estado para el rol
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLoggedIn(!!token);
+
+    if (token) {
+      const roleUser = localStorage.getItem("user");
+      if (roleUser) {
+        try {
+          const parsedRoleUser = JSON.parse(roleUser);
+          const userRole = parsedRoleUser?.data?.user?.role || "";
+          setRole(userRole);
+        } catch (error) {
+          console.error("Error al parsear el usuario:", error);
+          setRole("");
+        }
+      }
+    }
   }, []);
 
   const openMenu = () => {
@@ -51,6 +66,7 @@ function Header() {
   const closeSession = () => {
     localStorage.clear();
     setIsLoggedIn(false);
+    setRole(""); // Reiniciar el rol al cerrar sesión
   };
 
   return (
@@ -107,6 +123,7 @@ function Header() {
         <a href="/accesorios">{translate("accessories")}</a>
         <a href="/novedades">{translate("novelties")}</a>
         <a href="/rebajas">{translate("sales")}</a>
+        {isLoggedIn && role === "admin" && <a href="/admin">Admin</a>}
       </div>
     </div>
   );
