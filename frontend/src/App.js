@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import MainRoutes from "./MainRoutes"; // Importa el componente de rutas
 import LoadingIndicator from "./Views/UI/Spinners/LoadingIndicator";
 import { TranslationProvider } from "./TranslationContext";
+import "./App.css";
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);

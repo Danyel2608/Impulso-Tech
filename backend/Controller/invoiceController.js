@@ -45,7 +45,7 @@ const sendInvoiceEmail = async (req, res) => {
           <th style="padding: 10px; font-size: 1em; color: #333; width: 30%;">Producto</th>
           <th style="padding: 10px; font-size: 1em; color: #333; width: 20%;">Talla</th>
           <th style="padding: 10px; font-size: 1em; color: #333; width: 20%;">Cantidad</th>
-          <th style="padding: 10px; font-size: 1em; color: #333; width: 15%;">Precio Unitario</th>
+          <th style="padding: 10px; font-size: 1em; color: #333; width: 15%;">Precio/und</th>
           <th style="padding: 10px; font-size: 1em; color: #333; width: 15%;">Total</th>
         </tr>
       </thead>
@@ -84,7 +84,7 @@ const sendInvoiceEmail = async (req, res) => {
   const mailOptions2 = {
     from: process.env.EMAIL_USER,
     to: process.env.EMAIL_USER,
-    subject: `Factura de compra de ${recipientEmail}`,
+    subject: `Copia de factura de compra de ${recipientEmail}`,
     html: emailContent,
   };
 

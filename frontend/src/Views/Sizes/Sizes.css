@@ -1,0 +1,105 @@
+.sizes-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.sizes-container .section-title h2 {
+  text-align: center;
+  margin-top: 100px;
+  font-weight: 400;
+  
+}
+
+.sizes-section {
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.sizes-section .title {
+  width: 80%;
+}
+.sizes-section .title h3 {
+  font-size: 1.6rem;
+  color: steelblue;
+  font-weight: 400;
+  margin-bottom: 1;
+  text-transform: uppercase;
+}
+.sizes-section p {
+  margin: 1em 0;
+  width: 80%;
+}
+.sizes-section p strong {
+  font-style: italic;
+}
+
+.sizes-section .sub-title {
+  color: #2e3b4e;
+  font-size: 1.3rem;
+  margin-bottom: 1em;
+}
+.sizes-section .sub-title h4 {
+  font-style: oblique;
+  font-weight: 400;
+}
+
+.sizes-list {
+  list-style-type: none;
+  padding-left: 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 80%;
+}
+
+.sizes-list li {
+  font-size: 1.1rem;
+  margin: 5px 0;
+}
+
+.shoe-sizes {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  width: 90%;
+}
+
+.sizes-column {
+  width: 70%;
+  margin-top: 2em;
+}
+
+.sizes-column ul {
+  padding-left: 0;
+}
+
+.sizes-list-kids,
+.sizes-list-women,
+.sizes-list-men {
+  list-style-type: none;
+  padding-left: 0;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+}
+.sizes-list-kids li,
+.sizes-list-women li,
+.sizes-list-men li {
+  font-size: 1.1rem;
+  margin: 5px 0;
+}
+.sizes-list-kids {
+  flex-wrap: wrap;
+  gap: 10px;
+}

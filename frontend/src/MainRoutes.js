@@ -23,6 +23,7 @@ import NotFound from "./NotFound";
 import ForgetPassword from "./Views/ForgetPassword/ForgetPassword";
 import ProtectedRoute from "./ProtectedRoute";
 import AdminPage from "./Views/Admin/AdminPage";
+import Sizes from "./Views/Sizes/Sizes";
 
 function MainRoutes() {
   const [isRouteLoading, setIsRouteLoading] = useState(false);
@@ -51,7 +52,7 @@ function MainRoutes() {
 
     if (!token) {
       // Si no hay refresh token, el usuario necesita iniciar sesión de nuevo
-      alert("Tiene que iniciar sesión de nuevo")
+      alert("Tiene que iniciar sesión de nuevo");
       return;
     }
 
@@ -121,6 +122,7 @@ function MainRoutes() {
       <Route path="/newsletter" element={<NewsletterPage />} />
       <Route path="/products" element={<ProductsPage />} />
       <Route path="/generar" element={<ProductGenerator />} />
+      <Route path="/sizes" element={<Sizes />}></Route>
       {/* Rutas agrupadas bajo /marcas */}
       <Route path="/marcas">
         <Route path="nike" element={<Nike />} />
@@ -138,7 +140,6 @@ function MainRoutes() {
       <Route path="accesorios" element={<Accesorios />} />
       <Route path="novedades" element={<Novedades />} />
       <Route path="rebajas" element={<Rebajas />} />
-      <Route path="generar" element={<ProductGenerator />} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>
