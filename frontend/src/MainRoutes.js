@@ -24,6 +24,7 @@ import ForgetPassword from "./Views/ForgetPassword/ForgetPassword";
 import ProtectedRoute from "./ProtectedRoute";
 import AdminPage from "./Views/Admin/AdminPage";
 import Sizes from "./Views/Sizes/Sizes";
+import ChatBoot from "./Views/Chatboot/ChatBoot";
 
 function MainRoutes() {
   const [isRouteLoading, setIsRouteLoading] = useState(false);
@@ -105,44 +106,47 @@ function MainRoutes() {
   };
 
   return (
-    <Routes>
-      {/* Ruta Principal */}
-      <Route path="/" element={<Home />} />
-      <Route
-        path="/login"
-        element={<ProtectedRoute element={<Login onLogin={handleLogin} />} />}
-      />
-      <Route
-        path="/sign-up"
-        element={<ProtectedRoute element={<SignUp />} />}
-      />
-      <Route path="/admin" element={<AdminPage />}></Route>
-      <Route path="/forget" element={<ForgetPassword />} />
-      <Route path="/confirmar" element={<ConfirmEmail />} />
-      <Route path="/newsletter" element={<NewsletterPage />} />
-      <Route path="/products" element={<ProductsPage />} />
-      <Route path="/generar" element={<ProductGenerator />} />
-      <Route path="/sizes" element={<Sizes />}></Route>
-      {/* Rutas agrupadas bajo /marcas */}
-      <Route path="/marcas">
-        <Route path="nike" element={<Nike />} />
-        <Route path="adidas" element={<Adidas />} />
-        <Route path="supreme" element={<Supreme />} />
-        <Route path="vans" element={<Vans />} />
-        <Route path="puma" element={<Puma />} />
-      </Route>
-      {/* Rutas agrupadas bajo /categorias */}
-      <Route path="/categorias">
-        <Route path="niño" element={<Niño />} />
-        <Route path="hombre" element={<Hombre />} />
-        <Route path="mujer" element={<Mujer />} />
-      </Route>
-      <Route path="accesorios" element={<Accesorios />} />
-      <Route path="novedades" element={<Novedades />} />
-      <Route path="rebajas" element={<Rebajas />} />
+    <>
+      <ChatBoot></ChatBoot>
+      <Routes>
+        {/* Ruta Principal */}
+        <Route path="/" element={<Home />} />
+        <Route
+          path="/login"
+          element={<ProtectedRoute element={<Login onLogin={handleLogin} />} />}
+        />
+        <Route
+          path="/sign-up"
+          element={<ProtectedRoute element={<SignUp />} />}
+        />
+        <Route path="/admin" element={<AdminPage />}></Route>
+        <Route path="/forget" element={<ForgetPassword />} />
+        <Route path="/confirmar" element={<ConfirmEmail />} />
+        <Route path="/newsletter" element={<NewsletterPage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/generar" element={<ProductGenerator />} />
+        <Route path="/sizes" element={<Sizes />}></Route>
+        {/* Rutas agrupadas bajo /marcas */}
+        <Route path="/marcas">
+          <Route path="nike" element={<Nike />} />
+          <Route path="adidas" element={<Adidas />} />
+          <Route path="supreme" element={<Supreme />} />
+          <Route path="vans" element={<Vans />} />
+          <Route path="puma" element={<Puma />} />
+        </Route>
+        {/* Rutas agrupadas bajo /categorias */}
+        <Route path="/categorias">
+          <Route path="niño" element={<Niño />} />
+          <Route path="hombre" element={<Hombre />} />
+          <Route path="mujer" element={<Mujer />} />
+        </Route>
+        <Route path="accesorios" element={<Accesorios />} />
+        <Route path="novedades" element={<Novedades />} />
+        <Route path="rebajas" element={<Rebajas />} />
 
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 }
 

@@ -1,3 +1,4 @@
+/* Base Styles (Mobile First) */
 .sizes-container {
   width: 100%;
   display: flex;
@@ -5,36 +6,39 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+  padding: 1em;
+  border: 1px solid #2e3b4e;
 }
 
 .sizes-container .section-title h2 {
   text-align: center;
-  margin-top: 100px;
+  margin-top: 50px; /* Reduzco márgenes para pantallas pequeñas */
   font-weight: 400;
-  
 }
 
 .sizes-section {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
 }
+
 .sizes-section .title {
-  width: 80%;
+  width: 100%; /* Full width for mobile */
 }
 .sizes-section .title h3 {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   color: steelblue;
   font-weight: 400;
-  margin-bottom: 1;
+  margin-bottom: 1em;
   text-transform: uppercase;
 }
+
 .sizes-section p {
   margin: 1em 0;
-  width: 80%;
+  width: 100%; /* Full width for mobile */
 }
 .sizes-section p strong {
   font-style: italic;
@@ -42,7 +46,7 @@
 
 .sizes-section .sub-title {
   color: #2e3b4e;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   margin-bottom: 1em;
 }
 .sizes-section .sub-title h4 {
@@ -54,29 +58,30 @@
   list-style-type: none;
   padding-left: 0;
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column; /* Column layout for mobile */
+  justify-content: center;
   align-items: center;
-  width: 80%;
+  width: 100%;
 }
 
 .sizes-list li {
-  font-size: 1.1rem;
+  font-size: 1rem; /* Slightly smaller for mobile */
   margin: 5px 0;
 }
 
 .shoe-sizes {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Column layout for mobile */
   justify-content: center;
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  width: 90%;
+  width: 100%;
 }
 
 .sizes-column {
-  width: 70%;
-  margin-top: 2em;
+  width: 100%; /* Full width for mobile */
+  margin-top: 1em; /* Reduce top margin for mobile */
 }
 
 .sizes-column ul {
@@ -89,17 +94,124 @@
   list-style-type: none;
   padding-left: 0;
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column; /* Column layout for mobile */
+  justify-content: center;
   align-items: center;
+  gap: 5px; /* Add gap for better spacing */
   width: 100%;
 }
 .sizes-list-kids li,
 .sizes-list-women li,
 .sizes-list-men li {
-  font-size: 1.1rem;
+  font-size: 1rem; /* Slightly smaller font */
   margin: 5px 0;
 }
-.sizes-list-kids {
-  flex-wrap: wrap;
-  gap: 10px;
+.sizes-table {
+  width: 90%;
+  border-collapse: collapse;
+  margin: 10px;
+}
+
+.sizes-table th,
+.sizes-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+  font-size: 1.1em;
+}
+
+.sizes-table th {
+  background-color: #f4f4f4;
+}
+
+/* Responsive Breakpoints */
+
+/* Small Tablets and Larger (min-width: 576px) */
+@media (min-width: 576px) {
+  .sizes-container {
+    padding: 1.5em;
+  }
+
+  .sizes-list {
+    flex-direction: row; /* Switch to row layout */
+  }
+
+  .sizes-section .title {
+    width: 90%; /* Adjust width for tablet */
+  }
+
+  .sizes-column {
+    width: 85%;
+  }
+}
+
+/* Medium Devices and Larger (min-width: 768px) */
+@media (min-width: 768px) {
+  .sizes-table th,
+  .sizes-table td {
+    padding: 10px; /* slightly more padding for tablets */
+    font-size: 1.3em;
+  }
+  .sizes-container {
+    max-width: 800px;
+  }
+
+  .sizes-section {
+    flex-direction: column; /* Side-by-side layout for medium devices */
+  }
+
+  .sizes-section .title {
+    width: 70%;
+  }
+
+  .sizes-list {
+    flex-direction: row; /* Row layout */
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .sizes-column {
+    width: 80%;
+    margin-top: 2em; /* More spacing for larger screens */
+  }
+}
+
+/* Large Devices and Larger (min-width: 992px) */
+@media (min-width: 992px) {
+  sizes-table {
+    width: 80%; /* Limiting table width on large screens */
+    margin: auto; /* Center the table */
+  }
+  .sizes-table th,
+  .sizes-table td {
+    padding: 12px; /* more padding for a better desktop appearance */
+  }
+  .sizes-container {
+    max-width: 960px;
+    transform: translateX(350px);
+    margin-top: 2em;
+  }
+
+  .sizes-list-kids,
+  .sizes-list-women,
+  .sizes-list-men {
+    flex-direction: row; /* Horizontal alignment */
+    gap: 15px;
+  }
+}
+
+/* Extra Large Devices (min-width: 1200px) */
+@media (min-width: 1200px) {
+  .sizes-container {
+    max-width: 1140px;
+  }
+
+  .sizes-column {
+    width: 70%;
+  }
+
+  .sizes-list {
+    width: 70%;
+    gap: 20px;
+  }
 }

@@ -123,7 +123,7 @@
 .product-info-chat {
   list-style: none;
 }
-.product-info-chat li{
+.product-info-chat li {
   text-align: start;
 }
 .product-info-chat strong {
@@ -173,8 +173,8 @@
   }
 
   .chatbot-window {
-    width: 400px;
-    max-width: 400px;
+    min-width: 500px;
+    max-width: 600px;
     height: 500px;
   }
 
@@ -184,7 +184,10 @@
 
   .chatbot-body {
     padding: 20px;
-    font-size: 15px;
+    font-size: 1.2em;
+  }
+  .chatbot-body button{
+    font-size: 1em;
   }
 
   .chatbot-footer {
@@ -193,9 +196,11 @@
 
   .chatbot-input {
     padding: 12px;
+    font-size: 1.2em;
   }
 
   .send-btn {
     padding: 12px 20px;
+    font-size: 1.2em;
   }
 }
