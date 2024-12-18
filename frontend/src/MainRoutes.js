@@ -58,7 +58,7 @@ function MainRoutes() {
     }
 
     try {
-      const response = await fetch("http://localhost:8001/auth/refresh", {
+      const response = await fetch("/auth/refresh", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

@@ -15,7 +15,7 @@ function ConfirmEmail() {
     if (email) {
       // Hacemos la solicitud de confirmación al backend
       fetch(
-        `http://localhost:8001/emails/confirmar/${encodeURIComponent(email)}`,
+        `/emails/confirmar/${encodeURIComponent(email)}`,
         {
           method: "PUT",
         }

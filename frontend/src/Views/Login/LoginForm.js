@@ -6,6 +6,7 @@ import { useTranslation } from "../../TranslationContext"; // Importamos el cont
 import HeaderLanguages from "../Header/HeaderLanguages";
 
 function LoginForm(props) {
+  const [showPassword, setShowPassword] = useState(false);
   const { translate } = useTranslation(); // Accedemos a la función de traducción
   const refCheckbox = useRef(false);
   const refEmail = useRef("");
@@ -19,6 +20,15 @@ function LoginForm(props) {
       rememberMe: refCheckbox.current.checked, // Usamos el estado de rememberMe, esto está bien
     };
     props.onLogin(loginData);
+  };
+
+  // Función para alternar la visibilidad de la contraseña
+  const togglePasswordVisibility = () => {
+    const input = refPassword.current;
+    if (input) {
+      setShowPassword(!showPassword); // Cambia el estado
+      input.type = showPassword ? "password" : "text"; // Cambia el tipo del input
+    }
   };
 
   return (
@@ -35,28 +45,35 @@ function LoginForm(props) {
             type="email"
             placeholder={translate("email_placeholder")} // Traducción del placeholder
             required
+            className="email-input"
           />
-          <input
-            ref={refPassword}
-            type="password"
-            placeholder={translate("password_placeholder")} // Traducción del placeholder
-            required
-          />
+          <div className="password-container">
+            <input
+              ref={refPassword}
+              type="password"
+              placeholder={translate("password_placeholder")} // Traducción del placeholder
+              required
+            />
+            <i
+              className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`} // Cambia entre fa-eye y fa-eye-slash
+              onClick={togglePasswordVisibility} // Llama a la función cuando se hace clic
+            ></i>
+          </div>
+        </div>
+        <div className="remember-me">
+          <input ref={refCheckbox} type="checkbox" id="check1" />
+          <label htmlFor="check1">Remeember me</label>{" "}
+          {/* Traducción de "Remember me" */}
         </div>
         <div className="login-links">
-          <div className="remember-me">
-            <input ref={refCheckbox} type="checkbox" id="check1" />
-            <label htmlFor="check1">Remeember me</label>{" "}
-            {/* Traducción de "Remember me" */}
-          </div>
           <div className="forget-password">
             <a href="/forget">{translate("reset_password")}</a>{" "}
             {/* Traducción de "Reset your password" */}
           </div>
-        </div>
-        <div className="sign-up">
-          <a href="/sign-up">{translate("create_account")}</a>{" "}
-          {/* Traducción de "Create an Account" */}
+          <div className="sign-up">
+            <a href="/sign-up">{translate("create_account")}</a>{" "}
+            {/* Traducción de "Create an Account" */}
+          </div>
         </div>
         <div className="submit">
           <button type="submit">{translate("submit")}</button>{" "}

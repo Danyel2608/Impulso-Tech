@@ -24,7 +24,7 @@ const ProductsTable = () => {
   const fetchProducts = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("http://localhost:8001/api/all-products");
+      const response = await fetch("/api/all-products");
       if (!response.ok) {
         throw new Error(translate("error_fetching_products"));
       }
@@ -66,7 +66,7 @@ const ProductsTable = () => {
   // Handle product deletion
   const deleteProduct = async (productId) => {
     try {
-      const response = await fetch("http://localhost:8001/api/deleteId", {
+      const response = await fetch("/api/deleteId", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -135,7 +135,7 @@ const ProductsTable = () => {
         dataToSend.color = { [currentLanguage]: dataToSend.color };
       }
 
-      const response = await fetch("http://localhost:8001/api/updateProduct", {
+      const response = await fetch("/api/updateProduct", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -18,7 +18,7 @@ function AdminPage() {
     const token = localStorage.getItem("refresh-token");
 
     try {
-      const response = await fetch("http://localhost:8001/auth/deleteUser", {
+      const response = await fetch("/auth/deleteUser", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +48,7 @@ function AdminPage() {
     const token = localStorage.getItem("token");
 
     try {
-      const response = await fetch("http://localhost:8001/auth/allLogins", {
+      const response = await fetch("/auth/allLogins", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

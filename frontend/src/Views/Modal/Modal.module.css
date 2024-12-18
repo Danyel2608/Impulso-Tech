@@ -58,6 +58,10 @@ div.md-show.md-effect > div.md-content {
   position: relative;
   border-radius: 0.5rem;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .md-content.danger {
   background: #000;

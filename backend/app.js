@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+// const path = require('path');
 
 dotenv.config();
 
@@ -46,6 +47,12 @@ app.use("/emails", emailsConfirm);
 app.use("/newsletter", newsletterRoutes);
 app.use("/api", productRoutes);
 app.use("/invoice", invoiceRoutes);
+
+// app.use(express.static(path.join(__dirname, "build")));
+
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "build", "index.html"));
+// });
 
 // Iniciar el servidor
 app.listen(process.env.PORT, () => {

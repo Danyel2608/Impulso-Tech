@@ -45,6 +45,7 @@
   align-items: center;
   width: 90%;
   margin-top: 10%;
+  margin-bottom: 5%;
 }
 
 /* Iconos en el menú */
@@ -59,7 +60,7 @@
 
 /* Imagen dentro del header */
 .header-content img {
-  width: 80%; /* Ajustado para dispositivos pequeños */
+  width: 50%; /* Ajustado para dispositivos pequeños */
   object-fit: cover;
 }
 
@@ -169,7 +170,7 @@
     right: 60px;
   }
   .header-content img {
-    width: 50%;
+    width: 40%;
     height: 250px;
   }
 
@@ -199,7 +200,7 @@
 
   .header-content img {
     width: 20%; /* Reduce el tamaño de la imagen */
-    height: 160px;
+    height: 200px;
   }
   .header-menu i {
     font-size: 2em;

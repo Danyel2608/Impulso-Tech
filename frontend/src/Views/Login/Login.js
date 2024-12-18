@@ -37,7 +37,7 @@ function Login({ onLogin }) {
     ) {
       setPending(true);
       try {
-        const response = await fetch("http://localhost:8001/auth/login", {
+        const response = await fetch("/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

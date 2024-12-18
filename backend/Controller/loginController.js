@@ -25,7 +25,15 @@ const getLoginId = async (req, res) => {
 
 const signup = async (req, res) => {
   try {
-    const { name, email, password, lastName, role, answerPrivate } = req.body;
+    const {
+      name,
+      email,
+      password,
+      lastName,
+      role,
+      answerPrivate,
+      responsePrivate,
+    } = req.body;
 
     // Verificar si el correo electrónico ya está registrado en la base de datos
     const existingUserWithEmail = await Login.findOne({ email });
@@ -47,6 +55,7 @@ const signup = async (req, res) => {
       role,
       password: passwordHash,
       answerPrivate,
+      responsePrivate,
       confirmEmail: false, // El correo electrónico no está confirmado inicialmente
     });
 
@@ -174,7 +183,7 @@ const refreshToken = async (req, res) => {
 };
 const forgetPassword = async (req, res) => {
   try {
-    const { email, password, answerSecurity } = req.body;
+    const { email, password, responseSecurity } = req.body;
 
     // Buscar al usuario por correo electrónico
     const user = await Login.findOne({ email });
@@ -189,9 +198,9 @@ const forgetPassword = async (req, res) => {
     }
 
     // Obtener la respuesta a la pregunta de seguridad del usuario
-    const answer = user.answerPrivate;
+    const answer = user.responsePrivate;
 
-    if (answerSecurity !== answer) {
+    if (responseSecurity !== answer) {
       // Si la respuesta a la pregunta de seguridad no es correcta
       return res.status(400).json({
         status: "failed",
@@ -268,6 +277,29 @@ const deleteUser = async (req, res) => {
     });
   }
 };
+const getUserData = async (req, res) => {
+  const { email } = req.query; // Recibimos el email como parámetro
+
+  if (!email) {
+    return res.status(400).json({ message: "Email is required" });
+  }
+
+  try {
+    // Busca al usuario por el email
+    const user = await Login.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Enviar la pregunta de seguridad (answerPrivate)
+    res.json({ question: user.answerPrivate });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching user data", error: error.message });
+  }
+};
 
 module.exports = {
   signup,
@@ -277,4 +309,5 @@ module.exports = {
   deleteUser,
   getAllLogins,
   getLoginId,
+  getUserData,
 };

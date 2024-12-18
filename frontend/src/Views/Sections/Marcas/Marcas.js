@@ -6,6 +6,30 @@ import { useTranslation } from "../../../TranslationContext";
 import useShoppingCart from "../../Products/hooks/useShoppingCart";
 import ModalShop from "../../Products/ModalShop";
 
+function useResponsiveProductos() {
+  const [productosPorPagina, setProductosPorPagina] = useState(10);
+
+  useEffect(() => {
+    const updateProductosPorPagina = () => {
+      if (window.innerWidth >= 1024) {
+        setProductosPorPagina(20);
+      } else if (window.innerWidth >= 768) {
+        setProductosPorPagina(15);
+      } else {
+        setProductosPorPagina(10);
+      }
+    };
+
+    updateProductosPorPagina();
+    window.addEventListener("resize", updateProductosPorPagina);
+    return () => {
+      window.removeEventListener("resize", updateProductosPorPagina);
+    };
+  }, []);
+
+  return productosPorPagina;
+}
+
 function Marca({ marca }) {
   const { translate } = useTranslation();
   const {
@@ -15,48 +39,44 @@ function Marca({ marca }) {
     setIsModalVisible,
     setModalMessage,
   } = useShoppingCart();
+
+  const productosPorPagina = useResponsiveProductos();
   const [productosMarca, setProductosMarca] = useState([]);
+  const [productosPagina, setProductosPagina] = useState([]);
   const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState({});
-  const idioma = localStorage.getItem("language");
+  const [paginaActual, setPaginaActual] = useState(1);
+  const idioma = localStorage.getItem("language") || "es";
 
   const handleSizeChange = (productId, size) => {
     setSelectedSizes((prevSizes) => ({
       ...prevSizes,
-      [productId]: size, // Actualiza solo la talla del producto actual
+      [productId]: size,
     }));
   };
-  // Esta función se ejecuta cuando la marca cambia (cuando la prop 'marca' cambia)
+
   useEffect(() => {
-    console.log("Marca recibida:", marca); // Asegúrate de que este log sea visible y tenga el valor correcto
     if (marca) {
       fetchProducts();
-    } else {
-      console.error("Marca no recibida correctamente.");
     }
-  }, [marca]); // Ejecutamos cuando el valor de 'marca' cambie
+  }, [marca]);
 
-  // Función para obtener todos los productos de la API y filtrarlos por la marca
+  useEffect(() => {
+    const startIdx = (paginaActual - 1) * productosPorPagina;
+    const endIdx = startIdx + productosPorPagina;
+    setProductosPagina(productosFiltrados.slice(startIdx, endIdx));
+  }, [paginaActual, productosFiltrados, productosPorPagina]);
+
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://localhost:8001/api/all-products");
+      const response = await fetch("/api/all-products");
       const data = await response.json();
 
       if (response.ok) {
-        // Verifica los datos obtenidos
-        console.log("Datos obtenidos de la API:", data);
-
         const productosFiltrados = data.products.filter((producto) => {
-          if (producto.marca) {
-            console.log("Producto marca:", producto.marca); // Imprime el valor de la propiedad 'marca' de cada producto
-            console.log("Marca prop:", marca); // Imprime el valor del prop 'marca' que has pasado
-
-            // Comparación para verificar que las marcas coinciden
-            return (
-              producto.marca.trim().toLowerCase() === marca.trim().toLowerCase()
-            );
-          }
-          return false; // Si no tiene la propiedad 'marca', lo ignoramos
+          return (
+            producto.marca?.trim().toLowerCase() === marca.trim().toLowerCase()
+          );
         });
 
         setProductosMarca(productosFiltrados);
@@ -69,11 +89,15 @@ function Marca({ marca }) {
     }
   };
 
+  const handlePageChange = (pageNumber) => {
+    setPaginaActual(pageNumber);
+  };
+
   return (
     <div className="marcas-content">
       <Header></Header>
       <div className="marcas-header">
-        <h2>{marca ? marca.toUpperCase() : "Marca no válida"}</h2>
+        <h2>{marca ? marca.toUpperCase() : translate("invalid_brand")}</h2>
       </div>
       <div className="marcas-search">
         <Search
@@ -83,11 +107,11 @@ function Marca({ marca }) {
       </div>
 
       <div className="product-list marcas-list-products">
-        {productosFiltrados.length === 0 ? (
-          <p>{translate("marca_not_aviable")}</p>
+        {productosPagina.length === 0 ? (
+          <p>{translate("brand_not_aviable")}</p>
         ) : (
-          productosFiltrados.map((producto, index) => (
-            <div key={index} className="product-card">
+          productosPagina.map((producto) => (
+            <div key={producto._id} className="product-card">
               <img
                 src={producto.imagen_url}
                 alt={producto.nombre[idioma]}
@@ -111,10 +135,10 @@ function Marca({ marca }) {
                 <select
                   name="sizes"
                   id={`products-sizes-${producto._id}`}
-                  value={selectedSizes[producto._id] || ""} // Valor específico por producto
+                  value={selectedSizes[producto._id] || ""}
                   onChange={(e) =>
                     handleSizeChange(producto._id, e.target.value)
-                  } // Actualiza la talla del producto actual
+                  }
                 >
                   <option value="" disabled>
                     {translate("size_label")}
@@ -126,28 +150,23 @@ function Marca({ marca }) {
                   ))}
                 </select>
                 <p>
-                  {translate("material_label")}: {producto.material[idioma]}{" "}
-                  {/* Usamos el idioma actual */}
+                  {translate("material_label")}: {producto.material[idioma]}
                 </p>
               </div>
               <div className="product-buy">
                 <button
                   onClick={() => {
                     if (!selectedSizes[producto._id]) {
-                      // Mostrar modal si no se selecciona talla
                       setModalMessage(translate("size_neccesary"));
-                      setIsModalVisible(true); // Mostrar modal
+                      setIsModalVisible(true);
                     } else {
                       const productoSelect = {
                         _id: producto._id,
-                        nombre: producto.nombre[idioma], // Usar el nombre según el idioma
-                        imagen_url: producto.imagen_url, // Usar la imagen
-                        precio: producto.precio, // Usar el precio
+                        nombre: producto.nombre[idioma],
+                        imagen_url: producto.imagen_url,
+                        precio: producto.precio,
                       };
 
-                      console.log(productoSelect); // Esto debería mostrar solo los valores que quieres
-
-                      // Ahora pasas el producto correctamente al carrito
                       agregarAlCarrito(
                         productoSelect,
                         selectedSizes[producto._id]
@@ -162,6 +181,24 @@ function Marca({ marca }) {
           ))
         )}
       </div>
+
+      {/* Paginación */}
+      <div className="pagination-container">
+        {Array.from({
+          length: Math.ceil(productosFiltrados.length / productosPorPagina),
+        }).map((_, index) => (
+          <button
+            key={index}
+            className={`pagination-button ${
+              index + 1 === paginaActual ? "active" : ""
+            }`}
+            onClick={() => handlePageChange(index + 1)}
+          >
+            ●
+          </button>
+        ))}
+      </div>
+
       <ModalShop
         visible={isModalVisible}
         onClose={() => {

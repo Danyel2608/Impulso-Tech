@@ -23,7 +23,7 @@ function ShoppingCart() {
     let listItems = document.getElementById("listItems");
     listItems.innerHTML = "";
     let totalCount = document.getElementById("total-cart");
-    totalCount.innerHTML = "$0.00";
+    totalCount.innerHTML = "0.00";
   };
 
   const saveCart = () => {
@@ -75,7 +75,7 @@ function ShoppingCart() {
 
     try {
       const response = await fetch(
-        "http://localhost:8001/invoice/send-invoice",
+        "/invoice/send-invoice",
         {
           method: "POST",
           headers: {

@@ -6,7 +6,7 @@ import Search from "./Search";
 import ShoppingCart from "../ShoppingCart/ShoppingCart";
 import ModalShop from "./ModalShop";
 import { useTranslation } from "../../TranslationContext";
-import useShoppingCart from "./hooks/useShoppingCart"; // Importa el hook
+import useShoppingCart from "./hooks/useShoppingCart";
 
 function ProductsPage() {
   const { translate } = useTranslation();
@@ -21,16 +21,18 @@ function ProductsPage() {
 
   const [productos, setProductos] = useState([]);
   const [productosFiltrados, setProductosFiltrados] = useState([]);
-  const [productosVista, setProductosVista] = useState([]);
-  const [cantidadCargada, setCantidadCargada] = useState(20);
-  const [isLoading, setIsLoading] = useState(false);
+  const [productosPagina, setProductosPagina] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [paginaActual, setPaginaActual] = useState(1);
+
+  const productosPorPagina = 20;
   const idioma = localStorage.getItem("language");
 
   const handleSizeChange = (productId, size) => {
     setSelectedSizes((prevSizes) => ({
       ...prevSizes,
-      [productId]: size, // Actualiza solo la talla del producto actual
+      [productId]: size,
     }));
   };
 
@@ -38,13 +40,13 @@ function ProductsPage() {
     const fetchProducts = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch("http://localhost:8001/api/all-products");
+        const response = await fetch("/api/all-products");
         if (!response.ok) {
           throw new Error(translate("error_fetching_products"));
         }
         const data = await response.json();
-        setProductos(data.products); // Guardar sin traducir
-        setProductosFiltrados(data.products); // Copiar la lista inicial
+        setProductos(data.products);
+        setProductosFiltrados(data.products);
       } catch (error) {
         console.error(translate("error_fetching_products"), error.message);
       } finally {
@@ -54,6 +56,7 @@ function ProductsPage() {
 
     fetchProducts();
   }, [translate]);
+
   const mapProductosToIdioma = (productos, idioma) => {
     return productos.map((product) => ({
       ...product,
@@ -67,12 +70,18 @@ function ProductsPage() {
   };
 
   useEffect(() => {
+    const inicio = (paginaActual - 1) * productosPorPagina;
+    const fin = inicio + productosPorPagina;
     const productosAMostrar = mapProductosToIdioma(
-      productosFiltrados.slice(0, cantidadCargada),
+      productosFiltrados.slice(inicio, fin),
       idioma
     );
-    setProductosVista(productosAMostrar);
-  }, [productosFiltrados, cantidadCargada, idioma]);
+    setProductosPagina(productosAMostrar);
+  }, [productosFiltrados, paginaActual, idioma]);
+
+  const totalPaginas = Math.ceil(
+    productosFiltrados.length / productosPorPagina
+  );
 
   return (
     <div className="product-page-main">
@@ -86,10 +95,10 @@ function ProductsPage() {
         <div className="product-list">
           {isLoading ? (
             <p>{translate("loading_products")}</p>
-          ) : productosVista.length === 0 ? (
+          ) : productosPagina.length === 0 ? (
             <h5>{translate("no_results_found")}</h5>
           ) : (
-            productosVista.map((producto) => (
+            productosPagina.map((producto) => (
               <div className="product-card" key={producto._id}>
                 <img
                   src={producto.imagen_url}
@@ -149,6 +158,21 @@ function ProductsPage() {
             ))
           )}
         </div>
+        {totalPaginas > 1 && (
+          <div className="pagination-container">
+            {Array.from({ length: totalPaginas }, (_, index) => (
+              <button
+                key={index}
+                className={`pagination-button ${
+                  index + 1 === paginaActual ? "active" : ""
+                }`}
+                onClick={() => setPaginaActual(index + 1)}
+              >
+                ●
+              </button>
+            ))}
+          </div>
+        )}
       </div>
       <Footer />
       <ShoppingCart />

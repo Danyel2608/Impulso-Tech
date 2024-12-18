@@ -18,7 +18,7 @@ function NewsletterPage() {
     try {
       // Hacer la solicitud POST usando fetch
       const response = await fetch(
-        "http://localhost:8001/newsletter/subscribe",
+        "/newsletter/subscribe",
         {
           method: "POST",
           headers: {
@@ -65,7 +65,7 @@ function NewsletterPage() {
     <div className="newsletter-page">
       {/* Contenedor de fondo con el video */}
       <div className="newsletter-video-background">
-        <video src={NewsletterVideoBackground} autoPlay loop muted />
+        <video src={NewsletterVideoBackground} autoPlay loop muted playsInline />
       </div>
 
       {/* Contenedor del formulario */}

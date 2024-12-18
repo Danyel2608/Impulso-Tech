@@ -34,7 +34,7 @@ function SignUp() {
     ) {
       setPending(true);
       try {
-        const response = await fetch("http://localhost:8001/auth/signup", {
+        const response = await fetch("/auth/signup", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -45,6 +45,7 @@ function SignUp() {
             name: loginData.name,
             lastName: loginData.lastName,
             answerPrivate: loginData.answerPrivate,
+            responsePrivate: loginData.responsePrivate,
             confirmEmail: false,
           }),
         });
@@ -56,8 +57,7 @@ function SignUp() {
             password: "*******",
             name: loginData.name,
             loginHeader: translate("register_success"),
-            loginMessage:
-              translate("confirmation_email_sent"),
+            loginMessage: translate("confirmation_email_sent"),
           });
           setVisible(true);
         } else {
@@ -99,8 +99,7 @@ function SignUp() {
         name: loginData.name,
         lastName: loginData.lastName,
         loginHeader: translate("invalid_password"),
-        loginMessage:
-          translate("password_requirements"),
+        loginMessage: translate("password_requirements"),
       });
     } else {
       setLoginInfo({

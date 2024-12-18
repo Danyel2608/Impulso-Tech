@@ -34,6 +34,10 @@ const loginSchema = new Schema({
     type: String,
     required: true,
   },
+  responsePrivate: {
+    type: String,
+    required: true,
+  },
   confirmEmail: {
     type: Boolean,
     required: true,

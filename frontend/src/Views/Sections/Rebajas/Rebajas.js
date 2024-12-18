@@ -2,12 +2,36 @@ import React, { useState, useEffect } from "react";
 import Search from "../../Products/Search";
 import "./Rebajas.css";
 import Header from "../../Header/Header";
-import { useTranslation } from "../../../TranslationContext"; // Importamos el contexto de traducción
+import { useTranslation } from "../../../TranslationContext";
 import useShoppingCart from "../../Products/hooks/useShoppingCart";
 import ModalShop from "../../Products/ModalShop";
 
+function useResponsiveProductos() {
+  const [productosPorPagina, setProductosPorPagina] = useState(10);
+
+  useEffect(() => {
+    const updateProductosPorPagina = () => {
+      if (window.innerWidth >= 1024) {
+        setProductosPorPagina(20);
+      } else if (window.innerWidth >= 768) {
+        setProductosPorPagina(15);
+      } else {
+        setProductosPorPagina(10);
+      }
+    };
+
+    updateProductosPorPagina();
+    window.addEventListener("resize", updateProductosPorPagina);
+    return () => {
+      window.removeEventListener("resize", updateProductosPorPagina);
+    };
+  }, []);
+
+  return productosPorPagina;
+}
+
 function Rebajas() {
-  const { translate } = useTranslation(); // Usamos translate en lugar de textos estáticos
+  const { translate } = useTranslation();
   const {
     agregarAlCarrito,
     isModalVisible,
@@ -16,52 +40,62 @@ function Rebajas() {
     setModalMessage,
   } = useShoppingCart();
 
+  const productosPorPagina = useResponsiveProductos();
   const [productosFiltrados, setProductosFiltrados] = useState([]);
-  const [loading, setLoading] = useState(true); // Estado para manejar la carga
-  const [error, setError] = useState(null); // Estado para manejar errores
+  const [productosPagina, setProductosPagina] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedSizes, setSelectedSizes] = useState({});
-  const idioma = localStorage.getItem("language");
+  const [paginaActual, setPaginaActual] = useState(1);
+  const idioma = localStorage.getItem("language") || "es";
 
   const handleSizeChange = (productId, size) => {
     setSelectedSizes((prevSizes) => ({
       ...prevSizes,
-      [productId]: size, // Actualiza solo la talla del producto actual
+      [productId]: size,
     }));
-  };
-
-  // Función para obtener todos los productos de la API y filtrarlos por la categoría "rebaja"
-  const fetchProductsRebajas = async () => {
-    setLoading(true); // Establecer carga en true cuando comience la solicitud
-    try {
-      const response = await fetch("http://localhost:8001/api/all-products");
-      const data = await response.json();
-
-      if (response.ok) {
-        // Filtrar los productos que sean de tipo "rebaja"
-        const productosFiltrados = data.products.filter(
-          (producto) => producto.rebaja === true
-        );
-
-        setProductosFiltrados(productosFiltrados);
-      } else {
-        setError(translate("error_fetching_products")); // Usamos translate aquí
-      }
-    } catch (error) {
-      setError(translate("error_fetching_products") + ": " + error.message); // Capturar errores de red con traducción
-    } finally {
-      setLoading(false); // Desactivar el estado de carga una vez terminada la solicitud
-    }
   };
 
   useEffect(() => {
     fetchProductsRebajas();
   }, []);
 
+  useEffect(() => {
+    const startIdx = (paginaActual - 1) * productosPorPagina;
+    const endIdx = startIdx + productosPorPagina;
+    setProductosPagina(productosFiltrados.slice(startIdx, endIdx));
+  }, [paginaActual, productosFiltrados, productosPorPagina]);
+
+  const fetchProductsRebajas = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/all-products");
+      const data = await response.json();
+
+      if (response.ok) {
+        const productosFiltrados = data.products.filter(
+          (producto) => producto.rebaja === true
+        );
+        setProductosFiltrados(productosFiltrados);
+      } else {
+        setError(translate("error_fetching_products"));
+      }
+    } catch (error) {
+      setError(translate("error_fetching_products") + ": " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setPaginaActual(pageNumber);
+  };
+
   return (
     <div className="rebajas-content">
       <Header />
       <div className="rebajas-header">
-        <h2>{translate("sales_title")}</h2> {/* Usamos traducción aquí */}
+        <h2>{translate("sales_title")}</h2>
       </div>
       <div className="rebajas-search">
         <Search
@@ -75,11 +109,11 @@ function Rebajas() {
           <p>{translate("loading_products")}</p>
         ) : error ? (
           <p>{error}</p>
-        ) : productosFiltrados.length === 0 ? (
+        ) : productosPagina.length === 0 ? (
           <p>{translate("no_sales_products")}</p>
         ) : (
-          productosFiltrados.map((producto, index) => (
-            <div key={index} className="product-card">
+          productosPagina.map((producto) => (
+            <div key={producto._id} className="product-card">
               <img
                 src={producto.imagen_url}
                 alt={producto.nombre[idioma]}
@@ -104,10 +138,10 @@ function Rebajas() {
                 <select
                   name="sizes"
                   id={`products-sizes-${producto._id}`}
-                  value={selectedSizes[producto._id] || ""} // Valor específico por producto
+                  value={selectedSizes[producto._id] || ""}
                   onChange={(e) =>
                     handleSizeChange(producto._id, e.target.value)
-                  } // Actualiza la talla del producto actual
+                  }
                 >
                   <option value="" disabled>
                     {translate("size_label")}
@@ -119,28 +153,23 @@ function Rebajas() {
                   ))}
                 </select>
                 <p>
-                  {translate("material_label")}: {producto.material[idioma]}{" "}
-                  {/* Usamos el idioma actual */}
+                  {translate("material_label")}: {producto.material[idioma]}
                 </p>
               </div>
               <div className="product-buy">
                 <button
                   onClick={() => {
                     if (!selectedSizes[producto._id]) {
-                      // Mostrar modal si no se selecciona talla
                       setModalMessage(translate("size_neccesary"));
-                      setIsModalVisible(true); // Mostrar modal
+                      setIsModalVisible(true);
                     } else {
                       const productoSelect = {
                         _id: producto._id,
-                        nombre: producto.nombre[idioma], // Usar el nombre según el idioma
-                        imagen_url: producto.imagen_url, // Usar la imagen
-                        precio: producto.precio, // Usar el precio
+                        nombre: producto.nombre[idioma],
+                        imagen_url: producto.imagen_url,
+                        precio: producto.precio,
                       };
 
-                      console.log(productoSelect); // Esto debería mostrar solo los valores que quieres
-
-                      // Ahora pasas el producto correctamente al carrito
                       agregarAlCarrito(
                         productoSelect,
                         selectedSizes[producto._id]
@@ -150,11 +179,29 @@ function Rebajas() {
                 >
                   {translate("buy_button")}
                 </button>
-              </div>{" "}
+              </div>
             </div>
           ))
         )}
       </div>
+
+      {/* Paginación */}
+      <div className="pagination-container">
+        {Array.from({
+          length: Math.ceil(productosFiltrados.length / productosPorPagina),
+        }).map((_, index) => (
+          <button
+            key={index}
+            className={`pagination-button ${
+              index + 1 === paginaActual ? "active" : ""
+            }`}
+            onClick={() => handlePageChange(index + 1)}
+          >
+            ●
+          </button>
+        ))}
+      </div>
+
       <ModalShop
         visible={isModalVisible}
         onClose={() => {

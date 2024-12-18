@@ -2,12 +2,36 @@ import React, { useState, useEffect } from "react";
 import Search from "../../Products/Search";
 import "./Categoria.css";
 import Header from "../../Header/Header";
-import { useTranslation } from "../../../TranslationContext"; // Importa el hook de traducción
+import { useTranslation } from "../../../TranslationContext";
 import ModalShop from "../../Products/ModalShop";
 import useShoppingCart from "../../Products/hooks/useShoppingCart";
 
+function useResponsiveProductos() {
+  const [productosPorPagina, setProductosPorPagina] = useState(10);
+
+  useEffect(() => {
+    const updateProductosPorPagina = () => {
+      if (window.innerWidth >= 1024) {
+        setProductosPorPagina(20);
+      } else if (window.innerWidth >= 768) {
+        setProductosPorPagina(15);
+      } else {
+        setProductosPorPagina(10);
+      }
+    };
+
+    updateProductosPorPagina();
+    window.addEventListener("resize", updateProductosPorPagina);
+    return () => {
+      window.removeEventListener("resize", updateProductosPorPagina);
+    };
+  }, []);
+
+  return productosPorPagina;
+}
+
 function Categoria({ categoria }) {
-  const { translate } = useTranslation(); // Usamos el hook para obtener la función translate
+  const { translate } = useTranslation();
   const {
     agregarAlCarrito,
     isModalVisible,
@@ -16,45 +40,33 @@ function Categoria({ categoria }) {
     setModalMessage,
   } = useShoppingCart();
 
+  const productosPorPagina = useResponsiveProductos();
   const [productosCategoria, setProductosCategoria] = useState([]);
+  const [productosPagina, setProductosPagina] = useState([]);
   const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [selectedSizes, setSelectedSizes] = useState({});
+  const [paginaActual, setPaginaActual] = useState(1);
 
-  const handleSizeChange = (productId, size) => {
-    setSelectedSizes((prevSizes) => ({
-      ...prevSizes,
-      [productId]: size, // Actualiza solo la talla del producto actual
-    }));
-  };
-
-  // Obtener el idioma actual desde el contexto o el almacenamiento local
   const idioma = localStorage.getItem("language") || "es";
 
-  // Esta función se ejecuta cuando la categoría cambia
   useEffect(() => {
-    console.log("Categoria recibida:", categoria);
     if (categoria) {
       fetchProductsCategoria();
-    } else {
-      console.error("Categoria no recibida correctamente.");
     }
-  }, [categoria]); // Ejecutamos cuando el valor de 'categoria' cambie
+  }, [categoria]);
 
-  // Función para obtener todos los productos de la API y filtrarlos por la categoría
   const fetchProductsCategoria = async () => {
     try {
-      const response = await fetch("http://localhost:8001/api/all-products");
+      const response = await fetch("/api/all-products");
       const data = await response.json();
 
       if (response.ok) {
-        // Filtrar los productos que coincidan con la categoría en el idioma seleccionado
-        const productosFiltrados = data.products.filter((producto) => {
-          if (producto.categoria[idioma]) {
-            return producto.categoria[idioma] === categoria;
-          }
-          return false; // Ignoramos los productos sin categoría en el idioma actual
-        });
-        
+        const productosFiltrados = data.products.filter((producto) =>
+          producto.categoria[idioma]
+            ? producto.categoria[idioma] === categoria
+            : false
+        );
+
         setProductosCategoria(productosFiltrados);
         setProductosFiltrados(productosFiltrados);
       } else {
@@ -63,6 +75,23 @@ function Categoria({ categoria }) {
     } catch (error) {
       console.error("Error al obtener productos:", error);
     }
+  };
+
+  useEffect(() => {
+    const startIdx = (paginaActual - 1) * productosPorPagina;
+    const endIdx = startIdx + productosPorPagina;
+    setProductosPagina(productosFiltrados.slice(startIdx, endIdx));
+  }, [paginaActual, productosFiltrados, productosPorPagina]);
+
+  const handleSizeChange = (productId, size) => {
+    setSelectedSizes((prevSizes) => ({
+      ...prevSizes,
+      [productId]: size,
+    }));
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setPaginaActual(pageNumber);
   };
 
   return (
@@ -81,16 +110,15 @@ function Categoria({ categoria }) {
       </div>
 
       <div className="product-list marcas-list-products">
-        {productosFiltrados.length === 0 ? (
+        {productosPagina.length === 0 ? (
           <p>{translate("no_products_in_category", { category: categoria })}</p>
         ) : (
-          productosFiltrados.map((producto, index) => (
-            <div key={index} className="product-card">
+          productosPagina.map((producto) => (
+            <div key={producto._id} className="product-card">
               <img
                 src={producto.imagen_url}
-                alt={producto.nombre[idioma]} // Usamos el idioma actual para el nombre
+                alt={producto.nombre[idioma]}
                 className="product-image"
-                id={producto._id}
               />
               <div className="product-description">
                 {producto.rebaja && (
@@ -102,21 +130,18 @@ function Categoria({ categoria }) {
                   <span className="new-tag">{translate("new_arrival")}</span>
                 )}
               </div>
-              <h4 className="product-title">
-                {producto.nombre[idioma]} {/* Usamos el idioma actual */}
-              </h4>
+              <h4 className="product-title">{producto.nombre[idioma]}</h4>
               <p className="product-price">
-                {producto.precio}
-                {translate("price_label")}
+                {producto.precio} {translate("price_label")}
               </p>
               <div className="product-details">
                 <select
                   name="sizes"
                   id={`products-sizes-${producto._id}`}
-                  value={selectedSizes[producto._id] || ""} // Valor específico por producto
+                  value={selectedSizes[producto._id] || ""}
                   onChange={(e) =>
                     handleSizeChange(producto._id, e.target.value)
-                  } // Actualiza la talla del producto actual
+                  }
                 >
                   <option value="" disabled>
                     {translate("size_label")}
@@ -128,28 +153,23 @@ function Categoria({ categoria }) {
                   ))}
                 </select>
                 <p>
-                  {translate("material_label")}: {producto.material[idioma]}{" "}
-                  {/* Usamos el idioma actual */}
+                  {translate("material_label")}: {producto.material[idioma]}
                 </p>
               </div>
               <div className="product-buy">
                 <button
                   onClick={() => {
                     if (!selectedSizes[producto._id]) {
-                      // Mostrar modal si no se selecciona talla
                       setModalMessage(translate("size_neccesary"));
-                      setIsModalVisible(true); // Mostrar modal
+                      setIsModalVisible(true);
                     } else {
                       const productoSelect = {
                         _id: producto._id,
-                        nombre: producto.nombre[idioma], // Usar el nombre según el idioma
-                        imagen_url: producto.imagen_url, // Usar la imagen
-                        precio: producto.precio, // Usar el precio
+                        nombre: producto.nombre[idioma],
+                        imagen_url: producto.imagen_url,
+                        precio: producto.precio,
                       };
 
-                      console.log(productoSelect); // Esto debería mostrar solo los valores que quieres
-
-                      // Ahora pasas el producto correctamente al carrito
                       agregarAlCarrito(
                         productoSelect,
                         selectedSizes[producto._id]
@@ -159,11 +179,29 @@ function Categoria({ categoria }) {
                 >
                   {translate("buy_button")}
                 </button>
-              </div>{" "}
+              </div>
             </div>
           ))
         )}
       </div>
+
+      {/* Paginación */}
+      <div className="pagination-container">
+        {Array.from({
+          length: Math.ceil(productosFiltrados.length / productosPorPagina),
+        }).map((_, index) => (
+          <button
+            key={index}
+            className={`pagination-button ${
+              index + 1 === paginaActual ? "active" : ""
+            }`}
+            onClick={() => handlePageChange(index + 1)}
+          >
+            ●
+          </button>
+        ))}
+      </div>
+
       <ModalShop
         visible={isModalVisible}
         onClose={() => {

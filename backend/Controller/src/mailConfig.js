@@ -3,7 +3,8 @@ const path = require("path");
 
 const enviarMail = async (user) => {
   const encodedEmail = encodeURIComponent(user.email);
-  const confirmationLink = `http://localhost:3000/confirmar?email=${encodedEmail}`; // Asegúrate de usar las comillas correctas
+  // const confirmationLink = `http://192.168.1.132:8001/confirmar?email=${encodedEmail}`;
+  const confirmationLink = `http://localhost:3000/confirmar?email=${encodedEmail}`;
 
   const config = {
     host: "smtp.gmail.com",

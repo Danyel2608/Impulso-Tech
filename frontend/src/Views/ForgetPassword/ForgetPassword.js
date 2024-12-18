@@ -1,64 +1,89 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom"; // Importar ReactDOM para usar createPortal
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import ReactDOM from "react-dom";
 import "./ForgetPassword.css";
 import LogoModaModerna from "../../assets/ModaUrbanaLogo.png";
 import ImgLeft3 from "../../assets/Description3.jpg";
-import ModalForget from "../Modal/ModalForget"; // Asegúrate de importar tu modal
-import { useTranslation } from "../../TranslationContext"; // Importamos el contexto de traducción
+import ModalForget from "../Modal/ModalForget";
+import { useTranslation } from "../../TranslationContext";
 import HeaderLanguages from "../Header/HeaderLanguages";
 
 function ForgetPassword() {
-  // Accedemos a la función de traducción
+  const navigate = useNavigate();
+  const [selectedQuestion, setSelectedQuestion] = useState(""); // Para almacenar la pregunta de seguridad
+  const [showPassword, setShowPassword] = useState(false);
   const { translate } = useTranslation();
-
-  // Estados para el formulario y el mensaje de respuesta
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [answerSecurity, setAnswerSecurity] = useState("");
-  const [message, setMessage] = useState(""); // Para mostrar mensaje de éxito o error
-  const [isSuccess, setIsSuccess] = useState(false); // Estado para saber si es un mensaje de éxito o error
-  const [isLoading, setIsLoading] = useState(false); // Para manejar estado de carga
-  const [modalVisible, setModalVisible] = useState(false); // Para controlar la visibilidad del modal
-  const [pending, setPending] = useState(false); // Estado para mostrar el loading indicator (si es necesario)
+  const [responseSecurity, setResponseSecurity] = useState("");
+  const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [pending, setPending] = useState(false);
 
-  // Función para manejar el submit del formulario
+  useEffect(() => {
+    if (email) {
+      // Solicitamos la pregunta de seguridad solo si el email ha sido ingresado
+      const fetchSecurityQuestion = async () => {
+        try {
+          const response = await fetch(`/auth/user-data?email=${email}`);
+          const data = await response.json();
+          if (data.question) {
+            setSelectedQuestion(data.question); // Establecemos la pregunta de seguridad
+          } else {
+            setSelectedQuestion(""); // No se encontró la pregunta
+          }
+        } catch (error) {
+          console.error("Error fetching security question:", error);
+        }
+      };
+
+      fetchSecurityQuestion();
+    } else {
+      setSelectedQuestion(""); // Restablecer si no hay email
+    }
+  }, [email]); // Esta función se ejecutará cada vez que el email cambie
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState); // Invierte el estado de visibilidad
+  };
+
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevenir recarga de página
-
-    // Validación básica
-    if (!email || !password || !answerSecurity) {
+    e.preventDefault();
+    if (!email || !password || !responseSecurity) {
       setMessage(translate("complete_all_fields"));
       setIsSuccess(false);
       setModalVisible(true);
       return;
     }
 
-    setIsLoading(true); // Activar el estado de carga
-    setMessage(""); // Limpiar mensaje anterior
+    setIsLoading(true);
+    setMessage("");
 
     try {
-      setPending(true); // Para manejar el estado de carga
-      // Realizar la petición PUT
-      const response = await fetch("http://localhost:8001/auth/forget", {
-        method: "PUT", // Cambiar de POST a PUT
+      setPending(true);
+      const response = await fetch("/auth/forget", {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email,
           password,
-          answerSecurity,
+          responseSecurity,
         }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        // Si la respuesta es exitosa
         setMessage(translate("password_updated_successfully"));
         setIsSuccess(true);
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
       } else {
-        // Si hubo un error en la respuesta
         if (data.error && data.error.includes("respuesta incorrecta")) {
           setMessage(translate("incorrect_security_answer"));
           setIsSuccess(false);
@@ -68,17 +93,15 @@ function ForgetPassword() {
         }
       }
     } catch (error) {
-      // Si ocurre un error en la solicitud fetch
       setMessage(translate("problem_processing_request"));
       setIsSuccess(false);
     } finally {
-      setIsLoading(false); // Desactivar estado de carga
-      setPending(false); // Desactivar el loading
-      setModalVisible(true); // Mostrar el modal con el mensaje
+      setIsLoading(false);
+      setPending(false);
+      setModalVisible(true);
     }
   };
 
-  // Función para cerrar el modal
   const handleCloseModal = () => {
     setModalVisible(false);
   };
@@ -96,22 +119,30 @@ function ForgetPassword() {
             type="email"
             placeholder={translate("email")}
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)} // Guardamos el email en el estado
             required
           />
-          <input
-            type="password"
-            placeholder={translate("new_password")}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <h5>{translate("security_question")}</h5>
+          <div className="password-container-forget">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder={translate("new_password")}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <i
+              className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+              onClick={togglePasswordVisibility}
+              style={{ cursor: "pointer" }}
+            ></i>
+          </div>
+
+          <h5>{selectedQuestion || translate("security_question")}</h5>
           <input
             type="text"
             placeholder={translate("answer_security")}
-            value={answerSecurity}
-            onChange={(e) => setAnswerSecurity(e.target.value)}
+            value={responseSecurity}
+            onChange={(e) => setResponseSecurity(e.target.value)}
             required
           />
         </div>
@@ -128,7 +159,6 @@ function ForgetPassword() {
           </button>
         </div>
       </form>
-      {/* Ventana Modal usando ReactDOM.createPortal */}
       {ReactDOM.createPortal(
         <ModalForget
           visible={modalVisible}
@@ -137,7 +167,7 @@ function ForgetPassword() {
           isSuccess={isSuccess}
           onClose={handleCloseModal}
         />,
-        document.getElementById("modal") // El contenedor para el modal
+        document.getElementById("modal")
       )}
       <div className="img-left">
         <img src={ImgLeft3} alt="img-left3" />
