@@ -10,23 +10,29 @@ function ShoppingCart() {
   const [isModalVisible2, setIsModalVisible2] = useState(false);
   const [modalMessage2, setModalMessage2] = useState("");
   const [cartItems, setCartItems] = useState([]);
-
   // 1. Cargar los datos de `localStorage` al montar el componente
   useEffect(() => {
-    // Revisamos si ya hay algo guardado en localStorage
-    const savedItems = localStorage.getItem("itemsCart");
+    const isLogin = localStorage.getItem("token");
+    if (isLogin !== null) {
+      // Revisamos si ya hay algo guardado en localStorage
+      const savedItems = localStorage.getItem("itemsCart");
 
-    // Si hay datos, los parseamos y los asignamos al estado
-    if (savedItems) {
-      setCartItems(JSON.parse(savedItems)); // Convierte el string a un array de objetos
+      // Si hay datos, los parseamos y los asignamos al estado
+      if (savedItems) {
+        setCartItems(JSON.parse(savedItems)); // Convierte el string a un array de objetos
+      }
     }
   }, []); // Solo se ejecuta una vez, cuando el componente se monta
 
   // 2. Guardar el carrito de compras en `localStorage` cada vez que el estado cambie
   useEffect(() => {
-    // Guardamos los items del carrito solo si hay algo en el estado
-    if (cartItems.length > 0) {
-      localStorage.setItem("itemsCart", JSON.stringify(cartItems)); // Guardamos el carrito en localStorage como JSON
+    const isLogin = localStorage.getItem("token");
+
+    if (isLogin !== null) {
+      // Guardamos los items del carrito solo si hay algo en el estado
+      if (cartItems.length > 0) {
+        localStorage.setItem("itemsCart", JSON.stringify(cartItems)); // Guardamos el carrito en localStorage como JSON
+      }
     }
   }, [cartItems]); // Este efecto se ejecuta cada vez que el estado 'cartItems' cambia
 
@@ -183,50 +189,48 @@ function ShoppingCart() {
 
       {/* Aquí mapeamos los items del carrito */}
       <div id="listItems">
-        {cartItems.length > 0 ? (
-          cartItems.map((product, index) => (
-            <div key={index} className="item-content">
-              <div className="img-item">
-                <img
-                  src={product.imagen} // Se espera que cada producto tenga una propiedad 'image'
-                  alt={product.name} // Se espera que cada producto tenga una propiedad 'name'
-                />
-              </div>
-              <div className="name-item">
-                <h5>{product.name}</h5> {/* Nombre del producto */}
-              </div>
-              <div className="size-item">
-                <h5>{product.talla}</h5> {/* Talla seleccionada */}
-              </div>
-              <div className="price-item">
-                <h5>{product.precio.toFixed(2)}/und</h5>{" "}
-                {/* Precio del producto */}
-              </div>
-              <div className="buttons-quantity">
-                <div className="plus">
-                  <i
-                    className="fa-solid fa-plus"
-                    id="plus"
-                    onClick={addQuantity}
-                  ></i>
+        {cartItems.length > 0
+          ? cartItems.map((product, index) => (
+              <div key={index} className="item-content">
+                <div className="img-item">
+                  <img
+                    src={product.imagen} // Se espera que cada producto tenga una propiedad 'image'
+                    alt={product.name} // Se espera que cada producto tenga una propiedad 'name'
+                  />
                 </div>
-                <div className="quantity">
-                  <p className="quantity-value">{product.quantity}</p>{" "}
-                  {/* Cantidad seleccionada */}
+                <div className="name-item">
+                  <h5>{product.name}</h5> {/* Nombre del producto */}
                 </div>
-                <div className="rest">
-                  <i
-                    className="fa-solid fa-minus"
-                    id="rest"
-                    onClick={restQuantity}
-                  ></i>
+                <div className="size-item">
+                  <h5>{product.talla}</h5> {/* Talla seleccionada */}
+                </div>
+                <div className="price-item">
+                  <h5>{product.precio.toFixed(2)}/und</h5>{" "}
+                  {/* Precio del producto */}
+                </div>
+                <div className="buttons-quantity">
+                  <div className="plus">
+                    <i
+                      className="fa-solid fa-plus"
+                      id="plus"
+                      onClick={addQuantity}
+                    ></i>
+                  </div>
+                  <div className="quantity">
+                    <p className="quantity-value">{product.quantity}</p>{" "}
+                    {/* Cantidad seleccionada */}
+                  </div>
+                  <div className="rest">
+                    <i
+                      className="fa-solid fa-minus"
+                      id="rest"
+                      onClick={restQuantity}
+                    ></i>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <p>{translate("no_items_in_cart")}</p> // Mensaje si el carrito está vacío
-        )}
+            ))
+          : ""}
       </div>
 
       <div className="shopping-actions-container">

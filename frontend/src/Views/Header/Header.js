@@ -67,6 +67,8 @@ function Header() {
     localStorage.clear();
     setIsLoggedIn(false);
     setRole(""); // Reiniciar el rol al cerrar sesión
+    const shoppingCart = document.querySelector("#listItems");
+    shoppingCart.innerHTML = "";
   };
 
   return (

@@ -7,7 +7,9 @@ const router = require("express").Router();
 router.post("/signup", loginController.signup);
 //endpoint login
 router.post("/login", loginController.login);
+//enpoint obtener todos los logins
 router.get("/allLogins", verifyToken, loginController.getAllLogins);
+//obtener login por id
 router.get("/loginId", verifyToken, loginController.getLoginId);
 //endpoint para refrescar token
 router.get("/refresh", verifyToken, loginController.refreshToken);
