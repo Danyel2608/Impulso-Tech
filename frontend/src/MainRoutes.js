@@ -30,9 +30,6 @@ function MainRoutes() {
   const [isRouteLoading, setIsRouteLoading] = useState(false);
   const location = useLocation();
   const [token, setToken] = useState(localStorage.getItem("token") || "");
-  const [refreshToken, setRefreshToken] = useState(
-    localStorage.getItem("refresh-token") || ""
-  );
 
   useEffect(() => {
     const storedLanguage = localStorage.getItem("language");
@@ -49,9 +46,9 @@ function MainRoutes() {
 
   // Función para refrescar el token
   const refreshTokenUser = async () => {
-    const token = localStorage.getItem("token");
+    const refreshToken = localStorage.getItem("refresh-token"); // Usamos el refresh token directamente
 
-    if (!token) {
+    if (!refreshToken) {
       // Si no hay refresh token, el usuario necesita iniciar sesión de nuevo
       alert("Tiene que iniciar sesión de nuevo");
       return;
@@ -59,18 +56,17 @@ function MainRoutes() {
 
     try {
       const response = await fetch("/auth/refresh", {
-        method: "GET",
+        method: "POST", // La petición de refresco de token generalmente es POST
         headers: {
           "Content-Type": "application/json",
-          "auth-token": `${token}`, // Usamos el refresh token en el encabezado
         },
+        body: JSON.stringify({ refreshToken }), // Mandamos el refresh token en el cuerpo
       });
 
       const data = await response.json();
       if (response.ok) {
         // Si la respuesta es exitosa, actualizamos el token de acceso
-        console.log(data);
-        localStorage.setItem("token", data.data.token);
+        localStorage.setItem("token", data.data.token); // Guardamos el nuevo token de acceso
         console.log("Token de acceso renovado");
       } else {
         console.error("No se pudo renovar el token", data.error);
@@ -100,7 +96,6 @@ function MainRoutes() {
 
   const handleLogin = (token, refreshToken, role) => {
     setToken(token);
-    setRefreshToken(refreshToken);
     localStorage.setItem("token", token);
     localStorage.setItem("refresh-token", refreshToken);
   };

@@ -6,7 +6,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1em; /* Espaciado general */
 }
 
 .marcas-header {
@@ -52,8 +51,8 @@
 }
 /* Desktop (mínimo 1024px) */
 @media (min-width: 1024px) {
-  .marcas-header{
-    margin:5em 0 ;
+  .marcas-header {
+    margin: 5em 0;
   }
   .marcas-header h2 {
     font-size: 5em; /* Tamaño más grande para escritorio */
@@ -61,7 +60,7 @@
   .marcas-list-products {
     max-width: 60%;
   }
-  
+
   .marcas-search {
     width: 50%; /* Barra de búsqueda más ancha */
     font-size: 1.2em; /* Ajuste de tamaño de fuente */

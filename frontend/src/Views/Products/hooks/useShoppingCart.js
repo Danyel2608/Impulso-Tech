@@ -7,11 +7,9 @@ const useShoppingCart = (producto, selectSize) => {
   const [modalMessage, setModalMessage] = useState("");
 
   const agregarAlCarrito = (producto, selectSize) => {
-    console.log(selectSize);
     const listItems = document.getElementById("listItems");
     const rowId = `row-number-${producto._id}`;
     const tokenAccessUser = localStorage.getItem("token");
-    console.log(selectSize);
 
     if (!tokenAccessUser) {
       setModalMessage(translate("login_required_message"));
@@ -40,9 +38,7 @@ const useShoppingCart = (producto, selectSize) => {
     const contentItem = `
     <div class="item-content">
       <div class="img-item">
-        <img src=${producto.imagen_url} alt="${
-      producto.nombre
-    }" />
+        <img src=${producto.imagen_url} alt="${producto.nombre}" />
       </div>
       <div class="name-item"><h5>${producto.nombre}</h5></div>
       <div class="size-item"><h5>${selectSize}</h5></div> <!-- Usa la talla seleccionada -->
@@ -56,6 +52,22 @@ const useShoppingCart = (producto, selectSize) => {
   `;
     cartRow.innerHTML = contentItem;
     listItems.appendChild(cartRow);
+
+    const newProduct = {
+      imagen: producto.imagen_url,
+      name: producto.nombre,
+      talla: selectSize,
+      precio: producto.precio,
+      quantity: 1,
+    };
+    // Obtener el carrito actual del localStorage
+    const currentCart = JSON.parse(localStorage.getItem("itemsCart")) || [];
+
+    // Agregar el nuevo producto al carrito
+    currentCart.push(newProduct);
+
+    // Guardar el carrito actualizado en localStorage
+    localStorage.setItem("itemsCart", JSON.stringify(currentCart));
 
     const updateTotal = () => {
       let total = 0;

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Search from "../../Products/Search";
 import "./Novedades.css";
 import Header from "../../Header/Header";
 import { useTranslation } from "../../../TranslationContext";
 import ModalShop from "../../Products/ModalShop";
 import useShoppingCart from "../../Products/hooks/useShoppingCart";
+import Footer from "../../Footer/Footer";
 
 function useResponsiveProductos() {
   const [productosPorPagina, setProductosPorPagina] = useState(10);
@@ -56,17 +57,8 @@ function Novedades() {
     }));
   };
 
-  useEffect(() => {
-    fetchProductsNovedades();
-  }, []);
-
-  useEffect(() => {
-    const startIdx = (paginaActual - 1) * productosPorPagina;
-    const endIdx = startIdx + productosPorPagina;
-    setProductosPagina(productosFiltrados.slice(startIdx, endIdx));
-  }, [paginaActual, productosFiltrados, productosPorPagina]);
-
-  const fetchProductsNovedades = async () => {
+  // Memorizamos la función fetchProductsNovedades para evitar la advertencia
+  const fetchProductsNovedades = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch("/api/all-products");
@@ -85,7 +77,18 @@ function Novedades() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [translate]); // Dependencia traducida, ya que el texto de error depende de la traducción
+
+  // useEffect para llamar a fetchProductsNovedades
+  useEffect(() => {
+    fetchProductsNovedades();
+  }, [fetchProductsNovedades]); // Dependencia fetchProductsNovedades incluida
+
+  useEffect(() => {
+    const startIdx = (paginaActual - 1) * productosPorPagina;
+    const endIdx = startIdx + productosPorPagina;
+    setProductosPagina(productosFiltrados.slice(startIdx, endIdx));
+  }, [paginaActual, productosFiltrados, productosPorPagina]);
 
   const handlePageChange = (pageNumber) => {
     setPaginaActual(pageNumber);
@@ -216,6 +219,7 @@ function Novedades() {
         }}
         message={modalMessage}
       />
+      <Footer></Footer>
     </div>
   );
 }

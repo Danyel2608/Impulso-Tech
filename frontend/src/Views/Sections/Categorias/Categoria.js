@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Search from "../../Products/Search";
 import "./Categoria.css";
 import Header from "../../Header/Header";
 import { useTranslation } from "../../../TranslationContext";
 import ModalShop from "../../Products/ModalShop";
 import useShoppingCart from "../../Products/hooks/useShoppingCart";
+import Footer from "../../Footer/Footer";
 
 function useResponsiveProductos() {
   const [productosPorPagina, setProductosPorPagina] = useState(10);
@@ -49,13 +50,8 @@ function Categoria({ categoria }) {
 
   const idioma = localStorage.getItem("language") || "es";
 
-  useEffect(() => {
-    if (categoria) {
-      fetchProductsCategoria();
-    }
-  }, [categoria]);
-
-  const fetchProductsCategoria = async () => {
+  // Usamos useCallback aquí para evitar que la función cambie en cada render
+  const fetchProductsCategoria = useCallback(async () => {
     try {
       const response = await fetch("/api/all-products");
       const data = await response.json();
@@ -75,7 +71,13 @@ function Categoria({ categoria }) {
     } catch (error) {
       console.error("Error al obtener productos:", error);
     }
-  };
+  }, [categoria, idioma]); // Aseguramos que se actualice cuando 'categoria' o 'idioma' cambien
+
+  useEffect(() => {
+    if (categoria) {
+      fetchProductsCategoria();
+    }
+  }, [categoria, fetchProductsCategoria]); // Agregamos fetchProductsCategoria a las dependencias
 
   useEffect(() => {
     const startIdx = (paginaActual - 1) * productosPorPagina;
@@ -209,6 +211,7 @@ function Categoria({ categoria }) {
         }}
         message={modalMessage}
       />
+      <Footer></Footer>
     </div>
   );
 }

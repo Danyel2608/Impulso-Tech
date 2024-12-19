@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Search from "../../Products/Search";
 import "./Marcas.css";
 import Header from "../../Header/Header";
 import { useTranslation } from "../../../TranslationContext";
 import useShoppingCart from "../../Products/hooks/useShoppingCart";
 import ModalShop from "../../Products/ModalShop";
+import Footer from "../../Footer/Footer";
 
 function useResponsiveProductos() {
   const [productosPorPagina, setProductosPorPagina] = useState(10);
@@ -55,19 +56,8 @@ function Marca({ marca }) {
     }));
   };
 
-  useEffect(() => {
-    if (marca) {
-      fetchProducts();
-    }
-  }, [marca]);
-
-  useEffect(() => {
-    const startIdx = (paginaActual - 1) * productosPorPagina;
-    const endIdx = startIdx + productosPorPagina;
-    setProductosPagina(productosFiltrados.slice(startIdx, endIdx));
-  }, [paginaActual, productosFiltrados, productosPorPagina]);
-
-  const fetchProducts = async () => {
+  // Utilizamos useCallback para memorizar la función fetchProducts
+  const fetchProducts = useCallback(async () => {
     try {
       const response = await fetch("/api/all-products");
       const data = await response.json();
@@ -87,7 +77,19 @@ function Marca({ marca }) {
     } catch (error) {
       console.error("Error al obtener productos:", error);
     }
-  };
+  }, [marca]); // Dependencia para que se actualice cuando cambie 'marca'
+
+  useEffect(() => {
+    if (marca) {
+      fetchProducts(); // Llamada a la función fetchProducts
+    }
+  }, [marca, fetchProducts]); // Dependencias actualizadas
+
+  useEffect(() => {
+    const startIdx = (paginaActual - 1) * productosPorPagina;
+    const endIdx = startIdx + productosPorPagina;
+    setProductosPagina(productosFiltrados.slice(startIdx, endIdx));
+  }, [paginaActual, productosFiltrados, productosPorPagina]);
 
   const handlePageChange = (pageNumber) => {
     setPaginaActual(pageNumber);
@@ -206,6 +208,7 @@ function Marca({ marca }) {
         }}
         message={modalMessage}
       />
+      <Footer></Footer>
     </div>
   );
 }

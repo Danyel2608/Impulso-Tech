@@ -3,7 +3,6 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-// const path = require('path');
 
 dotenv.config();
 
@@ -35,8 +34,6 @@ app.use(
 // Conectar a MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
   })
   .then(() => console.log("Successfully connected to the database"))
   .catch((err) => console.error("Error al conectar con MongoDB", err));
@@ -47,12 +44,6 @@ app.use("/emails", emailsConfirm);
 app.use("/newsletter", newsletterRoutes);
 app.use("/api", productRoutes);
 app.use("/invoice", invoiceRoutes);
-
-// app.use(express.static(path.join(__dirname, "build")));
-
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "build", "index.html"));
-// });
 
 // Iniciar el servidor
 app.listen(process.env.PORT, () => {

@@ -1,0 +1,13 @@
+/* Estilo específico para la barra de búsqueda */
+.search-bar {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: end;
+  width: 90%;
+}
+
+.search-bar input {
+  width: 300px;
+  padding: 10px;
+  font-size: 14px;
+}

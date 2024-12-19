@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Search from "../../Products/Search";
 import "./Rebajas.css";
 import Header from "../../Header/Header";
 import { useTranslation } from "../../../TranslationContext";
 import useShoppingCart from "../../Products/hooks/useShoppingCart";
 import ModalShop from "../../Products/ModalShop";
+import Footer from "../../Footer/Footer";
 
 function useResponsiveProductos() {
   const [productosPorPagina, setProductosPorPagina] = useState(10);
@@ -56,17 +57,8 @@ function Rebajas() {
     }));
   };
 
-  useEffect(() => {
-    fetchProductsRebajas();
-  }, []);
-
-  useEffect(() => {
-    const startIdx = (paginaActual - 1) * productosPorPagina;
-    const endIdx = startIdx + productosPorPagina;
-    setProductosPagina(productosFiltrados.slice(startIdx, endIdx));
-  }, [paginaActual, productosFiltrados, productosPorPagina]);
-
-  const fetchProductsRebajas = async () => {
+  // Memoized fetch function
+  const fetchProductsRebajas = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch("/api/all-products");
@@ -85,7 +77,17 @@ function Rebajas() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [translate]);
+
+  useEffect(() => {
+    fetchProductsRebajas();
+  }, [fetchProductsRebajas]);
+
+  useEffect(() => {
+    const startIdx = (paginaActual - 1) * productosPorPagina;
+    const endIdx = startIdx + productosPorPagina;
+    setProductosPagina(productosFiltrados.slice(startIdx, endIdx));
+  }, [paginaActual, productosFiltrados, productosPorPagina]);
 
   const handlePageChange = (pageNumber) => {
     setPaginaActual(pageNumber);
@@ -209,6 +211,7 @@ function Rebajas() {
         }}
         message={modalMessage}
       />
+      <Footer></Footer>
     </div>
   );
 }

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./AdminPage.css";
 import ProductsTable from "./ProductsTable";
 import { useTranslation } from "../../TranslationContext";
+import NewsletterUsers from "./NewsletterUsers";
 
 function AdminPage() {
   const { translate } = useTranslation();
@@ -13,8 +14,9 @@ function AdminPage() {
     const deleteButton = e.target;
     const emailUser =
       deleteButton.parentNode.previousElementSibling.previousElementSibling
-        .textContent;
+        .previousElementSibling.textContent;
 
+    console.log(emailUser);
     const token = localStorage.getItem("refresh-token");
 
     try {
@@ -44,7 +46,8 @@ function AdminPage() {
     }
   };
 
-  const fetchUsers = async () => {
+  // Usamos useCallback para evitar la advertencia de dependencias en el useEffect
+  const fetchUsers = useCallback(async () => {
     const token = localStorage.getItem("token");
 
     try {
@@ -71,11 +74,12 @@ function AdminPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [translate]); // Añadimos 'translate' en las dependencias si la traducción cambia
 
+  // Llamar a fetchUsers en un useEffect
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [fetchUsers]); // Ahora no hay advertencia, ya que fetchUsers está memorizada
 
   if (loading) {
     return (
@@ -125,6 +129,7 @@ function AdminPage() {
           ))}
         </tbody>
       </table>
+      <NewsletterUsers />
       <ProductsTable />
     </div>
   );

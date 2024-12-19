@@ -5,6 +5,7 @@ import Header from "../../Header/Header";
 import { useTranslation } from "../../../TranslationContext"; // Importa el hook de traducción
 import useShoppingCart from "../../Products/hooks/useShoppingCart";
 import ModalShop from "../../Products/ModalShop";
+import Footer from "../../Footer/Footer";
 
 function useResponsiveProductos() {
   const [productosPorPagina, setProductosPorPagina] = useState(10);
@@ -59,7 +60,9 @@ function Accesorios() {
         if (response.ok) {
           const accesorios = data.products.filter(
             (producto) =>
-              producto.tipo_prenda[idioma].trim().toLowerCase() === "accesorio"
+              producto.tipo_prenda[idioma].trim().toLowerCase() ===
+                "accesorio" ||
+              producto.tipo_prenda[idioma].trim().toLowerCase() === "accessory"
           );
           setProductosFiltrados(accesorios);
         } else {
@@ -159,7 +162,17 @@ function Accesorios() {
                       setModalMessage(translate("size_neccesary"));
                       setIsModalVisible(true);
                     } else {
-                      agregarAlCarrito(producto, selectedSizes[producto._id]);
+                      const productoSelect = {
+                        _id: producto._id,
+                        nombre: producto.nombre[idioma],
+                        imagen_url: producto.imagen_url,
+                        precio: producto.precio,
+                      };
+
+                      agregarAlCarrito(
+                        productoSelect,
+                        selectedSizes[producto._id]
+                      );
                     }
                   }}
                 >
@@ -193,6 +206,7 @@ function Accesorios() {
         }}
         message={modalMessage}
       />
+      <Footer></Footer>
     </div>
   );
 }

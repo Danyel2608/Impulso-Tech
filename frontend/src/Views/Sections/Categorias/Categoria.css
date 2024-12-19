@@ -6,7 +6,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1em; /* Espaciado general */
 }
 
 .categoria-header {

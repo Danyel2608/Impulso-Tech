@@ -139,7 +139,49 @@ const subscribeToNewsletter = async (req, res) => {
       .json({ error: "Hubo un problema al procesar la suscripción." });
   }
 };
+// Controlador para obtener todos los usuarios suscritos
+const getAllNewsletterUsers = async (req, res) => {
+  try {
+    const users = await Newsletter.find();
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error al obtener usuarios:", error);
+    res
+      .status(500)
+      .json({ error: "Hubo un problema al obtener los usuarios." });
+  }
+};
+// Controlador para eliminar un usuario de la newsletter
+const deleteNewsletterUser = async (req, res) => {
+  const { email } = req.body;
+
+  // Validación básica del correo electrónico
+  if (!email || !email.includes("@")) {
+    return res.status(400).json({ error: "Correo electrónico inválido." });
+  }
+
+  try {
+    // Buscar y eliminar al usuario con el correo proporcionado
+    const deletedUser = await Newsletter.findOneAndDelete({ email });
+
+    if (!deletedUser) {
+      return res
+        .status(404)
+        .json({ error: "No se encontró un usuario con este correo." });
+    }
+
+    // Responder con éxito si se eliminó el usuario
+    res.status(200).json({
+      message: `El usuario con correo ${email} fue eliminado exitosamente.`,
+    });
+  } catch (error) {
+    console.error("Error al eliminar usuario:", error);
+    res.status(500).json({ error: "Hubo un problema al eliminar al usuario." });
+  }
+};
 
 module.exports = {
   subscribeToNewsletter,
+  getAllNewsletterUsers,
+  deleteNewsletterUser,
 };

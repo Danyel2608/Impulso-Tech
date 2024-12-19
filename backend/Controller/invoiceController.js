@@ -20,15 +20,15 @@ const sendInvoiceEmail = async (req, res) => {
             <td>${item.name}</td>
             <td>${item.size}</td>
             <td>${item.quantity}</td>
-            <td>$${item.price.toFixed(2)}</td>
-            <td>$${(item.quantity * item.price).toFixed(2)}</td>
+            <td>$${item.precio.toFixed(2)}</td>
+            <td>$${(item.quantity * item.precio).toFixed(2)}</td>
         </tr>
     `
     )
     .join("");
 
   const totalAmount = itemsCart.reduce(
-    (total, item) => total + item.quantity * item.price,
+    (total, item) => total + item.quantity * item.precio,
     0
   );
 
